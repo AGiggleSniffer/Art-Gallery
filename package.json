@@ -1,0 +1,20 @@
+{
+	"name": "canvascollective",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"directories": {
+		"doc": "docs"
+	},
+	"scripts": {
+		"install": "npm --prefix server install server",
+		"dev:server": "npm install --prefix server start",
+		"sequelize": "npm run --prefix server sequelize",
+		"sequelize-cli": "npm run --prefix server sequelize-cli",
+		"start": "npm start --prefix server",
+		"build": "npm run --prefix server build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
