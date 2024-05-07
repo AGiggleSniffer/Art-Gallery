@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -7,31 +7,32 @@ if (process.env.NODE_ENV === "production") {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('GalleryTags', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      gallery_id: {
-        type: Sequelize.INTEGER
-      },
-      type: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('GalleryTags');
-  }
+	async up(queryInterface, Sequelize) {
+		await queryInterface.createTable("GalleryTags", {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: Sequelize.INTEGER,
+			},
+			gallery_id: {
+				type: Sequelize.INTEGER,
+			},
+			type: {
+				type: Sequelize.STRING,
+			},
+			createdAt: {
+				allowNull: false,
+				type: Sequelize.DATE,
+			},
+			updatedAt: {
+				allowNull: false,
+				type: Sequelize.DATE,
+			},
+		});
+	},
+	async down(queryInterface, Sequelize) {
+		options.tableName = "GalleryTags";
+		await queryInterface.dropTable("GalleryTags");
+	},
 };
