@@ -6,15 +6,28 @@ export default function CanvasHome() {
 	const [isPainting, setIsPainting] = useState(false);
 	const [lineWidth, setLineWidth] = useState(5);
 	const [ctx, setCtx] = useState(null);
+	const [previous, setPrevious] = useState(null);
 
 	const clearCanvas = () => {
 		const { width, height } = canvasRef.current;
 		ctx.clearRect(0, 0, width, height);
 	};
 
+	const saveCanvas = () => {
+		canvasRef.current.toBlob((blob) => {
+			setPrevious(blob);
+		});
+		clearCanvas();
+	};
+
+	const loadCanvas = async () => {
+		const bitmap = await createImageBitmap(previous);
+		ctx.drawImage(bitmap, 0, 0);
+	};
+
 	useEffect(() => {
 		if (!canvasRef.current) return;
-        const canvas = canvasRef.current;
+		const canvas = canvasRef.current;
 		const canvasOffsetX = canvas.offsetLeft;
 		const canvasOffsetY = canvas.offsetTop;
 		canvas.width = window.innerWidth - canvasOffsetX;
@@ -65,6 +78,8 @@ export default function CanvasHome() {
 				/>
 			</div>
 			<button onClick={clearCanvas}>Clear</button>
+			<button onClick={saveCanvas}>Save</button>
+			<button onClick={loadCanvas}>Load</button>
 		</>
 	);
 }
