@@ -18,8 +18,4 @@ router.use("/art", artRouter);
 
 router.use("/gallery", galleryRouter);
 
-router.post("/test", (req, res) => {
-	res.json({ requestBody: req.body });
-});
-
 module.exports = router;
