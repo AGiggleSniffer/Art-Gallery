@@ -4,7 +4,7 @@ import "./Canvas.css";
 export default function CanvasHome() {
 	const canvasRef = useRef(null);
 	const [isPainting, setIsPainting] = useState(false);
-	const [lineWidth, setLineWidth] = useState(5);
+	const [lineWidth, ] = useState(5);
 	const [ctx, setCtx] = useState(null);
 	const [previous, setPrevious] = useState(null);
 
