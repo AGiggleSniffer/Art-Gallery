@@ -30,7 +30,7 @@ module.exports = {
 					type: Sequelize.STRING,
 				},
 				bitmap: {
-					type: Sequelize.STRING,
+					type: Sequelize.TEXT,
 				},
 				createdAt: {
 					allowNull: false,
