@@ -39,7 +39,7 @@ export default function CanvasHome() {
 				galleryId,
 				name,
 				description,
-				bitmap: dataURL,
+				dataURL,
 			}),
 		);
 		clearCanvas();

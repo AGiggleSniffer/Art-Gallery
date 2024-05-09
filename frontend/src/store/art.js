@@ -14,15 +14,15 @@ export const load = (payload) => ({
 });
 
 export const saveThunk =
-	({ galleryId, name, description, bitmap }) =>
+	({ galleryId, name, description, dataURL }) =>
 	async (dispatch) => {
 		const response = await csrfFetch("/api/art", {
 			method: "POST",
 			body: JSON.stringify({
-				gallery_id: galleryId,
+				galleryId,
 				name,
 				description,
-				bitmap,
+				dataURL,
 			}),
 		});
 		const data = await response.json();
