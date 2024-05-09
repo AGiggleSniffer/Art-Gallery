@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as artActions from "../../store/art";
 import "./Canvas.css";
-import { useNavigate } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import LoadArtModal from "../LoadArtModal/LoadArtModal";
 
@@ -12,9 +11,9 @@ export default function CanvasHome() {
 	const [lineWidth] = useState(5);
 	const [ctx, setCtx] = useState(null);
 	const [previous, setPrevious] = useState(null);
-	const [galleryId, setGalleryId] = useState(null);
-	const [description, setDescription] = useState("");
-	const [name, setName] = useState("");
+	const [galleryId, ] = useState(null);
+	const [description, ] = useState("");
+	const [name, ] = useState("");
 
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.session.user);

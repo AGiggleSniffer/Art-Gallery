@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loadThunk } from "../../store/art";
-import { useModal } from "../../context/Modal";
 import "./LoadArt.css";
 
 export default function LoadArtModal({ myArt }) {
