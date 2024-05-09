@@ -4,21 +4,27 @@ const { Art } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
-	const myArt = await Art.findAll({ where });
-	return res.json({ myArt, user });
+
+	try {
+		const myArt = await Art.findAll({ where });
+		return res.json({ myArt });
+	} catch (err) {
+		return next(err);
+	}
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { galleryId, description, bitmap } = req.body;
+	const { galleryId, name, description, bitmap } = req.body;
 	const payload = {
 		user_id: user.id,
 		gallery_id: galleryId,
-		description: description,
-		bitmap: bitmap,
+		name,
+		description,
+		bitmap,
 	};
 
 	try {
@@ -29,7 +35,7 @@ router.post("/", async (req, res, next) => {
 	}
 });
 
-router.put("/:artId", async (req, res, next) => {
+router.put("/:artId", requireAuth, async (req, res, next) => {
 	const { artId } = req.params;
 	const { galleryId, description, bitmap } = req.body;
 	const payload = {
@@ -57,7 +63,7 @@ router.put("/:artId", async (req, res, next) => {
 	}
 });
 
-router.delete("/:artId", async (req, res, next) => {
+router.delete("/:artId", requireAuth, async (req, res, next) => {
 	const { artId } = req.params;
 	const where = { id: artId };
 

@@ -14,13 +14,14 @@ module.exports = (sequelize, DataTypes) => {
 				hooks: true,
 			});
 			Art.belongsTo(models.Gallery, { foreignKey: "gallery_id" });
-      Art.belongsTo(models.User, { foreignKey: "user_id" });
+			Art.belongsTo(models.User, { foreignKey: "user_id" });
 		}
 	}
 	Art.init(
 		{
 			user_id: DataTypes.INTEGER,
 			gallery_id: DataTypes.INTEGER,
+			name: DataTypes.STRING,
 			description: DataTypes.STRING,
 			bitmap: DataTypes.STRING,
 		},

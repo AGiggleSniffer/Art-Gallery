@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 	Gallery.init(
 		{
 			user_id: DataTypes.INTEGER,
+			name: DataTypes.STRING,
 			description: DataTypes.STRING,
 		},
 		{

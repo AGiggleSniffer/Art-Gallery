@@ -13,10 +13,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
 	const { user } = req;
-	const { description } = req.body;
+	const { name, description } = req.body;
 	const payload = {
 		user_id: user.id,
-		description: description,
+		name,
+		description,
 	};
 
 	try {
