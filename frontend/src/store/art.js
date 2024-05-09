@@ -45,7 +45,6 @@ const artReducer = (state = initialState, action) => {
 		case SAVE:
 			return { ...state };
 		case LOAD:
-			console.log(action);
 			return { ...state, myArt: action.payload.myArt };
 		default:
 			return state;
