@@ -18,13 +18,13 @@ router.get("/", requireAuth, async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { galleryId, name, description, bitmap } = req.body;
+	const { galleryId, name, description, dataURL } = req.body;
 	const payload = {
 		user_id: user.id,
 		gallery_id: galleryId,
 		name,
 		description,
-		bitmap,
+		data_url: dataURL,
 	};
 
 	try {
