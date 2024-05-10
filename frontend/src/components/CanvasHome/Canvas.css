@@ -1,0 +1,25 @@
+#CanvasHome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#CanvasHome div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    box-shadow: 0 0 50px var(--main-light-color);
+}
+
+canvas {
+    background-color: white;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 2px solid var(--main-accent-color);
+    border-left: none;
+}

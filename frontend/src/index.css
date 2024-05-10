@@ -1,4 +1,25 @@
 /* TODO: Add sitewide styles */
-body{
-    margin: 0
+body {
+	margin: 0;
+	background-color: var(--main-bg-color);
+}
+
+a {
+	text-decoration: none;
+}
+
+:root {
+	/* https://goodpalette.io/db5f2a-1f8ab8-c9c1bd */
+	--main-accent-color: #811a03;
+	--main-color: #db5f2a;
+	--main-light-color: #fbbc8f;
+	--main-bg-color: #fff9f2;
+
+	--accent-light-color: #8ac9f6;
+	--accent-color: #1f8ab8;
+	--accent-dark-color: #025b6f;
+
+	--text-color: #c9c1bd;
+	--text-dark-color: #78706e;
+	--text-accent-color: #262322;
 }

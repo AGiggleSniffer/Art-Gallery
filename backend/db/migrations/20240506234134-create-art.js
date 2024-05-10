@@ -29,7 +29,7 @@ module.exports = {
 				description: {
 					type: Sequelize.STRING,
 				},
-				bitmap: {
+				data_url: {
 					type: Sequelize.TEXT,
 				},
 				createdAt: {

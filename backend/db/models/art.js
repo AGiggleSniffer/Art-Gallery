@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 			gallery_id: DataTypes.INTEGER,
 			name: DataTypes.STRING,
 			description: DataTypes.STRING,
-			bitmap: DataTypes.TEXT,
+			data_url: DataTypes.TEXT,
 		},
 		{
 			sequelize,

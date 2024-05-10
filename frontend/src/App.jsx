@@ -25,13 +25,8 @@ function Layout() {
 
 const router = createBrowserRouter([
 	{
-		element: <Layout />,
-		children: [
-			{
-				path: "/",
-				element: <CanvasHome />,
-			},
-		],
+		path: "/",
+		element: <CanvasHome />,
 	},
 ]);
 

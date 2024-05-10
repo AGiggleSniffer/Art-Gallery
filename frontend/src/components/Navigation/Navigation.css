@@ -1,3 +1,47 @@
+#Navigation {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--main-light-color);
+	top: 50px;
+	left: 50px;
+	height: 720px;
+
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+
+	border: 2px solid var(--main-accent-color);
+	border-right: none;
+}
+
+#Navigation a {
+	border-bottom: 3px solid var(--main-color);
+	text-align: center;
+	font-size: 1.2rem;
+    padding: 10px;
+}
+
+#Navigation a:hover {
+	transition: all 500ms ease;
+	background-color: var(--main-color);
+}
+
+section#Navigation__extra {
+    display: flex;
+    flex-direction: column;
+}
+
 .hidden {
-    display: none;
+	display: none;
+}
+
+button {
+	border: none;
+	background-color: var(--main-light-color);
+	padding: 10px;
+	text-align: left;
+}
+
+button:hover {
+	transition: all 500ms ease;
+	background-color: var(--main-color);
 }
