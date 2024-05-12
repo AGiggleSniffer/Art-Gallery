@@ -4,13 +4,38 @@ const { Art } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
-router.get("/", requireAuth, async (req, res, next) => {
+router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
 
 	try {
 		const myArt = await Art.findAll({ where });
 		return res.json({ myArt });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+router.get("/all", async (_, res, next) => {
+	try {
+		const myArt = await Art.findAll();
+		return res.json({ myArt });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+router.get("/:id", async (req, res, next) => {
+	const { id } = req.params;
+	const { user } = req;
+	const where = { id: id };
+
+	try {
+		const myArt = await Art.findOne({ where });
+		if (myArt) {
+			return res.json({ myArt });
+		}
+		throw new Error("No Art Found");
 	} catch (err) {
 		return next(err);
 	}
@@ -38,11 +63,11 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.put("/:artId", requireAuth, async (req, res, next) => {
 	const { artId } = req.params;
-	const { galleryId, description, bitmap } = req.body;
+	const { galleryId, description, dataURL } = req.body;
 	const payload = {
 		gallery_id: galleryId,
 		description: description,
-		bitmap: bitmap,
+		data_url: dataURL,
 	};
 	const options = {
 		where: { id: artId },
@@ -53,10 +78,10 @@ router.put("/:artId", requireAuth, async (req, res, next) => {
 	};
 
 	try {
-		const updatedArt = await Spot.update(payload, options);
+		const updatedArt = await Art.update(payload, options);
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
-			updatedArt.sqlite = await Spot.findByPk(spotId);
+			updatedArt.sqlite = await Art.findByPk(artId);
 		}
 		return res.json(updatedArt.sqlite || updatedArt[1].dataValues);
 	} catch (err) {

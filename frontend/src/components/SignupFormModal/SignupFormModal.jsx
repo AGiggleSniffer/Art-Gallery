@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
-function SignupFormModal() {
+function SignupFormModal({ extraMessage }) {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
@@ -45,6 +45,7 @@ function SignupFormModal() {
 	return (
 		<>
 			<h1>Sign Up</h1>
+			{extraMessage && <h2>{extraMessage}</h2>}
 			<form onSubmit={handleSubmit}>
 				<label>
 					Email
