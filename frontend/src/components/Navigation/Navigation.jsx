@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
 import ProfileButton from "./ProfileButton";
@@ -6,27 +6,29 @@ import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
-	const navigate = useNavigate();
 
 	return (
 		<nav id="Navigation">
 			<span>
-				<div onClick={() => navigate("/")}>
+				<NavLink to="/">
 					<BsHouse />
-					<NavLink to="/">Home</NavLink>
-				</div>
-				<div onClick={() => navigate("/arts")}>
+					Home
+				</NavLink>
+
+				<NavLink to="/arts">
 					<BsPalette />
-					<NavLink to="/arts">All Art</NavLink>
-				</div>
-				<div onClick={() => navigate("/galleries")}>
+					All Art
+				</NavLink>
+
+				<NavLink to="/galleries">
 					<BsEasel />
-					<NavLink to="/galleries">Galleries</NavLink>
-				</div>
-				<div onClick={() => navigate("/tags")}>
+					Galleries
+				</NavLink>
+
+				<NavLink to="/tags">
 					<BsHash />
-					<NavLink to="/tags">Tags</NavLink>
-				</div>
+					Tags
+				</NavLink>
 			</span>
 			<span id="Tags">
 				<p>FIND BY TAG</p>

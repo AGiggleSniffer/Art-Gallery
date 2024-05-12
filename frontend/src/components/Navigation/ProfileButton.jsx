@@ -44,6 +44,7 @@ function ProfileButton({ user }) {
 		<>
 			<button onClick={toggleMenu}>
 				<FaUserCircle />
+				Profile
 			</button>
 			<section className={ulClassName} ref={ulRef}>
 				{user ? (

@@ -12,9 +12,10 @@ export default function CanvasHome() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { id } = useParams();
-	
+
 	const [isPainting, setIsPainting] = useState(false);
 	const [lineWidth] = useState(5);
+	const [isOwner, setIsOwner] = useState(false);
 	const canvasRef = useRef(null);
 
 	const user = useSelector((state) => state.session.user);
@@ -25,12 +26,20 @@ export default function CanvasHome() {
 		ctx.clearRect(0, 0, width, height);
 	};
 
-	const [ctx, isOwner] = useCanvasCtx(canvasRef, myArt);
+	const ctx = useCanvasCtx(canvasRef, myArt);
 
 	useEffect(() => {
 		if (!id) return;
 		dispatch(artActions.findOneArt(id));
 	}, [dispatch, id]);
+
+	useEffect(() => {
+		if (user && myArt?.user_id === user?.id) {
+			setIsOwner(true);
+		} else {
+			setIsOwner(false);
+		}
+	}, [myArt, user]);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
