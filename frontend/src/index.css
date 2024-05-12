@@ -1,4 +1,42 @@
 /* TODO: Add sitewide styles */
-body{
-    margin: 0
+* {
+	font-family: "Nunito Sans", Roboto, "Open Sans", Tahoma, Geneva,
+		"Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+:root {
+	/* https://goodpalette.io/db5f2a-1f8ab8-c9c1bd */
+	--main-accent-t-color: #260300;
+	--main-accent-color: #811a03;
+	--main-color: #db5f2a;
+	--main-light-accent-color: #f0905b;
+	--main-light-color: #fbbc8f;
+	--main-bg-color: #fff9f2;
+
+	--accent-dark-color: #025b6f;
+    --accent-text-color: #6c7a99;
+	--accent-color: #1f8ab8;
+	--accent-light-color: #8ac9f6;
+
+	--text-accent-color: #262322;
+	--text-dark-color: #78706e;
+	--text-color: #c9c1bd;
+}
+
+body {
+	margin: 0;
+	background-color: var(--main-bg-color);
+}
+
+#Layout {
+	display: flex;
+	gap: 50px;
+
+	box-sizing: border-box;
+
+	height: 100vb;
+	padding: 50px;
+
+	align-items: center;
+	justify-content: center;
 }

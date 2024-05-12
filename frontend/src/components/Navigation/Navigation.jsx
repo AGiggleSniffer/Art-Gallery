@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
@@ -7,16 +8,45 @@ function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 
 	return (
-		<ul>
-			<li>
-				<NavLink to="/">Home</NavLink>
-			</li>
-			{isLoaded && (
-				<li>
-					<ProfileButton user={sessionUser} />
-				</li>
-			)}
-		</ul>
+		<nav id="Navigation">
+			<span>
+				<NavLink to="/">
+					<BsHouse />
+					Home
+				</NavLink>
+
+				<NavLink to="/arts">
+					<BsPalette />
+					All Art
+				</NavLink>
+
+				<NavLink to="/galleries">
+					<BsEasel />
+					Galleries
+				</NavLink>
+
+				<NavLink to="/tags">
+					<BsHash />
+					Tags
+				</NavLink>
+			</span>
+			<span id="Tags">
+				<p>FIND BY TAG</p>
+				<div>
+					<BsHash />
+					some tag
+				</div>
+				<div>
+					<BsHash />
+					other tag
+				</div>
+				<div>
+					<BsHash />
+					anotha one
+				</div>
+			</span>
+			<span>{isLoaded && <ProfileButton user={sessionUser} />}</span>
+		</nav>
 	);
 }
 

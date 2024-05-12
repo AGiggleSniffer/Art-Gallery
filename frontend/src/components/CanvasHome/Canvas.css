@@ -1,0 +1,40 @@
+#CanvasHome {
+	display: flex;
+	flex-direction: column;
+
+
+	& h1 {
+		color: var(--accent-text-color);
+	}
+
+	& button {
+		border: none;
+		border-radius: 5px;
+		background-color: var(--main-light-accent-color);
+		padding: 10px;
+		margin: 20px;
+		width: 20%;
+	}
+
+	& button:hover {
+		transition: all 500ms ease;
+		background-color: var(--main-color);
+	}
+}
+
+div#Buttons {
+	display: flex;
+	justify-content: center;
+	/* background-color: var(--main-light-color); */
+
+	margin: 20px;
+	border-radius: 20px;
+}
+
+canvas {
+	background-color: white;
+	border-radius: 5px;
+	border: 2px solid var(--main-accent-color);
+
+	box-shadow: 0 0 20px var(--main-light-color);
+}
