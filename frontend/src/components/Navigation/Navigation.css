@@ -31,6 +31,10 @@
 		margin: 10px;
 	}
 
+	& span#Tags div svg {
+		font-size: 1rem;
+	}
+
 	& a:first-of-type {
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
@@ -71,6 +75,7 @@
 
 	& button {
 		display: flex;
+		align-items: center;
 		border: none;
 
 		background-color: var(--main-light-color);
@@ -78,6 +83,7 @@
 
 		padding: 10px;
 		text-align: left;
+		font-size: 1.1rem;
 	}
 
 	& button:hover {
