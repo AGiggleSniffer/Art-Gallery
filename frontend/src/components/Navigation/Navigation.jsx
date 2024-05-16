@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
+import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
-	const sessionUser = useSelector((state) => state.session.user);
+	const sessionUser = useSelector(user);
 
 	return (
 		<nav id="Navigation">

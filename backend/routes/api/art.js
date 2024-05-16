@@ -4,38 +4,50 @@ const { Art } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
+const checkOwner = async (req, _res, next) => {
+	const { user } = req;
+	const where = { user_id: user.id };
+
+	try {
+		const myArt = await Art.findOne({ where });
+		if (myArt.user_id === user.id) {
+			return next();
+		} else throw new Error("Not Authorized");
+	} catch (err) {
+		next(err);
+	}
+};
+
+router.get("/", async (_req, res, next) => {
+	try {
+		const myArt = await Art.findAll();
+		return res.json(myArt);
+	} catch (err) {
+		return next(err);
+	}
+});
+
 router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
 
 	try {
 		const myArt = await Art.findAll({ where });
-		return res.json({ myArt });
+		return res.json(myArt);
 	} catch (err) {
 		return next(err);
 	}
 });
 
-router.get("/all", async (_, res, next) => {
-	try {
-		const myArt = await Art.findAll();
-		return res.json({ myArt });
-	} catch (err) {
-		return next(err);
-	}
-});
-
-router.get("/:id", async (req, res, next) => {
-	const { id } = req.params;
-	const { user } = req;
-	const where = { id: id };
+router.get("/:artId", async (req, res, next) => {
+	const { artId } = req.params;
+	const where = { id: artId };
 
 	try {
 		const myArt = await Art.findOne({ where });
 		if (myArt) {
-			return res.json({ myArt });
-		}
-		throw new Error("No Art Found");
+			return res.json(myArt);
+		} else throw new Error("No Art Found");
 	} catch (err) {
 		return next(err);
 	}
@@ -60,7 +72,7 @@ router.post("/", requireAuth, async (req, res, next) => {
 	}
 });
 
-router.put("/:artId", requireAuth, async (req, res, next) => {
+router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 	const { artId } = req.params;
 	const { galleryId, description, dataURL } = req.body;
 	const payload = {
@@ -88,7 +100,7 @@ router.put("/:artId", requireAuth, async (req, res, next) => {
 	}
 });
 
-router.delete("/:artId", requireAuth, async (req, res, next) => {
+router.delete("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 	const { artId } = req.params;
 	const where = { id: artId };
 

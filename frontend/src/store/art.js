@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { csrfFetch } from "./csrf";
 
 const SAVE = "art/save";
@@ -5,29 +6,35 @@ const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
+const DELETE = "art/delete";
 
-export const save = (payload) => ({
+const save = (payload) => ({
 	type: SAVE,
 	payload,
 });
 
-export const load = (payload) => ({
+const load = (payload) => ({
 	type: LOAD,
 	payload,
 });
 
-export const loadAll = (payload) => ({
+const loadAll = (payload) => ({
 	type: LOAD_ALL,
 	payload,
 });
 
-export const edit = (payload) => ({
+const edit = (payload) => ({
 	type: EDIT,
 	payload,
 });
 
-export const oneArt = (payload) => ({
+const oneArt = (payload) => ({
 	type: ONEART,
+	payload,
+});
+
+const deleteArt = (payload) => ({
+	type: DELETE,
 	payload,
 });
 
@@ -90,29 +97,48 @@ export const findOneArt = (id) => async (dispatch) => {
 	return data;
 };
 
-const initialState = { context: null, myArt: [], allArt: {} };
+export const deleteArtThunk = (id) => async (dispatch) => {
+	const response = await csrfFetch(`/api/art/${id}`, {
+		method: "DELETE",
+	});
+
+	const data = await response.json();
+	dispatch(deleteArt(id));
+	return data;
+};
+
+const initialState = { context: null, owned: [], all: {} };
+
+export const findArt = (id) => (state) => state.art.all[id];
+export const ownedArt = (state) => state.art.owned;
+export const allArt = (state) => state.art.all;
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SAVE:
 			return { ...state };
 		case LOAD:
-			return { ...state, myArt: action.payload.myArt };
+			return { ...state, owned: action.payload };
 		case LOAD_ALL:
-			return { ...state, allArt: action.payload.myArt };
+			return { ...state, all: action.payload };
 		case EDIT: {
 			const newAllArt = {
-				...state.allArt,
+				...state.all,
 				[action.payload.id]: action.payload,
 			};
-			return { ...state, allArt: newAllArt };
+			return { ...state, all: newAllArt };
 		}
 		case ONEART: {
 			const newAllArt = {
-				...state.allArt,
-				[action.payload.myArt.id]: action.payload.myArt,
+				...state.all,
+				[action.payload.id]: action.payload,
 			};
-			return { ...state, allArt: newAllArt };
+			return { ...state, all: newAllArt };
+		}
+		case DELETE: {
+			const newObj = { ...state };
+			delete newObj.all[action.payload.id];
+			return newObj;
 		}
 		default:
 			return state;

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 export default function useCanvasCtx(ref, myArt) {
 	const [ctx, setCtx] = useState(null);
 	const [isPainting, setIsPainting] = useState(false);
-	const [lineWidth] = useState(5);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -24,16 +23,20 @@ export default function useCanvasCtx(ref, myArt) {
 	}, [ref, myArt]);
 
 	useEffect(() => {
+		if (!ref.current) return;
+
 		const canvas = ref.current;
 
 		const mousedown = () => {
 			setIsPainting(true);
 		};
+
 		const mouseup = () => {
 			setIsPainting(false);
 			ctx.stroke();
 			ctx.beginPath();
 		};
+
 		const draw = (e) => {
 			if (!isPainting) return;
 
@@ -41,12 +44,13 @@ export default function useCanvasCtx(ref, myArt) {
 				var { clientX, clientY } = e.touches[0];
 			}
 
-			ctx.lineWidth = lineWidth;
+			ctx.lineWidth = 5;
 			ctx.lineCap = "round";
 
 			ctx.lineTo(e.offsetX || clientX, e.offsetY || clientY);
 			ctx.stroke();
 		};
+
 		canvas.addEventListener("mousedown", mousedown);
 		canvas.addEventListener("mouseup", mouseup);
 		canvas.addEventListener("mousemove", draw);
@@ -62,7 +66,7 @@ export default function useCanvasCtx(ref, myArt) {
 			canvas.removeEventListener("touchend", mouseup);
 			canvas.removeEventListener("touchmove", draw);
 		};
-	}, [ref, ctx, isPainting, lineWidth]);
+	}, [ref, ctx, isPainting]);
 
 	return ctx;
 }

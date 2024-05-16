@@ -14,7 +14,7 @@
 	--main-bg-color: #fff9f2;
 
 	--accent-dark-color: #025b6f;
-    --accent-text-color: #6c7a99;
+	--accent-text-color: #6c7a99;
 	--accent-color: #1f8ab8;
 	--accent-light-color: #8ac9f6;
 
@@ -39,4 +39,16 @@ body {
 
 	align-items: center;
 	justify-content: center;
+}
+
+@media screen and (max-width: 1575px) {
+	#Layout {
+		display: inline-block;
+	}
+
+	#Navigation {
+		flex-direction: row;
+		height: fit-content;
+		width: 100%;
+	}
 }

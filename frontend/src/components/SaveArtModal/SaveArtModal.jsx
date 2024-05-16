@@ -6,7 +6,7 @@ import * as artActions from "../../store/art";
 import "./CanvasSave.css";
 
 export default function SaveArtModal({ canvasRef, user, id }) {
-	const myArt = useSelector((state) => state.art.allArt[id]);
+	const myArt = useSelector(artActions.findArt(id));
 	const [galleryId] = useState(null);
 	const [description, setDescription] = useState("");
 	const [name, setName] = useState("");
@@ -22,7 +22,7 @@ export default function SaveArtModal({ canvasRef, user, id }) {
 			);
 		}
 
-		const dataURL = canvasRef.current.toDataURL();
+		const dataURL = await canvasRef.current.toDataURL();
 		console.log(tags);
 
 		try {
@@ -53,7 +53,6 @@ export default function SaveArtModal({ canvasRef, user, id }) {
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
-			console.log(errors);
 		}
 	};
 

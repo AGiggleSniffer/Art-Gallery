@@ -4,6 +4,7 @@
 	justify-self: flex-end;
 
 	box-sizing: border-box;
+	overflow: hidden;
 
 	background-color: var(--main-light-color);
 	height: 100%;

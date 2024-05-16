@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+
 import * as artActions from "../../store/art";
+import * as sessionActions from "../../store/session";
+
 import OpenModalButton from "../OpenModalButton";
+import DeleteArtModal from "../DeleteArtModal/DeleteArtModal";
 import LoadArtModal from "../LoadArtModal";
 import SaveArtModal from "../SaveArtModal";
+
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 import "./Canvas.css";
 
@@ -16,15 +21,14 @@ export default function CanvasHome() {
 	const [isOwner, setIsOwner] = useState(false);
 	const canvasRef = useRef(null);
 
-	const user = useSelector((state) => state.session.user);
-	const myArt = useSelector((state) => state.art.allArt[id]);
+	const user = useSelector(sessionActions.user);
+	const myArt = useSelector(artActions.findArt(id));
 
+	const ctx = useCanvasCtx(canvasRef, myArt);
 	const clearCanvas = () => {
 		const { width, height } = canvasRef.current;
 		ctx.clearRect(0, 0, width, height);
 	};
-
-	const ctx = useCanvasCtx(canvasRef, myArt);
 
 	useEffect(() => {
 		if (!id) return;
@@ -53,12 +57,24 @@ export default function CanvasHome() {
 						modalComponent={<SaveArtModal canvasRef={canvasRef} user={user} />}
 					/>
 					{isOwner && (
-						<OpenModalButton
-							buttonText="Edit & Save"
-							modalComponent={
-								<SaveArtModal canvasRef={canvasRef} user={user} id={id} />
-							}
-						/>
+						<>
+							<OpenModalButton
+								buttonText="Edit & Save"
+								modalComponent={
+									<SaveArtModal canvasRef={canvasRef} user={user} id={id} />
+								}
+							/>
+							<OpenModalButton
+								buttonText="Delete"
+								modalComponent={
+									<DeleteArtModal
+										navigate={navigate}
+										clear={clearCanvas}
+										id={id}
+									/>
+								}
+							/>
+						</>
 					)}
 					<OpenModalButton
 						buttonText="Load Saves"

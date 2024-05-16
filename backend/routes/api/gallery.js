@@ -4,14 +4,42 @@ const { Gallery } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
-router.get("/", async (req, res) => {
-	const { user } = req;
-	const where = { user_id: user.id };
-	const myGallery = await Gallery.findAll({ where });
-	return res.json({ myGallery, user });
+router.get("/", async (_req, res, next) => {
+	try {
+		const galleries = await Gallery.findAll();
+		return res.json(galleries);
+	} catch (err) {
+		return next(err);
+	}
 });
 
-router.post("/", async (req, res, next) => {
+router.get("/owned", requireAuth, async (req, res, next) => {
+	const { user } = req;
+	const where = { user_id: user.id };
+
+	try {
+		const galleries = await Gallery.findAll({ where });
+		return res.json(galleries);
+	} catch (err) {
+		return next(err);
+	}
+});
+
+router.get("/:galleryId", async (req, res, next) => {
+	const { galleryId } = req.params;
+	const where = { id: galleryId };
+
+	try {
+		const galleries = await Gallery.findOne({ where });
+		if (galleries) {
+			return res.json(galleries);
+		} else throw new Error("No Galleries Found");
+	} catch (err) {
+		return next(err);
+	}
+});
+
+router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const { name, description, dataURL } = req.body;
 	const payload = {
@@ -29,7 +57,7 @@ router.post("/", async (req, res, next) => {
 	}
 });
 
-router.put("/:galleryId", async (req, res, next) => {
+router.put("/:galleryId", requireAuth, async (req, res, next) => {
 	const { galleryId } = req.params;
 	const { description } = req.body;
 	const payload = {
@@ -55,7 +83,7 @@ router.put("/:galleryId", async (req, res, next) => {
 	}
 });
 
-router.delete("/:galleryId", async (req, res, next) => {
+router.delete("/:galleryId", requireAuth, async (req, res, next) => {
 	const { galleryId } = req.params;
 	const where = { id: galleryId };
 

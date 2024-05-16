@@ -6,9 +6,10 @@ import {
 	Outlet,
 	Navigate,
 } from "react-router-dom";
-import Navigation from "./components/Navigation";
 import * as sessionActions from "./store/session";
-import CanvasHome from "./components/CanvasHome/CanvasHome";
+import Navigation from "./components/Navigation";
+import CanvasHome from "./components/CanvasHome";
+import GalleryHome from "./components/GalleryHome";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -40,11 +41,11 @@ const router = createBrowserRouter([
 				path: "/art/:id",
 				element: <CanvasHome />,
 			},
+			{
+				path: "/galleries",
+				element: <GalleryHome />,
+			},
 		],
-	},
-	{
-		path: "/test",
-		element: "TEST",
 	},
 	{
 		path: "*",

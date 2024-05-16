@@ -16,6 +16,6 @@ router.use("/users", usersRouter);
 
 router.use("/art", artRouter);
 
-router.use("/gallery", galleryRouter);
+router.use("/galleries", galleryRouter);
 
 module.exports = router;
