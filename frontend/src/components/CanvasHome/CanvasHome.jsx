@@ -12,6 +12,7 @@ import SaveArtModal from "../SaveArtModal";
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 import "./Canvas.css";
+import SignupFormModal from "../SignupFormModal";
 
 export default function CanvasHome() {
 	const dispatch = useDispatch();
@@ -52,10 +53,21 @@ export default function CanvasHome() {
 				<canvas ref={canvasRef} id="CanvasHome" />
 				<div id="Buttons">
 					<button onClick={clearCanvas}>Clear</button>
-					<OpenModalButton
-						buttonText="Save As"
-						modalComponent={<SaveArtModal canvasRef={canvasRef} user={user} />}
-					/>
+					{user ? (
+						<OpenModalButton
+							buttonText="Save As"
+							modalComponent={
+								<SaveArtModal canvasRef={canvasRef} user={user} />
+							}
+						/>
+					) : (
+						<OpenModalButton
+							buttonText="Save As"
+							modalComponent={
+								<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
+							}
+						/>
+					)}
 					{isOwner && (
 						<>
 							<OpenModalButton
@@ -76,10 +88,19 @@ export default function CanvasHome() {
 							/>
 						</>
 					)}
-					<OpenModalButton
-						buttonText="Load Saves"
-						modalComponent={<LoadArtModal navigate={navigate} />}
-					/>
+					{user ? (
+						<OpenModalButton
+							buttonText="Load Saves"
+							modalComponent={<LoadArtModal navigate={navigate} user={user} />}
+						/>
+					) : (
+						<OpenModalButton
+							buttonText="Load Saves"
+							modalComponent={
+								<SignupFormModal extraMessage="Sign in or Sign up to Load Saves" />
+							}
+						/>
+					)}
 				</div>
 			</div>
 		</>

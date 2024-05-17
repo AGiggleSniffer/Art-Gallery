@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
-const { Gallery } = require("../../db/models");
+const { Gallery, Art } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
@@ -16,9 +16,11 @@ router.get("/", async (_req, res, next) => {
 router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
+	const include = [{ model: Art }];
 
 	try {
-		const galleries = await Gallery.findAll({ where });
+		const galleries = await Gallery.findAll({ where, include });
+		console.log("SERVER RESULTS", galleries);
 		return res.json(galleries);
 	} catch (err) {
 		return next(err);
@@ -41,16 +43,30 @@ router.get("/:galleryId", async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { name, description, dataURL } = req.body;
+	const { name, description, artIdArray } = req.body;
 	const payload = {
 		user_id: user.id,
 		name,
 		description,
-		data_url: dataURL,
+	};
+	const where = {
+		id: artIdArray,
 	};
 
 	try {
 		const { dataValues } = await Gallery.create(payload);
+
+		const response = await Art.update(
+			{
+				gallery_id: dataValues.id,
+			},
+			{
+				where,
+			},
+		);
+
+		console.log("SERVER RESPONSE", response, where);
+
 		return res.status(201).json(dataValues);
 	} catch (err) {
 		return next(err);

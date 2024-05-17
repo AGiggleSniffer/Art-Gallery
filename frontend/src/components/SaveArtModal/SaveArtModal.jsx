@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import SignupFormModal from "../SignupFormModal";
 import * as artActions from "../../store/art";
 import "./CanvasSave.css";
 
@@ -14,14 +13,8 @@ export default function SaveArtModal({ canvasRef, user, id }) {
 	const [errors, setErrors] = useState({});
 
 	const dispatch = useDispatch();
-	const { setModalContent, closeModal } = useModal();
+	const { closeModal } = useModal();
 	const saveCanvas = async () => {
-		if (!user) {
-			return setModalContent(
-				<SignupFormModal extraMessage="Sign in or Sign up to Save" />,
-			);
-		}
-
 		const dataURL = await canvasRef.current.toDataURL();
 		console.log(tags);
 

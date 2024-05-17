@@ -1,3 +1,9 @@
 export default function GallerySelection({ navigate, closeModal, galleryArr }) {
-	return;
+	return (
+		<>
+			{galleryArr.map((item) => {
+				<div key={item.id}>{item.id}</div>;
+			})}
+		</>
+	);
 }

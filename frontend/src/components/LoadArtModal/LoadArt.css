@@ -1,9 +1,37 @@
 #LoadArt {
 	height: 80vh;
 	width: 80vw;
+    overflow: auto;
+
+	& img {
+		width: 100px;
+		height: 100px;
+	}
+
+    & input {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 }
 
-#LoadArt img {
-    width: 100px;
-    height: 100px;
+#ArtSelection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 20px;
+
+    & div {
+        position: relative;
+        border: solid;
+    }
+
+    & button {
+        align-self: center;
+        justify-self: center;
+        width: 100px;
+        height: 100px;
+
+        border: none;
+    }
 }

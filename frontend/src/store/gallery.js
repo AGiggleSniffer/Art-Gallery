@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD = "galleries/load";
 const LOAD_OWNED = "galleries/loadOwned";
+const LOAD_ONE = "galleries/loadOne";
 
 const load = (payload) => ({
 	type: LOAD,
@@ -10,6 +11,11 @@ const load = (payload) => ({
 
 const loadOwned = (payload) => ({
 	type: LOAD_OWNED,
+	payload,
+});
+
+const loadOne = (payload) => ({
+	type: LOAD_ONE,
 	payload,
 });
 
@@ -29,6 +35,19 @@ export const getOwnedGalleries = () => async (dispatch) => {
 	return data;
 };
 
+export const postGallery =
+	({ artIdArray, description, name, tags }) =>
+	async (dispatch) => {
+		const response = await csrfFetch(`/api/galleries`, {
+			method: "POST",
+			body: JSON.stringify({ artIdArray, description, name, tags }),
+		});
+
+		const data = await response.json();
+		dispatch(loadOne(data));
+		return data;
+	};
+
 const initialState = { all: [], owned: [] };
 
 export const allGalleries = (state) => state.galleries.all;
@@ -40,6 +59,10 @@ const galleryReducer = (state = initialState, action) => {
 			return { ...state, all: action.payload };
 		case LOAD_OWNED:
 			return { ...state, owned: action.payload };
+		case LOAD_ONE: {
+			const newOwned = { ...state.owned, ...action.payload };
+			return { ...state, owned: newOwned };
+		}
 		default:
 			return state;
 	}
