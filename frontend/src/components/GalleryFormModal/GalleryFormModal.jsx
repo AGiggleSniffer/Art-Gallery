@@ -53,7 +53,9 @@ export default function GalleryFormModal({ handleSubmit }) {
 				Add Tags to help people find your Gallery:{" "}
 				<input type="text" onChange={(e) => setTags(e.target.value)} />
 			</div>
-			<button type="submit">Save New Gallery</button>
+			<button className="classic" type="submit">
+				Save New Gallery
+			</button>
 		</form>
 	);
 }

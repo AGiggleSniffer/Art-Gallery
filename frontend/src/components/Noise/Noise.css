@@ -1,0 +1,7 @@
+@keyframes distort {
+    0% { filter: url("#shake0"); }
+    25% { filter: url("#shake1"); }
+    50% { filter: url("#shake2"); }
+    75% { filter: url("#shake3"); }
+    100% { filter: url("#shake4"); }
+}

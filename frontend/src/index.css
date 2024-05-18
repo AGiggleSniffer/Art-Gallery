@@ -5,27 +5,31 @@
 }
 
 :root {
-	/* https://goodpalette.io/db5f2a-1f8ab8-c9c1bd */
-	--main-accent-t-color: #260300;
-	--main-accent-color: #811a03;
-	--main-color: #db5f2a;
-	--main-light-accent-color: #f0905b;
-	--main-light-color: #fbbc8f;
-	--main-bg-color: #fff9f2;
+	/* https://goodpalette.io/503bed-f29e16-b6b5c4 */
+	--main-accent-t-color: #020626;
+	--main-accent-color: #0a0a8a;
+	--main-color: #503bed;
+	--main-light-accent-color: #8269f7;
+	--main-light-color: #af98fd;
+	--main-bg-color: #f7f2ff;
 
-	--accent-dark-color: #025b6f;
-	--accent-text-color: #6c7a99;
-	--accent-color: #1f8ab8;
-	--accent-light-color: #8ac9f6;
+	--accent-dark-color: #260f00;
+	--accent-text-color: #bf6e07;
+	--accent-color: #f29e16;
+	--accent-light-color: #fddd84;
 
-	--text-accent-color: #262322;
-	--text-dark-color: #78706e;
-	--text-color: #c9c1bd;
+	--text-color: #222326;
+	--text-contrast-color: #fbfafc;
 }
 
 body {
 	margin: 0;
 	background-color: var(--main-bg-color);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 #Layout {
@@ -41,14 +45,29 @@ body {
 	justify-content: center;
 }
 
+button {
+	cursor: pointer;
+}
+
+button.classic {
+	border: outset var(--main-light-accent-color);
+	border-radius: 20px;
+	background-color: var(--main-color);
+	color: var(--main-bg-color);
+	font-weight: bold;
+	padding: 10px;
+	margin: 20px;
+	transition: all 50ms ease-in-out;
+	box-shadow: 0 5px 0 var(--main-light-accent-color);
+}
+
+button.classic:active {
+	box-shadow: 0 2px 15px var(--main-color);
+	transform: translateY(3px);
+}
+
 @media screen and (max-width: 1575px) {
 	#Layout {
 		display: inline-block;
-	}
-
-	#Navigation {
-		flex-direction: row;
-		height: fit-content;
-		width: 100%;
 	}
 }

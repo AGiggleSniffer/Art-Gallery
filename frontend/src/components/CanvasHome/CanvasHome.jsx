@@ -13,6 +13,7 @@ import SaveArtModal from "../SaveArtModal";
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 import "./Canvas.css";
 import SignupFormModal from "../SignupFormModal";
+import Toolbar from "./Toolbar";
 
 export default function CanvasHome() {
 	const dispatch = useDispatch();
@@ -46,13 +47,14 @@ export default function CanvasHome() {
 
 	return (
 		<>
+			<Toolbar ctx={ctx} />
 			<div id="CanvasHome">
 				<div>
 					<h1>CANVAS COLLECTIVE | HOME</h1>
 				</div>
 				<canvas ref={canvasRef} id="CanvasHome" />
 				<div id="Buttons">
-					<button onClick={clearCanvas}>Clear</button>
+					<button className="classic" onClick={clearCanvas}>Clear</button>
 					{user ? (
 						<OpenModalButton
 							buttonText="Save As"

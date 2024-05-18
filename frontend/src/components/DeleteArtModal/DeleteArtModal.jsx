@@ -31,8 +31,12 @@ export default function DeleteArtModal({ navigate, clear, id }) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h2>Are you sure you want to delete this art</h2>
-			<button onClick={() => closeModal()}>Cancel</button>
-			<button type="submit">Yes</button>
+			<button className="classic" onClick={() => closeModal()}>
+				Cancel
+			</button>
+			<button className="classic" type="submit">
+				Yes
+			</button>
 		</form>
 	);
 }

@@ -11,7 +11,6 @@ export default function useCanvasCtx(ref, myArt) {
 		canvas.width = 1280;
 		canvas.height = 720;
 		const newCtx = ref.current.getContext("2d");
-		newCtx.strokeStyle = "#000000";
 
 		if (myArt) {
 			const img = new Image();
@@ -44,7 +43,6 @@ export default function useCanvasCtx(ref, myArt) {
 				var { clientX, clientY } = e.touches[0];
 			}
 
-			ctx.lineWidth = 5;
 			ctx.lineCap = "round";
 
 			ctx.lineTo(e.offsetX || clientX, e.offsetY || clientY);

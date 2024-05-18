@@ -35,36 +35,42 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 		<>
 			<div id="ArtSelection">
 				{visible && (
-					<div>
-						<OpenModalButton
-							buttonText="save"
-							modalComponent={<GalleryFormModal handleSubmit={handleSubmit} />}
-						/>
-					</div>
+					<OpenModalButton
+						buttonText="save"
+						modalComponent={<GalleryFormModal handleSubmit={handleSubmit} />}
+					/>
 				)}
-				<div>
-					{!visible ? (
-						<button onClick={toggleVisible}>Create new Gallery</button>
-					) : (
-						<button onClick={toggleVisible}>Cancel</button>
-					)}
-				</div>
+				{!visible ? (
+					<button className="classic" onClick={toggleVisible}>
+						Create new Gallery
+					</button>
+				) : (
+					<button className="classic" onClick={toggleVisible}>
+						Cancel
+					</button>
+				)}
 				{artArray.map((art, i) => {
 					return (
-						<div key={art.id}>
-							<img
-								src={art.data_url}
-								onClick={() => {
-									navigate(`/art/${art.id}`);
-									closeModal();
-								}}
-							/>
-							{visible && (
-								<input
-									type="checkbox"
-									value={art.id}
-									onChange={handleCheck(i)}
-								/>
+						<div key={art.id} className={visible ? "checkActive" : null}>
+							{visible ? (
+								<label>
+									<img src={art.data_url} />
+									<input
+										type="checkbox"
+										value={art.id}
+										onChange={handleCheck(i)}
+									/>
+								</label>
+							) : (
+								<label>
+									<img
+										src={art.data_url}
+										onClick={() => {
+											navigate(`/art/${art.id}`);
+											closeModal();
+										}}
+									/>
+								</label>
 							)}
 						</div>
 					);

@@ -80,7 +80,9 @@ export default function SaveArtModal({ canvasRef, user, id }) {
 					defaultValue={myArt?.tags}
 				/>
 			</div>
-			<button type="submit">Save As</button>
+			<button className="classic" type="submit">
+				Save As
+			</button>
 		</form>
 	);
 }

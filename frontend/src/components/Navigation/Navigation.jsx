@@ -46,7 +46,7 @@ function Navigation({ isLoaded }) {
 					anotha one
 				</div>
 			</span>
-			<span>{isLoaded && <ProfileButton user={sessionUser} />}</span>
+			<span id="Profile">{isLoaded && <ProfileButton user={sessionUser} />}</span>
 		</nav>
 	);
 }
