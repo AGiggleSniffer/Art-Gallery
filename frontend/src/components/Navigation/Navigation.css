@@ -53,10 +53,11 @@
 		color: var(--main-bg-color);
 		margin-left: 20px;
 		margin-right: 10px;
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 	}
 
 	& a {
+		display: flex;
 		color: var(--main-bg-color);
 
 		text-decoration: none;
@@ -70,12 +71,12 @@
 
 	& a:hover {
 		background-color: var(--main-light-accent-color);
-		animation: distort 1s ease-in-out infinite;
+		animation: var(--distort-anim);
 	}
 
 	& a.active {
 		background-color: var(--main-light-accent-color);
-		animation: distort 1s ease-in-out infinite;
+		animation: var(--distort-anim);
 	}
 
 	& a:first-of-type {
@@ -100,7 +101,7 @@
 
 	& button:hover {
 		background-color: var(--main-light-accent-color);
-		animation: distort 1s ease-in-out infinite;
+		animation: var(--distort-anim);
 	}
 
 	& section div {
@@ -147,6 +148,11 @@
 		height: fit-content;
 		width: 100%;
 
+		& a {
+			width: fit-content;
+			padding-right: 20px;
+		}
+
 		& span {
 			flex-direction: row;
 			border: none;
@@ -163,11 +169,7 @@
 		& span#Profile button {
 			padding: 20px;
 			padding-left: 0;
-		}
-
-		& a {
-			width: fit-content;
-			padding-right: 20px;
+			justify-content: center;
 		}
 
 		& section button.classic {

@@ -4,7 +4,7 @@
 
 	& h1 {
 		color: var(--text-color);
-		animation: distort 1.5s ease-in-out infinite;
+		animation: var(--distort-anim);
 		font-size: 4rem;
 	}
 
