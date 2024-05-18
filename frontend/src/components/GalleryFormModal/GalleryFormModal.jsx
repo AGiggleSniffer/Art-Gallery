@@ -13,6 +13,7 @@ export default function GalleryFormModal({ handleSubmit }) {
 	const { closeModal } = useModal();
 	const saveGallery = async () => {
 		const artIdArray = handleSubmit();
+		console.log(tags)
 		try {
 			await dispatch(
 				galleryActions.postGallery({
@@ -27,6 +28,7 @@ export default function GalleryFormModal({ handleSubmit }) {
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
+			console.log(errors)
 		}
 	};
 

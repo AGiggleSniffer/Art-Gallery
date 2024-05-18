@@ -7,7 +7,7 @@ import ArtSelection from "./ArtSelection";
 import GallerySelection from "./GallerySelection";
 import "./LoadArt.css";
 
-export default function LoadArtModal({ user, navigate }) {
+export default function LoadArtModal({ navigate }) {
 	const dispatch = useDispatch();
 	const artArray = useSelector(artActions.ownedArt);
 	const galleryArr = useSelector(galleryActions.ownedGalleries);

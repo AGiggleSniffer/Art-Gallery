@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import * as artActions from "../../store/art";
 import "./CanvasSave.css";
 
-export default function SaveArtModal({ canvasRef, user, id }) {
+export default function SaveArtModal({ canvasRef, id }) {
 	const myArt = useSelector(artActions.findArt(id));
 	const [galleryId] = useState(null);
 	const [description, setDescription] = useState("");
@@ -46,6 +46,7 @@ export default function SaveArtModal({ canvasRef, user, id }) {
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
+			console.log(errors)
 		}
 	};
 

@@ -93,7 +93,7 @@ export default function CanvasHome() {
 					{user ? (
 						<OpenModalButton
 							buttonText="Load Saves"
-							modalComponent={<LoadArtModal navigate={navigate} user={user} />}
+							modalComponent={<LoadArtModal navigate={navigate} />}
 						/>
 					) : (
 						<OpenModalButton

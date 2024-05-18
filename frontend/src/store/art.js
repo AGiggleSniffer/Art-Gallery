@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { csrfFetch } from "./csrf";
 
 const SAVE = "art/save";

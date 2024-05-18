@@ -1,4 +1,4 @@
-export default function GallerySelection({ navigate, closeModal, galleryArr }) {
+export default function GallerySelection({ galleryArr }) {
 	return (
 		<>
 			{galleryArr.map((item) => {
