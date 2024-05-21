@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
-const { Gallery, Art } = require("../../db/models");
+const { Gallery, ArtGallery } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
 router.get("/", async (_req, res, next) => {
+	const include = [{ model: ArtGallery }];
 	try {
-		const galleries = await Gallery.findAll();
+		const galleries = await Gallery.findAll({ include });
 		return res.json(galleries);
 	} catch (err) {
 		return next(err);
@@ -16,11 +17,10 @@ router.get("/", async (_req, res, next) => {
 router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
-	const include = [{ model: Art }];
+	const include = [{ model: ArtGallery }];
 
 	try {
 		const galleries = await Gallery.findAll({ where, include });
-		console.log("SERVER RESULTS", galleries);
 		return res.json(galleries);
 	} catch (err) {
 		return next(err);
@@ -49,23 +49,16 @@ router.post("/", requireAuth, async (req, res, next) => {
 		name,
 		description,
 	};
-	const where = {
-		id: artIdArray,
-	};
 
 	try {
 		const { dataValues } = await Gallery.create(payload);
 
-		const response = await Art.update(
-			{
-				gallery_id: dataValues.id,
-			},
-			{
-				where,
-			},
-		);
+		const joinTablePayload = artIdArray.map((item) => ({
+			art_id: item,
+			gallery_id: dataValues.id,
+		}));
 
-		console.log("SERVER RESPONSE", response, where);
+		await ArtGallery.bulkCreate(joinTablePayload);
 
 		return res.status(201).json(dataValues);
 	} catch (err) {

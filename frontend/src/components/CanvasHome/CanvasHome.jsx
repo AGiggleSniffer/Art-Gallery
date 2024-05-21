@@ -49,9 +49,9 @@ export default function CanvasHome() {
 		<>
 			<Toolbar ctx={ctx} />
 			<div id="CanvasHome">
-				<div>
+				{/* <div>
 					<h1>CANVAS COLLECTIVE | HOME</h1>
-				</div>
+				</div> */}
 				<canvas ref={canvasRef} id="CanvasHome" />
 				<div id="Buttons">
 					<button className="classic" onClick={clearCanvas}>Clear</button>

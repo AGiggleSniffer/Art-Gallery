@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	ArtTag.init(
 		{
-			art_id: DataTypes.INTEGER,
-			type: DataTypes.STRING,
+			art_id: { type: DataTypes.INTEGER, allowNull: false, onDelete: "CASCADE" },
+			type: { type: DataTypes.STRING, allowNull: false },
 		},
 		{
 			sequelize,

@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { createSelector } from "reselect";
 
 const SAVE = "art/save";
 const LOAD = "art/load";
@@ -63,7 +64,7 @@ export const loadThunk = () => async (dispatch) => {
 };
 
 export const loadAllThunk = () => async (dispatch) => {
-	const response = await csrfFetch(`/api/art/all`);
+	const response = await csrfFetch(`/api/art`);
 
 	const data = await response.json();
 	dispatch(loadAll(data));
@@ -111,6 +112,7 @@ const initialState = { context: null, owned: [], all: {} };
 export const findArt = (id) => (state) => state.art.all[id];
 export const ownedArt = (state) => state.art.owned;
 export const allArt = (state) => state.art.all;
+export const allArtArr = createSelector(allArt, (art) => Object.values(art));
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -118,8 +120,11 @@ const artReducer = (state = initialState, action) => {
 			return { ...state };
 		case LOAD:
 			return { ...state, owned: action.payload };
-		case LOAD_ALL:
-			return { ...state, all: action.payload };
+		case LOAD_ALL: {
+			const newObj = { ...state, all: {} };
+			action.payload.forEach((art) => (newObj.all[art.id] = art));
+			return newObj;
+		}
 		case EDIT: {
 			const newAllArt = {
 				...state.all,

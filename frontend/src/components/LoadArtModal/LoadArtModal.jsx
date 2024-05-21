@@ -23,12 +23,22 @@ export default function LoadArtModal({ navigate }) {
 	return (
 		<>
 			<div id="LoadArt">
-				<h1>Select Art to Load</h1>
-
+				<button className="classic exit" onClick={closeModal}>
+					X
+				</button>
 				<h2>
-					<span onClick={() => setVisible(true)}>ART</span>
-					{" | "}
-					<span onClick={() => setVisible(false)}>GALLERY</span>
+					<span
+						className={visible ? "active" : null}
+						onClick={() => setVisible(true)}
+					>
+						ARTS
+					</span>
+					<span
+						className={!visible ? "active" : null}
+						onClick={() => setVisible(false)}
+					>
+						GALLERIES
+					</span>
 				</h2>
 
 				{visible ? (

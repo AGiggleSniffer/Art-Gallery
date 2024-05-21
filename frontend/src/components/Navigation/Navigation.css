@@ -11,6 +11,7 @@
 
 	width: fit-content;
 	min-width: 15%;
+	height: 100%;
 
 	border-radius: 10px;
 
@@ -71,12 +72,12 @@
 
 	& a:hover {
 		background-color: var(--main-light-accent-color);
-		animation: var(--distort-anim);
+		animation: distort 1.4s ease-in-out infinite;
 	}
 
 	& a.active {
 		background-color: var(--main-light-accent-color);
-		animation: var(--distort-anim);
+		animation: distort 1.6s ease-in-out infinite;
 	}
 
 	& a:first-of-type {
@@ -101,7 +102,7 @@
 
 	& button:hover {
 		background-color: var(--main-light-accent-color);
-		animation: var(--distort-anim);
+		animation: distort 1.4s ease-in-out infinite;
 	}
 
 	& section div {

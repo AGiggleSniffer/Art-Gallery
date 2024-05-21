@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable(
-			"GalleryTags",
+			"ArtGalleries",
 			{
 				id: {
 					allowNull: false,
@@ -17,15 +17,17 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
+				art_id: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: { model: "Arts" },
+					onDelete: "CASCADE",
+				},
 				gallery_id: {
 					type: Sequelize.INTEGER,
 					allowNull: false,
 					references: { model: "Galleries" },
 					onDelete: "CASCADE",
-				},
-				type: {
-					type: Sequelize.STRING,
-					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,
@@ -40,7 +42,7 @@ module.exports = {
 		);
 	},
 	async down(queryInterface, Sequelize) {
-		options.tableName = "GalleryTags";
-		await queryInterface.dropTable("GalleryTags");
+		options.tableName = "Arts";
+		await queryInterface.dropTable("ArtGalleries");
 	},
 };

@@ -4,7 +4,7 @@
 
 	& h1 {
 		color: var(--text-color);
-		animation: var(--distort-anim);
+		animation: distort 1.5s ease-in-out infinite;
 		font-size: 4rem;
 	}
 
@@ -16,7 +16,6 @@
 div#Buttons {
 	display: flex;
 	justify-content: center;
-	/* background-color: var(--main-light-color); */
 
 	margin: 20px;
 	border-radius: 20px;

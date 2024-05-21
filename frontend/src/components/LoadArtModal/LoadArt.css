@@ -3,54 +3,110 @@
 	width: 80vw;
 	overflow: auto;
 
-	& img {
-		width: 100px;
-		height: 100px;
-
-        cursor: pointer;
-
-        transition: all 300ms ease-in-out;
+	& h2 {
+		display: flex;
+		width: fit-content;
 	}
 
-    & img:hover {
-        transform: scale(1.2);
-    }
+	& h2 span {
+		cursor: pointer;
 
-	& input {
+		padding: 10px;
+
+		width: fit-content;
+	}
+
+	& h2 span:after {
+		display: block;
+		content: "";
+		border-bottom: solid 3px var(--main-color);
+		transform: scaleX(0);
+		transition: transform 250ms ease-in-out;
+		transform-origin: 0% 50%;
+	}
+
+	& h2 span:hover:after {
+		transform: scaleX(1);
+	}
+
+	& h2 span.active:after {
+		transform: scaleX(1);
+	}
+
+	& .exit {
 		position: absolute;
-		top: 0;
 		right: 0;
+		top: 0;
+		width: 50px;
 	}
 }
 
-#ArtSelection {
+#Selection {
 	display: flex;
 	flex-wrap: wrap;
+
 	gap: 5px;
 	margin: 20px;
 
-	& div {
-		position: relative;
-		border: outset var(--main-accent-color);
-        height: fit-content;
+	& img {
+		height: 100px;
 
-        transition: all 300ms ease-in-out;
+		transition: all 300ms ease-in-out;
 	}
 
-    & div:hover {
-        transform: scale(1.2);
-    }
+	& input {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
 
-	& .checkActive {
+	& div {
+		position: relative;
+		cursor: pointer;
+
+		padding: 2px;
+
+		transition: all 300ms ease-in-out;
+		z-index: 1;
+	}
+
+	& div::before {
+		content: "";
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		filter: url("#shake0");
+
+		border: outset var(--main-accent-color);
+		z-index: -1;
+	}
+
+	& div:hover::before {
 		animation: distort 1s ease-in-out infinite;
 	}
 
-	& button {
-		align-self: center;
-		justify-self: center;
-		width: 100px;
-		height: 100px;
-
-        margin: 0;
+	& figure {
+		cursor: pointer;
+		margin: 0;
+		padding: 10px;
 	}
+	
+}
+
+#Selection__buttons {
+	position: absolute;
+	right: 60px;
+	top: 0;
+	padding: 0 20px;
+
+	& .classic {
+		margin: 20px 10px;
+	}
+}
+
+div#Selection__galleryCard {
+	padding: 20px;
 }

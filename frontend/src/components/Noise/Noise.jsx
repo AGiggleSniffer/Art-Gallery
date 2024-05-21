@@ -3,6 +3,7 @@ import "./Noise.css";
 
 export default function Noise() {
 	const [rSalt, setSalt] = useState(0);
+
 	useEffect(() => {
 		const delay = 1000;
 		const id = setInterval(() => {
@@ -10,6 +11,7 @@ export default function Noise() {
 		}, delay);
 		return () => clearTimeout(id);
 	});
+
 	return (
 		<svg style={{ display: "none" }}>
 			<defs>

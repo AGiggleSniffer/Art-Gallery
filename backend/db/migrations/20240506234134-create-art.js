@@ -19,18 +19,20 @@ module.exports = {
 				},
 				user_id: {
 					type: Sequelize.INTEGER,
-				},
-				gallery_id: {
-					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: { model: "Users" },
+					onDelete: "CASCADE",
 				},
 				name: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				description: {
 					type: Sequelize.STRING,
 				},
 				data_url: {
 					type: Sequelize.TEXT,
+					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,

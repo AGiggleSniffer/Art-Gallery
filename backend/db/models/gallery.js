@@ -13,18 +13,22 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
 				hooks: true,
 			});
-			Gallery.hasMany(models.Art, {
+			Gallery.hasMany(models.ArtGallery, {
 				foreignKey: "gallery_id",
 				onDelete: "CASCADE",
 				hooks: true,
 			});
-      Gallery.belongsTo(models.User, { foreignKey: "user_id" });
+			Gallery.belongsTo(models.User, { foreignKey: "user_id" });
 		}
 	}
 	Gallery.init(
 		{
-			user_id: DataTypes.INTEGER,
-			name: DataTypes.STRING,
+			user_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				onDelete: "CASCADE",
+			},
+			name: { type: DataTypes.STRING, allowNull: false },
 			description: DataTypes.STRING,
 		},
 		{

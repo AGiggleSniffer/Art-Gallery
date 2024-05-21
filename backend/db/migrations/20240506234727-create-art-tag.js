@@ -19,9 +19,13 @@ module.exports = {
 				},
 				art_id: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: { model: "Arts" },
+					onDelete: "CASCADE",
 				},
 				type: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,
