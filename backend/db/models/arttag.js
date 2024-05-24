@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notNull: { msg: "Tag Type is required" },
 					notEmpty: { msg: "Tag Type is required" },
+					len: {
+						args: [0, 50],
+						msg: "Tag too long",
+					},
 				},
 			},
 		},

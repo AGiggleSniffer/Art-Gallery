@@ -38,9 +38,19 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notNull: { msg: "Name is required" },
 					notEmpty: { msg: "Name is required" },
+					len: {
+						args: [0, 50],
+						msg: "Name too long",
+					},
 				},
 			},
-			description: DataTypes.STRING,
+			description: {
+				type: DataTypes.STRING,
+				len: {
+					args: [0, 255],
+					msg: "Description too long",
+				},
+			},
 		},
 		{
 			sequelize,

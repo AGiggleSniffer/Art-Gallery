@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import * as artActions from "../../store/art";
 import * as galleryActions from "../../store/gallery";
 
-export default function EditGalModal({ id, navigate }) {
+export default function EditGalModal({ id }) {
 	const dispatch = useDispatch();
 	const artArray = useSelector(artActions.ownedArt);
 
