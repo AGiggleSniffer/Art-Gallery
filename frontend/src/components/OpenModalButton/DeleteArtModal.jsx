@@ -14,7 +14,7 @@ export default function DeleteArtModal({ navigate, clear, id }) {
 
 			return res;
 		} catch (err) {
-			return err;
+			console.error(err);
 		}
 	};
 

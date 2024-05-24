@@ -46,9 +46,11 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			description: {
 				type: DataTypes.STRING,
-				len: {
-					args: [0, 255],
-					msg: "Description too long",
+				validate: {
+					len: {
+						args: [0, 255],
+						msg: "Description too long",
+					},
 				},
 			},
 		},

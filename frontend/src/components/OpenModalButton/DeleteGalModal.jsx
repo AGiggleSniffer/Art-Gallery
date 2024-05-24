@@ -11,7 +11,7 @@ export default function DeleteGalModal({ id, navigate }) {
 			const res = await dispatch(galleryActions.deleteGallery(id));
 			return res;
 		} catch (err) {
-			return err;
+			console.error(err);
 		}
 	};
 

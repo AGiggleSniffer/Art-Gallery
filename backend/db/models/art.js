@@ -36,16 +36,18 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: { msg: "Name is required" },
 					len: {
 						args: [0, 50],
-						msg: "Name too long"
-					}
+						msg: "Name too long",
+					},
 				},
 			},
 			description: {
 				type: DataTypes.STRING,
-				len: {
-					args: [0, 255],
-					msg: "Description too long"
-				}
+				validate: {
+					len: {
+						args: [0, 255],
+						msg: "Description too long",
+					},
+				},
 			},
 			data_url: {
 				type: DataTypes.TEXT,

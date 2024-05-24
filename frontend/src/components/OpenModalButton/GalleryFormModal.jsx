@@ -35,7 +35,6 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
-			console.log(errors);
 		}
 	};
 
@@ -46,7 +45,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 
 	return (
 		<form onSubmit={handleSave}>
-			<span>
+			<div>
 				Name Your Gallery:{" "}
 				<input
 					required
@@ -54,7 +53,8 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					onChange={(e) => setName(e.target.value)}
 					defaultValue={myGal?.name}
 				/>
-			</span>
+			</div>
+			{errors.name && <p>{errors.name}</p>}
 			<div>
 				Description:{" "}
 				<input
@@ -64,6 +64,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					defaultValue={myGal?.description}
 				/>
 			</div>
+			{errors.description && <p>{errors.description}</p>}
 			<div>
 				Add Tags to help people find your Gallery:{" "}
 				<input
@@ -72,6 +73,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					defaultValue={myGal?.tags}
 				/>
 			</div>
+			{errors.tags && <p>{errors.tags}</p>}
 			<button className="classic" type="submit">
 				Save New Gallery
 			</button>

@@ -109,13 +109,15 @@ router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 	}
 });
 
-router.put(
+router.post(
 	"/:galleryId/arts",
 	requireAuth,
 	checkOwner,
 	async (req, res, next) => {
 		const { galleryId } = req.params;
 		const { artIdArray } = req.body;
+		const where = { id: galleryId };
+		const include = [{ model: ArtGallery, include: Art }];
 		try {
 			const joinTablePayload = artIdArray.map((item) => ({
 				art_id: item,
@@ -124,7 +126,9 @@ router.put(
 
 			await ArtGallery.bulkCreate(joinTablePayload);
 
-			return res.json({ message: "Succesfully edited" });
+			const results = await Gallery.findOne({ where, include });
+
+			return res.status(201).json(results);
 		} catch (err) {
 			return next(err);
 		}
@@ -136,12 +140,18 @@ router.delete(
 	requireAuth,
 	checkOwner,
 	async (req, res, next) => {
+		const { galleryId } = req.params;
 		const { artGalIdArr } = req.body;
 		const where = { id: artGalIdArr };
+		const include = [{ model: ArtGallery, include: Art }];
 
 		try {
-			const result = await ArtGallery.destroy({ where });
-			return res.json({ message: `Successfully deleted ${result} items` });
+			await ArtGallery.destroy({ where });
+			const results = await Gallery.findOne({
+				where: { id: galleryId },
+				include,
+			});
+			return res.json(results);
 		} catch (err) {
 			return next(err);
 		}

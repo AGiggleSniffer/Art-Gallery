@@ -33,12 +33,10 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 
 			closeModal();
 		} catch (err) {
-			console.log(err);
 			const data = await err.json();
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
-			console.log(data);
 		}
 	};
 
@@ -49,14 +47,15 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<span>
+			<div>
 				Name Your Art:{" "}
 				<input
 					type="text"
 					onChange={(e) => setName(e.target.value)}
 					defaultValue={myArt?.name}
 				/>
-			</span>
+			</div>
+			{errors.name && <p>{errors.name}</p>}
 			<div>
 				Description:{" "}
 				<input
@@ -65,6 +64,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					defaultValue={myArt?.description}
 				/>
 			</div>
+			{errors.description && <p>{errors.description}</p>}
 			<div>
 				Add Tags to help people find your art:{" "}
 				<input
@@ -73,6 +73,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					defaultValue={myArt?.tags}
 				/>
 			</div>
+			{errors.tags && <p>{errors.tags}</p>}
 			<button className="classic" type="submit">
 				Save As
 			</button>

@@ -66,6 +66,7 @@ export default function GalleryView() {
 
 	return (
 		<>
+			<div>{myGallery?.description}</div>
 			{isOwner && (
 				<div>
 					{!visible ? (

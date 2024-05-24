@@ -1,14 +1,18 @@
 import { useModal } from "../../context/Modal";
 
 export default function DeleteArtGalModal({ handleSubmit }) {
-    const { closeModal } = useModal();
-    
+	const { closeModal } = useModal();
+
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 
 		closeModal();
 
-		handleSubmit();
+		try {
+			handleSubmit();
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	return (

@@ -28,7 +28,11 @@ export default function EditGalModal({ id }) {
 		resetChecked();
 		closeModal();
 
-		dispatch(galleryActions.addArtGalleries({ id, artIdArray: selectedArt }));
+		try {
+			dispatch(galleryActions.addArtGalleries({ id, artIdArray: selectedArt }));
+		} catch (err) {
+			console.error(err)
+		}
 	};
 
 	useEffect(() => {
