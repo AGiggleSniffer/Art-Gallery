@@ -6,7 +6,8 @@ const isProduction = environment === "production";
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
-	const where = { user_id: user.id };
+	const { artId } = req.params;
+	const where = { id: artId };
 
 	try {
 		const myArt = await Art.findOne({ where });
@@ -55,10 +56,9 @@ router.get("/:artId", async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { galleryId, name, description, dataURL } = req.body;
+	const { name, description, dataURL } = req.body;
 	const payload = {
 		user_id: user.id,
-		gallery_id: galleryId,
 		name,
 		description,
 		data_url: dataURL,
@@ -74,10 +74,10 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 	const { artId } = req.params;
-	const { galleryId, description, dataURL } = req.body;
+	const { name, description, dataURL } = req.body;
 	const payload = {
-		gallery_id: galleryId,
-		description: description,
+		name,
+		description,
 		data_url: dataURL,
 	};
 	const options = {

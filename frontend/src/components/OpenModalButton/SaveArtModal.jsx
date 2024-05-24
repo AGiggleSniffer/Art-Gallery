@@ -2,51 +2,43 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as artActions from "../../store/art";
-import "./CanvasSave.css";
 
-export default function SaveArtModal({ canvasRef, id }) {
+export default function SaveArtModal({ canvasRef, id, navigate }) {
 	const myArt = useSelector(artActions.findArt(id));
-	const [galleryId] = useState(null);
-	const [description, setDescription] = useState("");
-	const [name, setName] = useState("");
-	const [tags, setTags] = useState("");
+	const [description, setDescription] = useState(myArt?.description);
+	const [name, setName] = useState(myArt?.name);
+	const [tags, setTags] = useState(myArt?.tags);
 	const [errors, setErrors] = useState({});
 
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 	const saveCanvas = async () => {
 		const dataURL = await canvasRef.current.toDataURL();
-		console.log(tags);
+		const payload = {
+			name,
+			description,
+			dataURL,
+			id,
+			tags,
+		};
 
 		try {
 			if (id) {
-				await dispatch(
-					artActions.editThunk({
-						galleryId,
-						name,
-						description,
-						dataURL,
-						id,
-					}),
-				);
+				await dispatch(artActions.editThunk(payload));
+				navigate(`/arts/${id}`);
 			} else {
-				await dispatch(
-					artActions.saveThunk({
-						galleryId,
-						name,
-						description,
-						dataURL,
-					}),
-				);
+				const { id: newId } = await dispatch(artActions.saveThunk(payload));
+				navigate(`/arts/${newId}`);
 			}
 
 			closeModal();
 		} catch (err) {
+			console.log(err);
 			const data = await err.json();
 			if (data?.errors) {
 				setErrors(data.errors);
 			}
-			console.log(errors)
+			console.log(data);
 		}
 	};
 

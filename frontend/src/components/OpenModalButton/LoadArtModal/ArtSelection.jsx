@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OpenModalButton from "../OpenModalButton";
 import GalleryFormModal from "../GalleryFormModal";
 
 export default function ArtSelection({ navigate, closeModal, artArray }) {
 	const [visible, setVisible] = useState(false);
-	const [checked, setChecked] = useState(
-		new Array(artArray.length).fill(false),
-	);
+	const [checked, setChecked] = useState([]);
 
 	const resetChecked = () => setChecked(new Array(artArray.length).fill(false));
 
@@ -31,6 +29,10 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 		return selectedArt;
 	};
 
+	useEffect(() => {
+		setChecked(new Array(artArray.length).fill(false));
+	}, [artArray]);
+
 	return (
 		<>
 			<div id="Selection">
@@ -51,32 +53,36 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 						</button>
 					)}
 				</section>
-				{artArray.map((art, i) => {
+				{artArray.map(({ id, name, data_url }, i) => {
 					return (
-						<div key={art.id} className={visible ? "checkActive" : null}>
-							{visible ? (
-								<label>
+						<span key={id}>
+							<div className={visible ? "checkActive" : null}>
+								{visible ? (
+									<label>
+										<figure>
+											<img src={data_url} />
+											<input
+												type="checkbox"
+												value={id}
+												onChange={handleCheck(i)}
+											/>
+											<h3>{name}</h3>
+										</figure>
+									</label>
+								) : (
 									<figure>
-										<img src={art.data_url} />
-										<input
-											type="checkbox"
-											value={art.id}
-											onChange={handleCheck(i)}
+										<img
+											src={data_url}
+											onClick={() => {
+												navigate(`/arts/${id}`);
+												closeModal();
+											}}
 										/>
+										<h3>{name}</h3>
 									</figure>
-								</label>
-							) : (
-								<figure>
-									<img
-										src={art.data_url}
-										onClick={() => {
-											navigate(`/arts/${art.id}`);
-											closeModal();
-										}}
-									/>
-								</figure>
-							)}
-						</div>
+								)}
+							</div>
+						</span>
 					);
 				})}
 			</div>

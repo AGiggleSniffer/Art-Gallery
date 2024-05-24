@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useCanvasCtx(ref, myArt) {
+export default function useCanvasCtx(ref) {
 	const [ctx, setCtx] = useState(null);
 	const [isPainting, setIsPainting] = useState(false);
 
@@ -12,14 +12,8 @@ export default function useCanvasCtx(ref, myArt) {
 		canvas.height = 720;
 		const newCtx = ref.current.getContext("2d");
 
-		if (myArt) {
-			const img = new Image();
-			img.src = myArt?.data_url;
-			newCtx.drawImage(img, 0, 0);
-		}
-
 		setCtx(newCtx);
-	}, [ref, myArt]);
+	}, [ref]);
 
 	useEffect(() => {
 		if (!ref.current) return;

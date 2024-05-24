@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
 import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
+import Toolbar from "./Toolbar";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
@@ -31,22 +32,10 @@ function Navigation({ isLoaded }) {
 					Tags
 				</NavLink>
 			</span>
-			<span id="Tags">
-				<p>FIND BY TAG</p>
-				<div>
-					<BsHash />
-					some tag
-				</div>
-				<div>
-					<BsHash />
-					other tag
-				</div>
-				<div>
-					<BsHash />
-					anotha one
-				</div>
+			<Toolbar />
+			<span id="Profile">
+				{isLoaded && <ProfileButton user={sessionUser} />}
 			</span>
-			<span id="Profile">{isLoaded && <ProfileButton user={sessionUser} />}</span>
 		</nav>
 	);
 }

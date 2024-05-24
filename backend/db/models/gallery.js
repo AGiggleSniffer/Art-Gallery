@@ -27,8 +27,19 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				onDelete: "CASCADE",
+				validate: {
+					notNull: { msg: "User Id is required" },
+					notEmpty: { msg: "User Id is required" },
+				},
 			},
-			name: { type: DataTypes.STRING, allowNull: false },
+			name: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: { msg: "Name is required" },
+					notEmpty: { msg: "Name is required" },
+				},
+			},
 			description: DataTypes.STRING,
 		},
 		{

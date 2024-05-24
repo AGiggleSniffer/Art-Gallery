@@ -28,9 +28,23 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: false,
 				onDelete: "CASCADE",
 			},
-			name: { type: DataTypes.STRING, allowNull: false },
+			name: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: { msg: "Name is required" },
+					notEmpty: { msg: "Name is required" },
+				},
+			},
 			description: DataTypes.STRING,
-			data_url: { type: DataTypes.TEXT, allowNull: false },
+			data_url: {
+				type: DataTypes.TEXT,
+				allowNull: false,
+				validate: {
+					notNull: { msg: "Something went wrong please try again" },
+					notEmpty: { msg: "Something went wrong please try again" },
+				},
+			},
 		},
 		{
 			sequelize,

@@ -2,6 +2,12 @@ import { csrfFetch } from "./csrf";
 
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
+const UPDATE_CTX = "session/update";
+
+export const updateCtx = (ctx) => ({
+	type: UPDATE_CTX,
+	ctx,
+});
 
 const setUser = (user) => {
 	return {
@@ -62,7 +68,7 @@ export const logout = () => async (dispatch) => {
 	return response;
 };
 
-const initialState = { user: null };
+const initialState = { ctx: null, user: null };
 
 export const user = (state) => state.session.user;
 
@@ -72,6 +78,8 @@ const sessionReducer = (state = initialState, action) => {
 			return { ...state, user: action.payload };
 		case REMOVE_USER:
 			return { ...state, user: null };
+		case UPDATE_CTX:
+			return { ...state, ctx: action.ctx };
 		default:
 			return state;
 	}
