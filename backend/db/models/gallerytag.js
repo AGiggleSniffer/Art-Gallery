@@ -17,8 +17,23 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				onDelete: "CASCADE",
+				validate: {
+					notNull: { msg: "Gallery Id is required" },
+					notEmpty: { msg: "Gallery Id is required" },
+				},
 			},
-			type: { type: DataTypes.STRING, allowNull: false },
+			type: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: { msg: "Tag Type is required" },
+					notEmpty: { msg: "Tag Type Id is required" },
+					len: {
+						args: [0, 50],
+						msg: "Tag too long",
+					},
+				},
+			},
 		},
 		{
 			sequelize,

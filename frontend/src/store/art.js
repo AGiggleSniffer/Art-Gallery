@@ -1,17 +1,10 @@
 import { csrfFetch } from "./csrf";
 import { createSelector } from "reselect";
 
-const SAVE = "art/save";
 const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
-const DELETE = "art/delete";
-
-const save = (payload) => ({
-	type: SAVE,
-	payload,
-});
 
 const load = (payload) => ({
 	type: LOAD,
@@ -33,14 +26,9 @@ const oneArt = (payload) => ({
 	payload,
 });
 
-const deleteArt = (payload) => ({
-	type: DELETE,
-	payload,
-});
-
 export const saveThunk =
 	({ galleryId, name, description, dataURL }) =>
-	async (dispatch) => {
+	async () => {
 		const response = await csrfFetch("/api/art", {
 			method: "POST",
 			body: JSON.stringify({
@@ -51,8 +39,7 @@ export const saveThunk =
 			}),
 		});
 		const data = await response.json();
-		dispatch(save(data));
-		return response;
+		return data;
 	};
 
 export const loadThunk = () => async (dispatch) => {
@@ -97,17 +84,16 @@ export const findOneArt = (id) => async (dispatch) => {
 	return data;
 };
 
-export const deleteArtThunk = (id) => async (dispatch) => {
+export const deleteArtThunk = (id) => async () => {
 	const response = await csrfFetch(`/api/art/${id}`, {
 		method: "DELETE",
 	});
 
 	const data = await response.json();
-	dispatch(deleteArt(id));
 	return data;
 };
 
-const initialState = { context: null, owned: [], all: {} };
+const initialState = { owned: [], all: {} };
 
 export const findArt = (id) => (state) => state.art.all[id];
 export const ownedArt = (state) => state.art.owned;
@@ -116,8 +102,6 @@ export const allArtArr = createSelector(allArt, (art) => Object.values(art));
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SAVE:
-			return { ...state };
 		case LOAD:
 			return { ...state, owned: action.payload };
 		case LOAD_ALL: {
@@ -138,11 +122,6 @@ const artReducer = (state = initialState, action) => {
 				[action.payload.id]: action.payload,
 			};
 			return { ...state, all: newAllArt };
-		}
-		case DELETE: {
-			const newObj = { ...state };
-			delete newObj.all[action.payload.id];
-			return newObj;
 		}
 		default:
 			return state;

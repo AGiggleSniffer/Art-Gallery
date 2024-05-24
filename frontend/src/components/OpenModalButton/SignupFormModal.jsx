@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
-import "./SignupForm.css";
+import "./ModalForm.css";
 
 function SignupFormModal({ extraMessage }) {
 	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState({});
@@ -23,8 +21,6 @@ function SignupFormModal({ extraMessage }) {
 				sessionActions.signup({
 					email,
 					username,
-					firstName,
-					lastName,
 					password,
 				}),
 			)
@@ -67,26 +63,6 @@ function SignupFormModal({ extraMessage }) {
 					/>
 				</label>
 				{errors.username && <p>{errors.username}</p>}
-				<label>
-					First Name
-					<input
-						type="text"
-						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						required
-					/>
-				</label>
-				{errors.firstName && <p>{errors.firstName}</p>}
-				<label>
-					Last Name
-					<input
-						type="text"
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						required
-					/>
-				</label>
-				{errors.lastName && <p>{errors.lastName}</p>}
 				<label>
 					Password
 					<input

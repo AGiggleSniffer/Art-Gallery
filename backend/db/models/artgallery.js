@@ -19,11 +19,19 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				onDelete: "CASCADE",
+				validate: {
+					notNull: { msg: "Art Id is required" },
+					notEmpty: { msg: "Art Id is required" },
+				},
 			},
 			gallery_id: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				onDelete: "CASCADE",
+				validate: {
+					notNull: { msg: "Gallery Id is required" },
+					notEmpty: { msg: "Gallery Id is required" },
+				},
 			},
 		},
 		{

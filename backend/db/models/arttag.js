@@ -13,8 +13,27 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	ArtTag.init(
 		{
-			art_id: { type: DataTypes.INTEGER, allowNull: false, onDelete: "CASCADE" },
-			type: { type: DataTypes.STRING, allowNull: false },
+			art_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				onDelete: "CASCADE",
+				validate: {
+					notNull: { msg: "Art Id is required" },
+					notEmpty: { msg: "Art Id is required" },
+				},
+			},
+			type: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: { msg: "Tag Type is required" },
+					notEmpty: { msg: "Tag Type is required" },
+					len: {
+						args: [0, 50],
+						msg: "Tag too long",
+					},
+				},
+			},
 		},
 		{
 			sequelize,

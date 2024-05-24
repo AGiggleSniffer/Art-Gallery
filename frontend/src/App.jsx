@@ -1,24 +1,33 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	createBrowserRouter,
 	RouterProvider,
 	Outlet,
 	Navigate,
 	useLocation,
+	useParams,
 } from "react-router-dom";
 import * as sessionActions from "./store/session";
+import * as artActions from "./store/art";
+import * as galleryActions from "./store/gallery";
 import Navigation from "./components/Navigation";
 import CanvasHome from "./components/CanvasHome";
 import GalleryHome from "./components/GalleryHome";
-import GalleryView from "./components/GalleryView/GalleryView";
-import AllArtView from "./components/AllArtView.jsx";
+import GalleryView from "./components/GalleryView";
+import AllArtView from "./components/AllArtView";
+import CanvasView from "./components/CanvasView";
 
 function Layout() {
 	const dispatch = useDispatch();
+	const location = useLocation();
+	const { id } = useParams();
+
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [name, setName] = useState("");
-	const location = useLocation();
+
+	const myArt = useSelector(artActions.findArt(id));
+	const myGallery = useSelector(galleryActions.findGallery(id));
 
 	useEffect(() => {
 		dispatch(sessionActions.restoreUser()).then(() => {
@@ -27,9 +36,21 @@ function Layout() {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (location.pathname === "/") setName("HOME");
-		else setName(location.pathname.slice(1).toUpperCase());
-	}, [location]);
+		const pathArr = location.pathname.split("/");
+		if (location.pathname === "/") return setName("HOME");
+		if (pathArr[1] === "arts") {
+			if (pathArr[2]) {
+				return setName(myArt?.name);
+			}
+			return setName("ARTS");
+		}
+		if (pathArr[1] === "galleries") {
+			if (pathArr[2]) {
+				return setName(myGallery?.name);
+			}
+			return setName("GALLERIES");
+		}
+	}, [location, myArt, myGallery]);
 
 	return (
 		<div id="Layout">
@@ -56,7 +77,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/arts/:id",
-				element: <CanvasHome />,
+				element: <CanvasView />,
 			},
 			{
 				path: "/galleries",

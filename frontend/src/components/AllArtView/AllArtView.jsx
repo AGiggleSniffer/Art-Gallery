@@ -15,14 +15,12 @@ export default function AllArtView() {
 	return (
 		<>
 			<div id="Selection">
-				{allArts.map((art) => {
+				{allArts.map(({ id, data_url, name }) => {
 					return (
-						<div key={art.id}>
+						<div key={id}>
 							<figure>
-								<img
-									src={art.data_url}
-									onClick={() => navigate(`/arts/${art.id}`)}
-								/>
+								<img src={data_url} onClick={() => navigate(`/arts/${id}`)} />
+								<h3>{name}</h3>
 							</figure>
 						</div>
 					);

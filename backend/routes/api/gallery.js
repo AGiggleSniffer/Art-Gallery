@@ -1,11 +1,26 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
-const { Gallery, ArtGallery } = require("../../db/models");
+const { Gallery, ArtGallery, Art } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
+const checkOwner = async (req, _res, next) => {
+	const { user } = req;
+	const { galleryId } = req.params;
+	const where = { id: galleryId };
+
+	try {
+		const myGallery = await Gallery.findOne({ where });
+		if (myGallery.user_id === user.id) {
+			return next();
+		} else throw new Error("Not Authorized");
+	} catch (err) {
+		next(err);
+	}
+};
+
 router.get("/", async (_req, res, next) => {
-	const include = [{ model: ArtGallery }];
+	const include = [{ model: ArtGallery, include: Art }];
 	try {
 		const galleries = await Gallery.findAll({ include });
 		return res.json(galleries);
@@ -17,7 +32,7 @@ router.get("/", async (_req, res, next) => {
 router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
-	const include = [{ model: ArtGallery }];
+	const include = [{ model: ArtGallery, include: Art }];
 
 	try {
 		const galleries = await Gallery.findAll({ where, include });
@@ -30,9 +45,10 @@ router.get("/owned", requireAuth, async (req, res, next) => {
 router.get("/:galleryId", async (req, res, next) => {
 	const { galleryId } = req.params;
 	const where = { id: galleryId };
+	const include = [{ model: ArtGallery, include: Art }];
 
 	try {
-		const galleries = await Gallery.findOne({ where });
+		const galleries = await Gallery.findOne({ where, include });
 		if (galleries) {
 			return res.json(galleries);
 		} else throw new Error("No Galleries Found");
@@ -66,11 +82,12 @@ router.post("/", requireAuth, async (req, res, next) => {
 	}
 });
 
-router.put("/:galleryId", requireAuth, async (req, res, next) => {
+router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 	const { galleryId } = req.params;
-	const { description } = req.body;
+	const { description, name } = req.body;
 	const payload = {
-		description: description,
+		description,
+		name,
 	};
 	const options = {
 		where: { id: galleryId },
@@ -81,10 +98,10 @@ router.put("/:galleryId", requireAuth, async (req, res, next) => {
 	};
 
 	try {
-		const updatedGallery = await Spot.update(payload, options);
+		const updatedGallery = await Gallery.update(payload, options);
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
-			updatedGallery.sqlite = await Spot.findByPk(spotId);
+			updatedGallery.sqlite = await Gallery.findByPk(galleryId);
 		}
 		return res.json(updatedGallery.sqlite || updatedGallery[1].dataValues);
 	} catch (err) {
@@ -92,16 +109,70 @@ router.put("/:galleryId", requireAuth, async (req, res, next) => {
 	}
 });
 
-router.delete("/:galleryId", requireAuth, async (req, res, next) => {
-	const { galleryId } = req.params;
-	const where = { id: galleryId };
+router.post(
+	"/:galleryId/arts",
+	requireAuth,
+	checkOwner,
+	async (req, res, next) => {
+		const { galleryId } = req.params;
+		const { artIdArray } = req.body;
+		const where = { id: galleryId };
+		const include = [{ model: ArtGallery, include: Art }];
+		try {
+			const joinTablePayload = artIdArray.map((item) => ({
+				art_id: item,
+				gallery_id: galleryId,
+			}));
 
-	try {
-		await Gallery.destroy({ where });
-		return res.json({ message: "Successfully deleted" });
-	} catch (err) {
-		return next(err);
-	}
-});
+			await ArtGallery.bulkCreate(joinTablePayload);
+
+			const results = await Gallery.findOne({ where, include });
+
+			return res.status(201).json(results);
+		} catch (err) {
+			return next(err);
+		}
+	},
+);
+
+router.delete(
+	"/:galleryId/arts",
+	requireAuth,
+	checkOwner,
+	async (req, res, next) => {
+		const { galleryId } = req.params;
+		const { artGalIdArr } = req.body;
+		const where = { id: artGalIdArr };
+		const include = [{ model: ArtGallery, include: Art }];
+
+		try {
+			await ArtGallery.destroy({ where });
+			const results = await Gallery.findOne({
+				where: { id: galleryId },
+				include,
+			});
+			return res.json(results);
+		} catch (err) {
+			return next(err);
+		}
+	},
+);
+
+router.delete(
+	"/:galleryId",
+	requireAuth,
+	checkOwner,
+	async (req, res, next) => {
+		const { galleryId } = req.params;
+		const where = { id: galleryId };
+
+		try {
+			await Gallery.destroy({ where });
+			return res.json({ message: "Successfully deleted" });
+		} catch (err) {
+			return next(err);
+		}
+	},
+);
 
 module.exports = router;

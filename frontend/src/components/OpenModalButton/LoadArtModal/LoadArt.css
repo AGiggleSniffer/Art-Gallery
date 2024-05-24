@@ -93,6 +93,28 @@
 		margin: 0;
 		padding: 10px;
 	}
+
+	& span {
+		display: flex;
+		flex-direction: column;
+
+		align-items: center;
+		justify-content: start;
+	}
+
+	& h3 {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+
+		margin: 5px;
+
+		opacity: 50%;
+	}
+
+	& p {
+		align-self: flex-start;
+	}
 	
 }
 
@@ -105,8 +127,4 @@
 	& .classic {
 		margin: 20px 10px;
 	}
-}
-
-div#Selection__galleryCard {
-	padding: 20px;
 }

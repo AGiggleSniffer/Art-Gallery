@@ -23,13 +23,24 @@
 }
 
 body {
-	margin: 0;
 	background-color: var(--main-bg-color);
-
+	margin: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+@keyframes gradientAnimation {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 #Layout {
@@ -38,16 +49,21 @@ body {
 
 	box-sizing: border-box;
 
-	height: 100vb;
 	padding: 50px;
-
-	align-items: center;
+	
 	justify-content: center;
+	
+	height: 100vh;
+	width: 100vw;
 
 	& h1 {
 		color: var(--text-color);
 		animation: distort 1.5s ease-in-out infinite;
 		font-size: 4rem;
+	}
+
+	& > div {
+		width: 100%;
 	}
 }
 
