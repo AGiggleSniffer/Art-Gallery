@@ -1,6 +1,7 @@
 #CanvasHome {
 	display: flex;
 	flex-direction: column;
+	align-self: start;
 
 	& h1 {
 		color: var(--text-color);
@@ -33,3 +34,4 @@ canvas {
 	height: 720px;
 	width: 1280px;
 }
+

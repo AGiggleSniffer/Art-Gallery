@@ -2,6 +2,8 @@
 * {
 	font-family: "Nunito Sans", Roboto, "Open Sans", Tahoma, Geneva,
 		"Helvetica Neue", Helvetica, Arial, sans-serif;
+
+	box-sizing: border-box;
 }
 
 :root {
@@ -25,10 +27,6 @@
 body {
 	background-color: var(--main-bg-color);
 	margin: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 }
 
 @keyframes gradientAnimation {
@@ -44,17 +42,12 @@ body {
 }
 
 #Layout {
+	margin: 0;
 	display: flex;
-	gap: 50px;
+	flex-direction: column;
+	align-items: center;
 
-	box-sizing: border-box;
-
-	padding: 50px;
-	
-	justify-content: center;
-	
 	height: 100vh;
-	width: 100vw;
 
 	& h1 {
 		color: var(--text-color);
@@ -63,7 +56,12 @@ body {
 	}
 
 	& > div {
+		display: flex;
+
+		gap: 50px;
 		width: 100%;
+		height: 100%;
+		padding: 50px;
 	}
 }
 
@@ -89,7 +87,8 @@ button.classic:active {
 }
 
 @media screen and (max-width: 1575px) {
-	#Layout {
-		display: inline-block;
+	#Layout > div {
+		flex-direction: column;
+		gap: 50px;
 	}
 }

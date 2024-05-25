@@ -45,6 +45,8 @@
 	display: flex;
 	flex-wrap: wrap;
 
+	align-content: start;
+
 	gap: 5px;
 	margin: 20px;
 
@@ -63,6 +65,7 @@
 	& div {
 		position: relative;
 		cursor: pointer;
+		height: fit-content;
 
 		padding: 2px;
 
@@ -97,6 +100,7 @@
 	& span {
 		display: flex;
 		flex-direction: column;
+		height: fit-content;
 
 		align-items: center;
 		justify-content: start;

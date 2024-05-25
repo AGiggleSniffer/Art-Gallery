@@ -65,7 +65,7 @@ export default function GalleryView() {
 	}, [myGallery, user]);
 
 	return (
-		<>
+		<div>
 			<div>{myGallery?.description}</div>
 			{isOwner && (
 				<div>
@@ -135,6 +135,6 @@ export default function GalleryView() {
 					);
 				})}
 			</div>
-		</>
+		</div>
 	);
 }
