@@ -27,24 +27,30 @@ function LoginFormModal() {
 		<>
 			<h1>Log In</h1>
 			<form onSubmit={handleSubmit}>
-				<label>
-					Username or Email
+				<div>
+					<label style={{ top: credential ? 0 : "" }} htmlFor="credential">
+						Username or Email
+					</label>
 					<input
+						id="credential"
 						type="text"
 						value={credential}
 						onChange={(e) => setCredential(e.target.value)}
 						required
 					/>
-				</label>
-				<label>
-					Password
+				</div>
+				<div>
+					<label style={{ top: password ? 0 : "" }} htmlFor="password">
+						Password
+					</label>
 					<input
+						id="password"
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.credential && <p>{errors.credential}</p>}
 				<button className="classic" type="submit">
 					Log In

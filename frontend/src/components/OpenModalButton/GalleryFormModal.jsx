@@ -45,20 +45,26 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 
 	return (
 		<form onSubmit={handleSave}>
+			<h1>Save Gallery</h1>
 			<div>
-				Name Your Gallery:{" "}
+				<label style={{ top: name ? 0 : "" }} htmlFor="name">
+					Name Your Gallery:
+				</label>
 				<input
-					required
+					id="name"
 					type="text"
 					onChange={(e) => setName(e.target.value)}
 					defaultValue={myGal?.name}
+					required
 				/>
 			</div>
 			{errors.name && <p>{errors.name}</p>}
 			<div>
-				Description:{" "}
+				<label style={{ top: description ? 0 : "" }} htmlFor="description">
+					Description:
+				</label>
 				<input
-					required
+					id="description"
 					type="text"
 					onChange={(e) => setDescription(e.target.value)}
 					defaultValue={myGal?.description}
@@ -66,9 +72,15 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 			</div>
 			{errors.description && <p>{errors.description}</p>}
 			<div>
-				Add Tags to help people find your Gallery:{" "}
-				<input
-					type="text"
+				<label
+					style={tags ? { top: tags ? 0 : "" } : { display: "none" }}
+					htmlFor="tags"
+				>
+					Tags:
+				</label>
+				<textarea
+					id="tags"
+					placeholder="Add Tags to help people find your Gallery:"
 					onChange={(e) => setTags(e.target.value)}
 					defaultValue={myGal?.tags}
 				/>
