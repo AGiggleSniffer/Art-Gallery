@@ -43,45 +43,60 @@ function SignupFormModal({ extraMessage }) {
 			<h1>Sign Up</h1>
 			{extraMessage && <h2>{extraMessage}</h2>}
 			<form onSubmit={handleSubmit}>
-				<label>
-					Email
+				<div>
+					<label style={{ top: email ? 0 : "" }} htmlFor="email">
+						Email
+					</label>
 					<input
+						id="email"
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.email && <p>{errors.email}</p>}
-				<label>
-					Username
+				<div>
+					<label style={{ top: username ? 0 : "" }} htmlFor="username">
+						Username
+					</label>
 					<input
+						id="username"
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.username && <p>{errors.username}</p>}
-				<label>
-					Password
+				<div>
+					<label style={{ top: password ? 0 : "" }} htmlFor="password">
+						Password
+					</label>
 					<input
+						id="password"
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.password && <p>{errors.password}</p>}
-				<label>
-					Confirm Password
+				<div>
+					<label
+						style={{ top: confirmPassword ? 0 : "" }}
+						htmlFor="confirmpassword"
+					>
+						Confirm Password
+					</label>
 					<input
+						id="confirmpassword"
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
 				<button className="classic" type="submit">
 					Sign Up

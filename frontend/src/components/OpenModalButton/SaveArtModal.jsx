@@ -47,18 +47,26 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 
 	return (
 		<form onSubmit={handleSubmit}>
+			<h1>Save Art</h1>
 			<div>
-				Name Your Art:{" "}
+				<label style={{ top: name ? 0 : "" }} htmlFor="name">
+					Name Your Art:
+				</label>
 				<input
+					id="name"
 					type="text"
 					onChange={(e) => setName(e.target.value)}
 					defaultValue={myArt?.name}
+					required
 				/>
 			</div>
 			{errors.name && <p>{errors.name}</p>}
 			<div>
-				Description:{" "}
+				<label style={{ top: description ? 0 : "" }} htmlFor="description">
+					Description:
+				</label>
 				<input
+					id="description"
 					type="text"
 					onChange={(e) => setDescription(e.target.value)}
 					defaultValue={myArt?.description}
@@ -66,9 +74,15 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 			</div>
 			{errors.description && <p>{errors.description}</p>}
 			<div>
-				Add Tags to help people find your art:{" "}
-				<input
-					type="text"
+				<label
+					style={tags ? { top: tags ? 0 : "" } : { display: "none" }}
+					htmlFor="tags"
+				>
+					Tags:
+				</label>
+				<textarea
+					id="tags"
+					placeholder="Add Tags to help people find your art:"
 					onChange={(e) => setTags(e.target.value)}
 					defaultValue={myArt?.tags}
 				/>
