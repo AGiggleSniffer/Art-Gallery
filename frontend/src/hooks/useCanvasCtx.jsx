@@ -8,8 +8,8 @@ export default function useCanvasCtx(ref) {
 		if (!ref.current) return;
 
 		const canvas = ref.current;
-		canvas.width = 1280;
-		canvas.height = 720;
+		canvas.width = 800;
+		canvas.height = 600;
 		const newCtx = ref.current.getContext("2d");
 
 		setCtx(newCtx);

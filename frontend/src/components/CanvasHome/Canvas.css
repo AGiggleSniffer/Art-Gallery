@@ -10,7 +10,7 @@
 	}
 
 	& button {
-		width: 10%;
+		width: fit-content;
 	}
 }
 
@@ -31,8 +31,8 @@ canvas {
 
 	cursor: crosshair;
 
-	height: 720px;
-	width: 1280px;
+	height: 600px;
+	width: 800px;
 }
 
 @media screen and (max-width: 1575px) {
