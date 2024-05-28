@@ -125,7 +125,7 @@ export default function GalleryView() {
 									<figure>
 										<img
 											src={Art.data_url}
-											onClick={() => navigate(`/arts/${id}`)}
+											onClick={() => navigate(`/arts/${Art.id}`)}
 										/>
 										<h3>{Art.name}</h3>
 									</figure>
