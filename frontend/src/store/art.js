@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 
 const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
+const SAVE = "art/save";
 const EDIT = "art/edit";
 const ONEART = "art/one";
 
@@ -13,6 +14,11 @@ const load = (payload) => ({
 
 const loadAll = (payload) => ({
 	type: LOAD_ALL,
+	payload,
+});
+
+const save = (payload) => ({
+	type: SAVE,
 	payload,
 });
 
@@ -28,7 +34,7 @@ const oneArt = (payload) => ({
 
 export const saveThunk =
 	({ galleryId, name, description, dataURL }) =>
-	async () => {
+	async (dispatch) => {
 		const response = await csrfFetch("/api/art", {
 			method: "POST",
 			body: JSON.stringify({
@@ -39,6 +45,7 @@ export const saveThunk =
 			}),
 		});
 		const data = await response.json();
+		dispatch(save(data));
 		return data;
 	};
 
@@ -108,6 +115,13 @@ const artReducer = (state = initialState, action) => {
 			const newObj = { ...state, all: {} };
 			action.payload.forEach((art) => (newObj.all[art.id] = art));
 			return newObj;
+		}
+		case SAVE: {
+			const newAllArt = {
+				...state.all,
+				[action.payload.id]: action.payload,
+			};
+			return { ...state, all: newAllArt };
 		}
 		case EDIT: {
 			const newAllArt = {
