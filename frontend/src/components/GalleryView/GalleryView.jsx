@@ -7,8 +7,8 @@ import OpenModalButton, {
 	DeleteGalModal,
 	EditGalModal,
 	GalleryFormModal,
+	DeleteArtGalModal
 } from "../OpenModalButton";
-import DeleteArtGalModal from "../OpenModalButton/DeleteArtGalModal";
 
 export default function GalleryView() {
 	const dispatch = useDispatch();
