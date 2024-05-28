@@ -6,6 +6,7 @@
 	flex-direction: column;
 
 	align-self: flex-start;
+	justify-self: center;
 
 	box-sizing: border-box;
 	overflow: hidden;
@@ -13,8 +14,8 @@
 	background-color: var(--main-light-color);
 	box-shadow: 5px 5px 0 var(--main-light-accent-color);
 
-	width: fit-content;
-	min-width: 15%;
+	width: 75%;
+	min-width: fit-content;
 
 	border-radius: 10px;
 	z-index: 10;
