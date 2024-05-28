@@ -7,15 +7,17 @@ import DeleteGalModal from "./DeleteGalModal";
 import EditGalModal from "./EditGalModal"
 import SignupFormModal from "./SignupFormModal";
 import LoginFormModal from "./LoginFormModal";
+import DeleteArtGalModal from "./DeleteArtGalModal"
 
 export default OpenModalButton;
 export {
 	LoadArtModal,
 	SaveArtModal,
 	DeleteArtModal,
-    GalleryFormModal,
-    EditGalModal,
+	GalleryFormModal,
+	EditGalModal,
 	DeleteGalModal,
 	SignupFormModal,
 	LoginFormModal,
+	DeleteArtGalModal,
 };
