@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as artActions from "../../store/art";
+import ErrorDisplay from "./ErrorDisplay";
 
 export default function SaveArtModal({ canvasRef, id, navigate }) {
 	const myArt = useSelector(artActions.findArt(id));
@@ -60,7 +61,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					required
 				/>
 			</div>
-			{errors.name && <p>{errors.name}</p>}
+			{errors.name && <ErrorDisplay msg={errors.name} />}
 			<div>
 				<label style={{ top: description ? 0 : "" }} htmlFor="description">
 					Description:
@@ -72,7 +73,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					defaultValue={myArt?.description}
 				/>
 			</div>
-			{errors.description && <p>{errors.description}</p>}
+			{errors.description && <ErrorDisplay msg={errors.description} />}
 			<div>
 				<label
 					style={tags ? { top: tags ? 0 : "" } : { display: "none" }}
@@ -87,7 +88,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					defaultValue={myArt?.tags}
 				/>
 			</div>
-			{errors.tags && <p>{errors.tags}</p>}
+			{errors.tags && <ErrorDisplay msg={errors.tags} />}
 			<button className="classic" type="submit">
 				Save As
 			</button>

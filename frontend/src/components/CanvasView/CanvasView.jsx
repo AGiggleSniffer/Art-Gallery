@@ -115,7 +115,7 @@ export default function CanvasView() {
 					)}
 				</div>
 				{myArt && (
-					<h3>
+					<h3 id="Description">
 						<div>Desc:</div> <div>{myArt.description}</div>
 					</h3>
 				)}

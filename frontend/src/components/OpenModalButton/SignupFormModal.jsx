@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./ModalForm.css";
+import ErrorDisplay from "./ErrorDisplay";
 
 function SignupFormModal({ extraMessage }) {
 	const dispatch = useDispatch();
@@ -55,7 +56,7 @@ function SignupFormModal({ extraMessage }) {
 						required
 					/>
 				</div>
-				{errors.email && <p>{errors.email}</p>}
+				{errors.email && <ErrorDisplay msg={errors.email} />}
 				<div>
 					<label style={{ top: username ? 0 : "" }} htmlFor="username">
 						Username
@@ -68,7 +69,7 @@ function SignupFormModal({ extraMessage }) {
 						required
 					/>
 				</div>
-				{errors.username && <p>{errors.username}</p>}
+				{errors.username && <ErrorDisplay msg={errors.username} />}
 				<div>
 					<label style={{ top: password ? 0 : "" }} htmlFor="password">
 						Password
@@ -81,7 +82,7 @@ function SignupFormModal({ extraMessage }) {
 						required
 					/>
 				</div>
-				{errors.password && <p>{errors.password}</p>}
+				{errors.password && <ErrorDisplay msg={errors.password} />}
 				<div>
 					<label
 						style={{ top: confirmPassword ? 0 : "" }}
@@ -97,7 +98,9 @@ function SignupFormModal({ extraMessage }) {
 						required
 					/>
 				</div>
-				{errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+				{errors.confirmPassword && (
+					<ErrorDisplay msg={errors.confirmPassword} />
+				)}
 				<button className="classic" type="submit">
 					Sign Up
 				</button>

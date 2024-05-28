@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as galleryActions from "../../store/gallery";
+import ErrorDisplay from "./ErrorDisplay";
 
 export default function GalleryFormModal({ id, handleSubmit }) {
 	const myGal = useSelector(galleryActions.findGallery(id));
@@ -58,7 +59,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					required
 				/>
 			</div>
-			{errors.name && <p>{errors.name}</p>}
+			{errors.name && <ErrorDisplay msg={errors.name} />}
 			<div>
 				<label style={{ top: description ? 0 : "" }} htmlFor="description">
 					Description:
@@ -70,7 +71,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					defaultValue={myGal?.description}
 				/>
 			</div>
-			{errors.description && <p>{errors.description}</p>}
+			{errors.description && <ErrorDisplay msg={errors.description} />}
 			<div>
 				<label
 					style={tags ? { top: tags ? 0 : "" } : { display: "none" }}
@@ -85,7 +86,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					defaultValue={myGal?.tags}
 				/>
 			</div>
-			{errors.tags && <p>{errors.tags}</p>}
+			{errors.tags && <ErrorDisplay msg={errors.tags} />}
 			<button className="classic" type="submit">
 				Save New Gallery
 			</button>

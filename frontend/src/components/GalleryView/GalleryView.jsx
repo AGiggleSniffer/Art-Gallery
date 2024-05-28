@@ -66,7 +66,6 @@ export default function GalleryView() {
 
 	return (
 		<div>
-			<div>{myGallery?.description}</div>
 			{isOwner && (
 				<div>
 					{!visible ? (
@@ -104,6 +103,7 @@ export default function GalleryView() {
 					)}
 				</div>
 			)}
+			<h3 id="Description">{myGallery?.description}</h3>
 			<div id="Selection">
 				{myGallery?.ArtGalleries?.map(({ Art, id }, i) => {
 					return (

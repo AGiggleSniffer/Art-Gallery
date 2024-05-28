@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import ErrorDisplay from "./ErrorDisplay";
 
 function LoginFormModal() {
 	const dispatch = useDispatch();
@@ -67,7 +68,7 @@ function LoginFormModal() {
 						required
 					/>
 				</div>
-				{errors.credential && <p>{errors.credential}</p>}
+				{errors.credential && <ErrorDisplay msg={errors.credential} />}
 				<button className="classic" type="submit">
 					Log In
 				</button>
