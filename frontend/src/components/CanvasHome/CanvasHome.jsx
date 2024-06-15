@@ -12,6 +12,7 @@ import OpenModalButton, {
 } from "../OpenModalButton";
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
+
 import "./Canvas.css";
 
 export default function CanvasHome() {

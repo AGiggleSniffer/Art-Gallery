@@ -1,8 +1,8 @@
 #CanvasHome {
 	display: flex;
 	flex-direction: column;
+
 	align-self: start;
-	justify-self: center;
 
 	& h1 {
 		color: var(--text-color);
@@ -24,7 +24,7 @@ div#Buttons {
 }
 
 canvas {
-	background-color: white;
+	background-color: var(--White);
 	border-radius: 5px;
 	border: 2px solid var(--main-accent-color);
 

@@ -6,7 +6,7 @@ import ErrorDisplay from "./ErrorDisplay";
 
 export default function SaveArtModal({ canvasRef, id, navigate }) {
 	const myArt = useSelector(artActions.findArt(id));
-	const formattedTagArr = myArt?.ArtTags.map(({ type }) => type).join(" ");
+	const formattedTagArr = myArt?.ArtTags?.map(({ type }) => type).join(" ");
 	const [description, setDescription] = useState(myArt?.description || "");
 	const [name, setName] = useState(myArt?.name || "");
 	const [tags, setTags] = useState(formattedTagArr || "");
