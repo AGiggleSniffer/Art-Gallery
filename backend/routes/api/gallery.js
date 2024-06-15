@@ -146,12 +146,13 @@ router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 		});
 
 		const updatedGallery = await Gallery.update(payload, options);
+		console.log(updatedGallery[1]);
 
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
 			updatedGallery.sqlite = await Gallery.findByPk(galleryId, { include });
 		}
-		
+
 		return res.json(updatedGallery.sqlite || updatedGallery[1].dataValues);
 	} catch (err) {
 		return next(err);

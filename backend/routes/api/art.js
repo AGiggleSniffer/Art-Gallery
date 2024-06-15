@@ -134,6 +134,7 @@ router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 		});
 
 		const updatedArt = await Art.update(payload, options);
+		console.log(updatedArt[1]);
 
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
