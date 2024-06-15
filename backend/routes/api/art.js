@@ -2,7 +2,6 @@ const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
 const { Art, ArtTag, sequelize } = require("../../db/models");
 const { environment } = require("../../config");
-const isProduction = environment === "production";
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -104,7 +103,6 @@ router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 		data_url: dataURL,
 	};
 	const options = {
-		include,
 		where: { id: artId },
 		/* ONLY supported for Postgres */
 		// will return the results without needing another db query
@@ -133,15 +131,11 @@ router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 			});
 		});
 
-		const updatedArt = await Art.update(payload, options);
-		console.log(updatedArt[1]);
+		await Art.update(payload, options);
 
-		// check if we are in production or if we have to make another DB query
-		if (!isProduction) {
-			updatedArt.sqlite = await Art.findByPk(artId, { include });
-		}
+		const updatedArt = await Art.findByPk(artId, { include });
 
-		return res.json(updatedArt.sqlite || updatedArt[1].dataValues);
+		return res.json(updatedArt);
 	} catch (err) {
 		return next(err);
 	}

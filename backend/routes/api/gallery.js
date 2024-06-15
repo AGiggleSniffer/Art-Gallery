@@ -8,7 +8,6 @@ const {
 	sequelize,
 } = require("../../db/models");
 const { environment } = require("../../config");
-const isProduction = environment === "production";
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -116,7 +115,6 @@ router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 		name,
 	};
 	const options = {
-		include,
 		where: { id: galleryId },
 		/* ONLY supported for Postgres */
 		// will return the results without needing another db query
@@ -145,15 +143,11 @@ router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 			});
 		});
 
-		const updatedGallery = await Gallery.update(payload, options);
-		console.log(updatedGallery[1]);
+		await Gallery.update(payload, options);
 
-		// check if we are in production or if we have to make another DB query
-		if (!isProduction) {
-			updatedGallery.sqlite = await Gallery.findByPk(galleryId, { include });
-		}
+		const updatedGallery = await Gallery.findByPk(galleryId, { include });
 
-		return res.json(updatedGallery.sqlite || updatedGallery[1].dataValues);
+		return res.json(updatedGallery);
 	} catch (err) {
 		return next(err);
 	}
