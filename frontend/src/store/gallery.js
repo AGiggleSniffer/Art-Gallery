@@ -75,11 +75,11 @@ export const postGallery =
 	};
 
 export const editGallery =
-	({ description, name, id }) =>
+	({ description, name, id, tags }) =>
 	async (dispatch) => {
 		const response = await csrfFetch(`/api/galleries/${id}`, {
 			method: "PUT",
-			body: JSON.stringify({ description, name }),
+			body: JSON.stringify({ description, name, tags }),
 		});
 
 		const data = await response.json();
@@ -119,7 +119,6 @@ export const addArtGalleries =
 
 		const data = await response.json();
 		dispatch(addArt(data));
-		console.log(data);
 		return data;
 	};
 
@@ -156,12 +155,18 @@ const galleryReducer = (state = initialState, action) => {
 			return { ...state, all: newAllObj };
 		}
 		case EDIT: {
+			// const newAllObj = {
+			// 	...state.all,
+			// 	[action.payload.id]: { ...state.all[action.payload.id] },
+			// };
+			// newAllObj[action.payload.id].description = action.payload.description;
+			// newAllObj[action.payload.id].name = action.payload.name;
+			// return { ...state, all: newAllObj };
+
 			const newAllObj = {
 				...state.all,
-				[action.payload.id]: { ...state.all[action.payload.id] },
+				[action.payload.id]: action.payload,
 			};
-			newAllObj[action.payload.id].description = action.payload.description;
-			newAllObj[action.payload.id].name = action.payload.name;
 			return { ...state, all: newAllObj };
 		}
 		case DELETE_ART: {

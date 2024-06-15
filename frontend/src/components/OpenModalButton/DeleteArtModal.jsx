@@ -2,15 +2,13 @@ import { useDispatch } from "react-redux";
 import * as artActions from "../../store/art";
 import { useModal } from "../../context/Modal";
 
-export default function DeleteArtModal({ navigate, clear, id }) {
+export default function DeleteArtModal({ navigate, id }) {
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 
 	const deleteArt = async () => {
 		try {
 			const res = await dispatch(artActions.deleteArtThunk(id));
-
-			clear();
 
 			return res;
 		} catch (err) {

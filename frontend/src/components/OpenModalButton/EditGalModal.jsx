@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { BsPlusCircle } from "react-icons/bs";
+
 import { useModal } from "../../context/Modal";
 
 import * as artActions from "../../store/art";
@@ -46,12 +48,13 @@ export default function EditGalModal({ id }) {
 	return (
 		<div id="LoadArt">
 			<h2>Select Art to ADD to Gallery</h2>
+			<button className="classic exit" onClick={closeModal}>
+				X
+			</button>
 			<section id="Selection__buttons">
 				<button className="classic" onClick={handleSubmit}>
-					Add Art
-				</button>
-				<button className="classic" onClick={closeModal}>
-					Cancel
+					<BsPlusCircle />
+					Add
 				</button>
 			</section>
 			<div id="Selection">

@@ -1,20 +1,24 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useModal } from "../../context/Modal";
+
 import * as galleryActions from "../../store/gallery";
+
 import ErrorDisplay from "./ErrorDisplay";
 
 export default function GalleryFormModal({ id, handleSubmit }) {
 	const myGal = useSelector(galleryActions.findGallery(id));
-	const [description, setDescription] = useState(myGal?.description);
-	const [name, setName] = useState(myGal?.name);
-	const [tags, setTags] = useState(myGal?.tags);
+	const formattedTagArr = myGal?.GalleryTags?.map(({ type }) => type).join(" ");
+	const [description, setDescription] = useState(myGal?.description || "");
+	const [name, setName] = useState(myGal?.name || "");
+	const [tags, setTags] = useState(formattedTagArr || "");
 	const [errors, setErrors] = useState({});
 
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 	const saveGallery = async () => {
-		console.log(tags);
+		const formattedTags = tags.replaceAll("#", "").split(" ");
 
 		try {
 			const payload = {
@@ -22,6 +26,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 				description,
 				name,
 				id,
+				tags: formattedTags,
 			};
 
 			if (id) {
@@ -83,10 +88,11 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					id="tags"
 					placeholder="Add Tags to help people find your Gallery:"
 					onChange={(e) => setTags(e.target.value)}
-					defaultValue={myGal?.tags}
+					defaultValue={formattedTagArr}
 				/>
 			</div>
-			{errors.tags && <ErrorDisplay msg={errors.tags} />}
+			{errors.type && <ErrorDisplay msg={errors.type} />}
+			<p>{'(tags will be seperated by spaces. "#\'s" will be ignored)'}</p>
 			<button className="classic" type="submit">
 				Save New Gallery
 			</button>

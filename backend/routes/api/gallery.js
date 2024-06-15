@@ -1,6 +1,12 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
-const { Gallery, ArtGallery, Art } = require("../../db/models");
+const {
+	Gallery,
+	ArtGallery,
+	Art,
+	GalleryTag,
+	sequelize,
+} = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
@@ -45,7 +51,7 @@ router.get("/owned", requireAuth, async (req, res, next) => {
 router.get("/:galleryId", async (req, res, next) => {
 	const { galleryId } = req.params;
 	const where = { id: galleryId };
-	const include = [{ model: ArtGallery, include: Art }];
+	const include = [{ model: ArtGallery, include: Art }, { model: GalleryTag }];
 
 	try {
 		const galleries = await Gallery.findOne({ where, include });
@@ -59,7 +65,7 @@ router.get("/:galleryId", async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { name, description, artIdArray } = req.body;
+	const { name, description, artIdArray, tags } = req.body;
 	const payload = {
 		user_id: user.id,
 		name,
@@ -67,16 +73,35 @@ router.post("/", requireAuth, async (req, res, next) => {
 	};
 
 	try {
-		const { dataValues } = await Gallery.create(payload);
+		const result = await sequelize.transaction(async (t) => {
+			const { dataValues } = await Gallery.create(payload, { transaction: t });
+
+			const formattedTags = tags
+				.map((tag) =>
+					tag.length ? { gallery_id: dataValues.id, type: tag } : null,
+				)
+				.filter((ele) => ele);
+
+			if (formattedTags.length > 20) {
+				throw new Error("Limit of 20 tags allowed");
+			}
+
+			dataValues.GalleryTags = await GalleryTag.bulkCreate(formattedTags, {
+				validate: true,
+				transaction: t,
+			});
+
+			return dataValues;
+		});
 
 		const joinTablePayload = artIdArray.map((item) => ({
 			art_id: item,
-			gallery_id: dataValues.id,
+			gallery_id: result.id,
 		}));
 
 		await ArtGallery.bulkCreate(joinTablePayload);
 
-		return res.status(201).json(dataValues);
+		return res.status(201).json(result);
 	} catch (err) {
 		return next(err);
 	}
@@ -84,12 +109,14 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 	const { galleryId } = req.params;
-	const { description, name } = req.body;
+	const { description, name, tags } = req.body;
+	const include = [{ model: ArtGallery, include: Art }, { model: GalleryTag }];
 	const payload = {
 		description,
 		name,
 	};
 	const options = {
+		include,
 		where: { id: galleryId },
 		/* ONLY supported for Postgres */
 		// will return the results without needing another db query
@@ -98,11 +125,33 @@ router.put("/:galleryId", requireAuth, checkOwner, async (req, res, next) => {
 	};
 
 	try {
+		const formattedTags = tags
+			.map((tag) => (tag.length ? { gallery_id: galleryId, type: tag } : null))
+			.filter((ele) => ele);
+
+		if (formattedTags.length > 20) {
+			throw new Error("Limit of 20 tags allowed");
+		}
+
+		await sequelize.transaction(async (t) => {
+			await GalleryTag.destroy({
+				where: { gallery_id: galleryId },
+				transaction: t,
+			});
+
+			await GalleryTag.bulkCreate(formattedTags, {
+				validate: true,
+				transaction: t,
+			});
+		});
+
 		const updatedGallery = await Gallery.update(payload, options);
+
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
-			updatedGallery.sqlite = await Gallery.findByPk(galleryId);
+			updatedGallery.sqlite = await Gallery.findByPk(galleryId, { include });
 		}
+		
 		return res.json(updatedGallery.sqlite || updatedGallery[1].dataValues);
 	} catch (err) {
 		return next(err);

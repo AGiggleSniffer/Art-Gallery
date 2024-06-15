@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
 import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
-import Toolbar from "./Toolbar";
+import Toolbar from "../Toolbar";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {

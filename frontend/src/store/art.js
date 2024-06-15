@@ -33,7 +33,7 @@ const oneArt = (payload) => ({
 });
 
 export const saveThunk =
-	({ galleryId, name, description, dataURL }) =>
+	({ galleryId, name, description, dataURL, tags }) =>
 	async (dispatch) => {
 		const response = await csrfFetch("/api/art", {
 			method: "POST",
@@ -42,6 +42,7 @@ export const saveThunk =
 				name,
 				description,
 				dataURL,
+				tags
 			}),
 		});
 		const data = await response.json();
@@ -66,7 +67,7 @@ export const loadAllThunk = () => async (dispatch) => {
 };
 
 export const editThunk =
-	({ galleryId, name, description, dataURL, id }) =>
+	({ galleryId, name, description, dataURL, tags, id }) =>
 	async (dispatch) => {
 		const response = await csrfFetch(`/api/art/${id}`, {
 			method: "PUT",
@@ -75,6 +76,7 @@ export const editThunk =
 				name,
 				description,
 				dataURL,
+				tags,
 			}),
 		});
 

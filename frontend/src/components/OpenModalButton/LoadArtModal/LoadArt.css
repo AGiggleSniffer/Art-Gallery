@@ -34,6 +34,7 @@
 	}
 
 	& .exit {
+		display: flex;
 		position: absolute;
 		right: 0;
 		top: 0;
@@ -119,10 +120,10 @@
 	& p {
 		align-self: flex-start;
 	}
-	
 }
 
 #Selection__buttons {
+	display: flex;
 	position: absolute;
 	right: 60px;
 	top: 0;

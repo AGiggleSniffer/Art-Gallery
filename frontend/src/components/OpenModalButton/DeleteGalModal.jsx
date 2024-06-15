@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+
 import { useModal } from "../../context/Modal";
 import * as galleryActions from "../../store/gallery";
 
@@ -27,7 +28,7 @@ export default function DeleteGalModal({ id, navigate }) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h2>Are you sure you want to delete this Gallery</h2>
+			<h2>Are you sure you want to delete this Gallery?</h2>
 			<button className="classic" onClick={() => closeModal()}>
 				Cancel
 			</button>

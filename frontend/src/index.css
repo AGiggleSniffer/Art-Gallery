@@ -72,6 +72,9 @@ button {
 }
 
 button.classic {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: outset var(--main-light-accent-color);
 	border-radius: 20px;
 	background-color: var(--main-color);
@@ -81,6 +84,10 @@ button.classic {
 	margin: 20px;
 	transition: all 50ms ease-in-out;
 	box-shadow: 0 5px 0 var(--main-light-accent-color);
+
+	& svg {
+		margin-right: 5px;
+	}
 }
 
 button.classic:active {

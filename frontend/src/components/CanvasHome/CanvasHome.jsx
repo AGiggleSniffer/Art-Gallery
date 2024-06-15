@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { VscSaveAs } from "react-icons/vsc";
+import { BsBan } from "react-icons/bs";
 
 import * as sessionActions from "../../store/session";
 
 import OpenModalButton, {
-	LoadArtModal,
 	SaveArtModal,
 	SignupFormModal,
 } from "../OpenModalButton";
@@ -37,33 +38,23 @@ export default function CanvasHome() {
 				<canvas ref={canvasRef} id="CanvasHome" />
 				<div id="Buttons">
 					<button className="classic" onClick={clearCanvas}>
+						<BsBan />
 						Clear
 					</button>
 					{user ? (
 						<OpenModalButton
-							buttonText="Save As"
+							buttonText="Save As..."
+							icon={<VscSaveAs />}
 							modalComponent={
 								<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
 							}
 						/>
 					) : (
 						<OpenModalButton
-							buttonText="Save As"
+							buttonText="Save As..."
+							icon={<VscSaveAs />}
 							modalComponent={
 								<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
-							}
-						/>
-					)}
-					{user ? (
-						<OpenModalButton
-							buttonText="Load Saves"
-							modalComponent={<LoadArtModal navigate={navigate} />}
-						/>
-					) : (
-						<OpenModalButton
-							buttonText="Load Saves"
-							modalComponent={
-								<SignupFormModal extraMessage="Sign in or Sign up to Load Saves" />
 							}
 						/>
 					)}

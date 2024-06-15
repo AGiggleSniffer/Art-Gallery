@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
 					notNull: { msg: "Name is required" },
 					notEmpty: { msg: "Name is required" },
 					len: {
-						args: [0, 50],
-						msg: "Name too long",
+						args: [3, 50],
+						msg: "Name too long, must be between 3-50 chars",
 					},
 				},
 			},
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					len: {
 						args: [0, 255],
-						msg: "Description too long",
+						msg: "Description too long, cannot be over 255 chars",
 					},
 				},
 			},

@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 					notNull: { msg: "Tag Type is required" },
 					notEmpty: { msg: "Tag Type is required" },
 					len: {
-						args: [0, 50],
-						msg: "Tag too long",
+						args: [3, 25],
+						msg: "Tag too long, must be between 3-25 chars",
 					},
 				},
 			},

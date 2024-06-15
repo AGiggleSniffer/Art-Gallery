@@ -6,21 +6,25 @@ import ErrorDisplay from "./ErrorDisplay";
 
 export default function SaveArtModal({ canvasRef, id, navigate }) {
 	const myArt = useSelector(artActions.findArt(id));
-	const [description, setDescription] = useState(myArt?.description);
-	const [name, setName] = useState(myArt?.name);
-	const [tags, setTags] = useState(myArt?.tags);
+	const formattedTagArr = myArt?.ArtTags.map(({ type }) => type).join(" ");
+	const [description, setDescription] = useState(myArt?.description || "");
+	const [name, setName] = useState(myArt?.name || "");
+	const [tags, setTags] = useState(formattedTagArr || "");
 	const [errors, setErrors] = useState({});
 
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 	const saveCanvas = async () => {
 		const dataURL = await canvasRef.current.toDataURL();
+
+		const formattedTags = tags.replaceAll("#", "").split(" ");
+
 		const payload = {
 			name,
 			description,
 			dataURL,
 			id,
-			tags,
+			tags: formattedTags,
 		};
 
 		try {
@@ -85,10 +89,11 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 					id="tags"
 					placeholder="Add Tags to help people find your art:"
 					onChange={(e) => setTags(e.target.value)}
-					defaultValue={myArt?.tags}
+					defaultValue={formattedTagArr}
 				/>
 			</div>
-			{errors.tags && <ErrorDisplay msg={errors.tags} />}
+			{errors.type && <ErrorDisplay msg={errors.type} />}
+			<p>{'(tags will be seperated by spaces. "#\'s" will be ignored)'}</p>
 			<button className="classic" type="submit">
 				Save As
 			</button>

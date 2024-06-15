@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { VscSave, VscSaveAs } from "react-icons/vsc";
+import { BsTrash, BsBan } from "react-icons/bs";
 
 import * as artActions from "../../store/art";
 import * as sessionActions from "../../store/session";
 
 import OpenModalButton, {
 	SignupFormModal,
-	LoadArtModal,
 	SaveArtModal,
 	DeleteArtModal,
 } from "../OpenModalButton";
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
+
+import "./CanvasView.css";
 
 export default function CanvasView() {
 	const dispatch = useDispatch();
@@ -57,60 +60,51 @@ export default function CanvasView() {
 		<>
 			<div id="CanvasHome">
 				<canvas ref={canvasRef} id="CanvasHome" />
+				<div id="Tags">
+					{myArt?.ArtTags?.map(({ type, id }) => (
+						<span key={id}>#{type}</span>
+					))}
+				</div>
 				<div id="Buttons">
 					<button className="classic" onClick={clearCanvas}>
+						<BsBan />
 						Clear
 					</button>
+					{isOwner && (
+						<OpenModalButton
+							buttonText="Save"
+							icon={<VscSaveAs />}
+							modalComponent={
+								<SaveArtModal
+									canvasRef={canvasRef}
+									id={id}
+									navigate={navigate}
+								/>
+							}
+						/>
+					)}
 					{user ? (
 						<OpenModalButton
-							buttonText="Save As"
+							buttonText="Save As..."
+							icon={<VscSave />}
 							modalComponent={
 								<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
 							}
 						/>
 					) : (
 						<OpenModalButton
-							buttonText="Save As"
+							buttonText="Save As..."
+							icon={<VscSave />}
 							modalComponent={
-								<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
+								<SignupFormModal extraMessage="Sign in or Sign up to Save" />
 							}
 						/>
 					)}
 					{isOwner && (
-						<>
-							<OpenModalButton
-								buttonText="Edit & Save"
-								modalComponent={
-									<SaveArtModal
-										canvasRef={canvasRef}
-										id={id}
-										navigate={navigate}
-									/>
-								}
-							/>
-							<OpenModalButton
-								buttonText="Delete"
-								modalComponent={
-									<DeleteArtModal
-										navigate={navigate}
-										clear={clearCanvas}
-										id={id}
-									/>
-								}
-							/>
-						</>
-					)}
-					{user ? (
 						<OpenModalButton
-							buttonText="Load Saves"
-							modalComponent={<LoadArtModal navigate={navigate} />}
-						/>
-					) : (
-						<OpenModalButton
-							buttonText="Load Saves"
-							modalComponent={
-								<SignupFormModal extraMessage="Sign in or Sign up to Load Saves" />
-							}
+							buttonText="Delete"
+							icon={<BsTrash />}
+							modalComponent={<DeleteArtModal navigate={navigate} id={id} />}
 						/>
 					)}
 				</div>

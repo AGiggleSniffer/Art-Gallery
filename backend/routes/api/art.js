@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
-const { Art } = require("../../db/models");
+const { Art, ArtTag, sequelize } = require("../../db/models");
 const { environment } = require("../../config");
 const isProduction = environment === "production";
 
@@ -43,9 +43,10 @@ router.get("/owned", requireAuth, async (req, res, next) => {
 router.get("/:artId", async (req, res, next) => {
 	const { artId } = req.params;
 	const where = { id: artId };
+	const include = [{ model: ArtTag }];
 
 	try {
-		const myArt = await Art.findOne({ where });
+		const myArt = await Art.findOne({ where, include });
 		if (myArt) {
 			return res.json(myArt);
 		} else throw new Error("No Art Found");
@@ -56,17 +57,38 @@ router.get("/:artId", async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
 	const { user } = req;
-	const { name, description, dataURL } = req.body;
+	const { name, description, dataURL, tags } = req.body;
 	const payload = {
 		user_id: user.id,
 		name,
 		description,
 		data_url: dataURL,
+		tags,
 	};
 
 	try {
-		const { dataValues } = await Art.create(payload);
-		return res.status(201).json(dataValues);
+		const result = await sequelize.transaction(async (t) => {
+			const { dataValues } = await Art.create(payload, { transaction: t });
+
+			const formattedTags = tags
+				.map((tag) =>
+					tag.length ? { art_id: dataValues.id, type: tag } : null,
+				)
+				.filter((ele) => ele);
+
+			if (formattedTags.length > 20) {
+				throw new Error("Limit of 20 tags allowed");
+			}
+
+			dataValues.ArtTags = await ArtTag.bulkCreate(formattedTags, {
+				validate: true,
+				transaction: t,
+			});
+
+			return dataValues;
+		});
+
+		return res.status(201).json(result);
 	} catch (err) {
 		return next(err);
 	}
@@ -74,13 +96,15 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 	const { artId } = req.params;
-	const { name, description, dataURL } = req.body;
+	const { name, description, dataURL, tags } = req.body;
+	const include = [{ model: ArtTag }];
 	const payload = {
 		name,
 		description,
 		data_url: dataURL,
 	};
 	const options = {
+		include,
 		where: { id: artId },
 		/* ONLY supported for Postgres */
 		// will return the results without needing another db query
@@ -89,11 +113,33 @@ router.put("/:artId", requireAuth, checkOwner, async (req, res, next) => {
 	};
 
 	try {
+		const formattedTags = tags
+			.map((tag) => (tag.length ? { art_id: artId, type: tag } : null))
+			.filter((ele) => ele);
+
+		if (formattedTags.length > 20) {
+			throw new Error("Limit of 20 tags allowed");
+		}
+
+		await sequelize.transaction(async (t) => {
+			await ArtTag.destroy({
+				where: { art_id: artId },
+				transaction: t,
+			});
+
+			await ArtTag.bulkCreate(formattedTags, {
+				validate: true,
+				transaction: t,
+			});
+		});
+
 		const updatedArt = await Art.update(payload, options);
+
 		// check if we are in production or if we have to make another DB query
 		if (!isProduction) {
-			updatedArt.sqlite = await Art.findByPk(artId);
+			updatedArt.sqlite = await Art.findByPk(artId, { include });
 		}
+
 		return res.json(updatedArt.sqlite || updatedArt[1].dataValues);
 	} catch (err) {
 		return next(err);

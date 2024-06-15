@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { VscSaveAs } from "react-icons/vsc";
+import { BsTrash, BsBan, BsPlusCircle, BsCheck2Circle } from "react-icons/bs";
+
 import * as galleryActions from "../../store/gallery";
 import * as sessionActions from "../../store/session";
+
 import OpenModalButton, {
 	DeleteGalModal,
 	EditGalModal,
 	GalleryFormModal,
-	DeleteArtGalModal
+	DeleteArtGalModal,
 } from "../OpenModalButton";
+
+import "./Gallery.css";
 
 export default function GalleryView() {
 	const dispatch = useDispatch();
@@ -65,36 +71,42 @@ export default function GalleryView() {
 	}, [myGallery, user]);
 
 	return (
-		<div>
+		<div id="Galleries">
 			{isOwner && (
 				<div>
 					{!visible ? (
 						<>
+							<OpenModalButton
+								buttonText="Add Art"
+								icon={<BsPlusCircle />}
+								modalComponent={<EditGalModal id={id} navigate={navigate} />}
+							/>
 							<button className="classic" onClick={toggleVisible}>
-								Delete Art
+								<BsBan />
+								Remove Art
 							</button>
 							<OpenModalButton
-								buttonText="Delete Gallery"
-								modalComponent={<DeleteGalModal id={id} navigate={navigate} />}
-							/>
-							<OpenModalButton
 								buttonText="Edit Details"
+								icon={<VscSaveAs />}
 								modalComponent={
 									<GalleryFormModal id={id} navigate={navigate} />
 								}
 							/>
 							<OpenModalButton
-								buttonText="Add Art"
-								modalComponent={<EditGalModal id={id} navigate={navigate} />}
+								buttonText="Delete Gallery"
+								icon={<BsTrash />}
+								modalComponent={<DeleteGalModal id={id} navigate={navigate} />}
 							/>
 						</>
 					) : (
 						<>
 							<button className="classic" onClick={toggleVisible}>
+								<BsBan />
 								Cancel
 							</button>
 							<OpenModalButton
-								buttonText="Delete Selected Art"
+								buttonText="Remove Art"
+								icon={<BsCheck2Circle />}
 								modalComponent={
 									<DeleteArtGalModal handleSubmit={handleSubmit} />
 								}
@@ -103,7 +115,14 @@ export default function GalleryView() {
 					)}
 				</div>
 			)}
-			<h3 id="Description">{myGallery?.description}</h3>
+			<h3 id="Description">
+				Desc: <div>{myGallery?.description}</div>
+			</h3>
+			<div id="Tags">
+				{myGallery?.GalleryTags?.map(({ type, id }) => (
+					<span key={id}>#{type}</span>
+				))}
+			</div>
 			<div id="Selection">
 				{myGallery?.ArtGalleries?.map(({ Art, id }, i) => {
 					return (

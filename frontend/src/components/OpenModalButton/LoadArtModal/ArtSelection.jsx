@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { BsPlusCircle, BsBan } from "react-icons/bs";
+import { VscSave } from "react-icons/vsc";
 import OpenModalButton from "../OpenModalButton";
 import GalleryFormModal from "../GalleryFormModal";
 
@@ -39,16 +41,19 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 				<section id="Selection__buttons">
 					{visible && (
 						<OpenModalButton
-							buttonText="Save To Gallery"
+							buttonText="Save"
+							icon={<VscSave />}
 							modalComponent={<GalleryFormModal handleSubmit={handleSubmit} />}
 						/>
 					)}
 					{!visible ? (
 						<button className="classic" onClick={toggleVisible}>
-							Edit Your Art
+							<BsPlusCircle />
+							Create Gallery
 						</button>
 					) : (
 						<button className="classic" onClick={toggleVisible}>
+							<BsBan />
 							Cancel
 						</button>
 					)}

@@ -1,0 +1,13 @@
+#Galleries {
+    align-self: flex-start;
+}
+
+#Galleries > div {
+    display: flex;
+}
+
+@media screen and (max-width: 1575px) {
+	#Galleries {
+        align-self: center;
+    }
+}
