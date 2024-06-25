@@ -93,9 +93,11 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 			</div>
 			{errors.type && <ErrorDisplay msg={errors.type} />}
 			<p>{'(tags will be seperated by spaces. "#\'s" will be ignored)'}</p>
-			<button className="classic" type="submit">
-				Save New Gallery
-			</button>
+			<span>
+				<button className="classic" type="submit">
+					Save As...
+				</button>
+			</span>
 		</form>
 	);
 }

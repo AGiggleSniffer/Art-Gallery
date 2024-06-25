@@ -16,6 +16,7 @@ import OpenModalButton, {
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
 import "./CanvasView.css";
+import Toolbar from "../Toolbar";
 
 export default function CanvasView() {
 	const dispatch = useDispatch();
@@ -59,60 +60,61 @@ export default function CanvasView() {
 	return (
 		<>
 			<div id="CanvasHome">
-				<canvas ref={canvasRef} id="CanvasHome" />
+				<div id="CanvasContainer">
+					<div id="Buttons">
+						<Toolbar />
+						<button className="classic" onClick={clearCanvas}>
+							<BsBan />
+							Clear
+						</button>
+						{isOwner && (
+							<OpenModalButton
+								buttonText="Save"
+								icon={<VscSaveAs />}
+								modalComponent={
+									<SaveArtModal
+										canvasRef={canvasRef}
+										id={id}
+										navigate={navigate}
+									/>
+								}
+							/>
+						)}
+						{user ? (
+							<OpenModalButton
+								buttonText="Save As..."
+								icon={<VscSave />}
+								modalComponent={
+									<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
+								}
+							/>
+						) : (
+							<OpenModalButton
+								buttonText="Save As..."
+								icon={<VscSave />}
+								modalComponent={
+									<SignupFormModal extraMessage="Sign in or Sign up to Save" />
+								}
+							/>
+						)}
+						{isOwner && (
+							<OpenModalButton
+								buttonText="Delete"
+								icon={<BsTrash />}
+								modalComponent={<DeleteArtModal navigate={navigate} id={id} />}
+							/>
+						)}
+					</div>
+					<canvas ref={canvasRef} />
+					<h3 id="Description">
+						<div>Desc:</div> <div>{myArt?.description}</div>
+					</h3>
+				</div>
 				<div id="Tags">
 					{myArt?.ArtTags?.map(({ type, id }) => (
 						<span key={id}>#{type}</span>
 					))}
 				</div>
-				<div id="Buttons">
-					<button className="classic" onClick={clearCanvas}>
-						<BsBan />
-						Clear
-					</button>
-					{isOwner && (
-						<OpenModalButton
-							buttonText="Save"
-							icon={<VscSaveAs />}
-							modalComponent={
-								<SaveArtModal
-									canvasRef={canvasRef}
-									id={id}
-									navigate={navigate}
-								/>
-							}
-						/>
-					)}
-					{user ? (
-						<OpenModalButton
-							buttonText="Save As..."
-							icon={<VscSave />}
-							modalComponent={
-								<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
-							}
-						/>
-					) : (
-						<OpenModalButton
-							buttonText="Save As..."
-							icon={<VscSave />}
-							modalComponent={
-								<SignupFormModal extraMessage="Sign in or Sign up to Save" />
-							}
-						/>
-					)}
-					{isOwner && (
-						<OpenModalButton
-							buttonText="Delete"
-							icon={<BsTrash />}
-							modalComponent={<DeleteArtModal navigate={navigate} id={id} />}
-						/>
-					)}
-				</div>
-				{myArt && (
-					<h3 id="Description">
-						<div>Desc:</div> <div>{myArt.description}</div>
-					</h3>
-				)}
 			</div>
 		</>
 	);

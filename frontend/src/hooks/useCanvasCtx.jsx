@@ -44,18 +44,20 @@ export default function useCanvasCtx(ref) {
 		};
 
 		canvas.addEventListener("mousedown", mousedown);
-		canvas.addEventListener("mouseup", mouseup);
+		window.addEventListener("mouseup", mouseup);
 		canvas.addEventListener("mousemove", draw);
+
 		canvas.addEventListener("touchstart", mousedown);
-		canvas.addEventListener("touchend", mouseup);
+		window.addEventListener("touchend", mouseup);
 		canvas.addEventListener("touchmove", draw);
 
 		return () => {
 			canvas.removeEventListener("mousedown", mousedown);
-			canvas.removeEventListener("mouseup", mouseup);
+			window.removeEventListener("mouseup", mouseup);
 			canvas.removeEventListener("mousemove", draw);
+
 			canvas.removeEventListener("touchstart", mousedown);
-			canvas.removeEventListener("touchend", mouseup);
+			window.removeEventListener("touchend", mouseup);
 			canvas.removeEventListener("touchmove", draw);
 		};
 	}, [ref, ctx, isPainting]);

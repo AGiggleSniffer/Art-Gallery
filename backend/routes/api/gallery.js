@@ -7,7 +7,6 @@ const {
 	GalleryTag,
 	sequelize,
 } = require("../../db/models");
-const { environment } = require("../../config");
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;

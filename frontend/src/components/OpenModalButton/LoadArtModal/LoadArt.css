@@ -36,17 +36,17 @@
 	& .exit {
 		display: flex;
 		position: absolute;
-		right: 0;
-		top: 0;
+		right: 10px;
+		top: 10px;
 		width: 50px;
 	}
 }
 
 #Selection {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-auto-flow: column;
 
-	align-content: start;
+	justify-content: start;
 
 	gap: 5px;
 	margin: 20px;
@@ -107,14 +107,29 @@
 		justify-content: start;
 	}
 
+	& h2 {
+		height: 2rem;
+		width: 15vb;
+
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
 	& h3 {
 		position: absolute;
 		bottom: 0;
 		right: 0;
 
+		width: 90%;
+
 		margin: 5px;
 
 		opacity: 50%;
+
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	& p {

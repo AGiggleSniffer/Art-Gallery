@@ -69,12 +69,14 @@ function LoginFormModal() {
 					/>
 				</div>
 				{errors.credential && <ErrorDisplay msg={errors.credential} />}
-				<button className="classic" type="submit">
-					Log In
-				</button>
-				<button className="classic" onClick={loginDemo}>
-					Login as Demo User
-				</button>
+				<span>
+					<button className="classic" type="submit">
+						Log In
+					</button>
+					<button className="classic" onClick={loginDemo}>
+						Demo Login
+					</button>
+				</span>
 			</form>
 		</>
 	);

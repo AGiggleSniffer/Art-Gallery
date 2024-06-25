@@ -54,11 +54,10 @@ function Layout() {
 
 	return (
 		<div id="Layout">
-			<h1>CANVAS COLLECTIVE | {name}</h1>
-			<div>
-				<Navigation isLoaded={isLoaded} />
-				{isLoaded && <Outlet />}
-			</div>
+			<Navigation isLoaded={isLoaded} />
+
+			<h1 id="Title">CANVAS COLLECTIVE | {name}</h1>
+			{isLoaded && <Outlet />}
 		</div>
 	);
 }

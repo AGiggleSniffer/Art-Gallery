@@ -12,6 +12,15 @@
 		align-items: center;
 	}
 
+	& > span {
+		display: flex;
+		align-self: center;
+		align-items: center;
+		justify-content: center;
+
+		width: 50%;
+	}
+
 	& label {
 		position: absolute;
 		opacity: 50%;
@@ -58,16 +67,16 @@
 
 	& button {
 		width: 50%;
-		align-self: center;
+		text-wrap: nowrap;
 	}
 
 	& p {
-        display: flex;
-        align-items: center;
+		display: flex;
+		align-items: center;
 		color: var(--accent-text-color);
 
-        & svg {
-            margin-right: 5px;
-        }
+		& svg {
+			margin-right: 5px;
+		}
 	}
 }

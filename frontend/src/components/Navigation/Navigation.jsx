@@ -1,9 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { BsHouse, BsEasel, BsPalette, BsHash } from "react-icons/bs";
+import { BsHouse, BsEasel, BsPalette } from "react-icons/bs";
 import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
-import Toolbar from "../Toolbar";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
@@ -26,13 +25,7 @@ function Navigation({ isLoaded }) {
 					<BsEasel />
 					Galleries
 				</NavLink>
-
-				<NavLink to="/tags">
-					<BsHash />
-					Tags
-				</NavLink>
 			</span>
-			<Toolbar />
 			<span id="Profile">
 				{isLoaded && <ProfileButton user={sessionUser} />}
 			</span>

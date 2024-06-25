@@ -36,24 +36,20 @@ function ProfileButton({ user }) {
 
 	const closeMenu = () => setShowMenu(false);
 
-	const logout = (e) => {
-		e.preventDefault();
+	const logout = () => {
 		dispatch(sessionActions.logout());
 		closeMenu();
 	};
 
 	const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
+	const profileClass = showMenu ? "active" : " ";
+
 	return (
 		<>
-			<button onClick={toggleMenu}>
-				<FaUserCircle />
-				{user ? `Hi, ${user.username}` : "Profile Login" }
-			</button>
 			<section className={ulClassName} ref={ulRef}>
 				{user ? (
 					<>
-						<div>{user.username}</div>
 						<div>{user.email}</div>
 
 						<OpenModalButton
@@ -61,7 +57,7 @@ function ProfileButton({ user }) {
 							modalComponent={<LoadArtModal navigate={navigate} />}
 						/>
 
-						<button onClick={logout}>Log Out</button>
+						<OpenModalButton buttonText="Log Out" onButtonClick={logout} />
 					</>
 				) : (
 					<>
@@ -79,6 +75,10 @@ function ProfileButton({ user }) {
 					</>
 				)}
 			</section>
+			<button className={profileClass} onClick={toggleMenu}>
+				{user ? `Hi, ${user.username}` : "Profile Login"}
+				<FaUserCircle style={{marginLeft: "10px"}} />
+			</button>
 		</>
 	);
 }

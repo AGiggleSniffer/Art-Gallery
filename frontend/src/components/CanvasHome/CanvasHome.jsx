@@ -14,6 +14,7 @@ import OpenModalButton, {
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
 import "./Canvas.css";
+import Toolbar from "../Toolbar";
 
 export default function CanvasHome() {
 	const navigate = useNavigate();
@@ -36,29 +37,32 @@ export default function CanvasHome() {
 	return (
 		<>
 			<div id="CanvasHome">
-				<canvas ref={canvasRef} id="CanvasHome" />
-				<div id="Buttons">
-					<button className="classic" onClick={clearCanvas}>
-						<BsBan />
-						Clear
-					</button>
-					{user ? (
-						<OpenModalButton
-							buttonText="Save As..."
-							icon={<VscSaveAs />}
-							modalComponent={
-								<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
-							}
-						/>
-					) : (
-						<OpenModalButton
-							buttonText="Save As..."
-							icon={<VscSaveAs />}
-							modalComponent={
-								<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
-							}
-						/>
-					)}
+				<div id="CanvasContainer">
+					<div id="Buttons">
+						<Toolbar />
+						<button className="classic" onClick={clearCanvas}>
+							<BsBan />
+							Clear
+						</button>
+						{user ? (
+							<OpenModalButton
+								buttonText="Save As..."
+								icon={<VscSaveAs />}
+								modalComponent={
+									<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
+								}
+							/>
+						) : (
+							<OpenModalButton
+								buttonText="Save As..."
+								icon={<VscSaveAs />}
+								modalComponent={
+									<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
+								}
+							/>
+						)}
+					</div>
+					<canvas ref={canvasRef} />
 				</div>
 			</div>
 		</>

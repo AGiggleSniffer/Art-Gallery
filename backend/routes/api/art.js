@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
 const { Art, ArtTag, sequelize } = require("../../db/models");
-const { environment } = require("../../config");
+const { where } = require("sequelize");
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -20,7 +20,20 @@ const checkOwner = async (req, _res, next) => {
 
 router.get("/", async (_req, res, next) => {
 	try {
+		const artTags = await ArtTag.findAll({
+			attributes: [
+				"type",
+				[sequelize.fn("count", sequelize.col("ArtTag.type")), "typecount"],
+			],
+			group: "type",
+			order: [["typecount", "DESC"]],
+			limit: 5,
+		});
+
+		const topFive = artTags.map(({ dataValues }) => dataValues.type);
+
 		const myArt = await Art.findAll();
+
 		return res.json(myArt);
 	} catch (err) {
 		return next(err);

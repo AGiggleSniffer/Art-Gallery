@@ -1,33 +1,30 @@
 #Navigation {
 	position: sticky;
-	top: 20px;
-	bottom: 20px;
-	display: flex;
-	flex-direction: column;
+	top: 0;
 
-	align-self: flex-start;
-	justify-self: center;
+	display: flex;
+
+	justify-content: space-between;
 
 	box-sizing: border-box;
+	overflow: visible;
+
 	overflow: hidden;
 
 	background-color: var(--main-light-color);
-	box-shadow: 5px 5px 0 var(--main-light-accent-color);
+	box-shadow: 0 5px 0 var(--main-light-accent-color);
 
-	width: 75%;
-	min-width: fit-content;
+	width: 100%;
+	height: fit-content;
 
-	border-radius: 10px;
+	/* border-radius: 0 0 10px 10px; */
 	z-index: 10;
+
+	text-wrap: nowrap;
 
 	& span {
 		display: flex;
-		flex-direction: column;
-		border-bottom: 3px solid var(--main-light-accent-color);
-	}
-
-	& span:last-of-type {
-		border-bottom: 0;
+		border: none;
 	}
 
 	& span#Tags {
@@ -57,7 +54,6 @@
 
 	& svg {
 		color: var(--main-bg-color);
-		margin-left: 20px;
 		margin-right: 10px;
 		font-size: 1.5rem;
 	}
@@ -66,12 +62,15 @@
 		display: flex;
 		color: var(--main-bg-color);
 
+		border-radius: 10px;
+
 		text-decoration: none;
 		font-size: 1.2rem;
 
-		padding: 20px 0;
-		width: 100%;
+		padding: 20px;
+		width: fit-content;
 		height: 100%;
+
 		transition: all 500ms ease-in-out;
 	}
 
@@ -80,20 +79,17 @@
 		animation: distort 1.4s ease-in-out infinite;
 	}
 
-	& a.active {
+	& .active {
 		background-color: var(--main-light-accent-color);
 		animation: distort 1.6s ease-in-out infinite;
-	}
-
-	& a:first-of-type {
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
 	}
 
 	& button {
 		display: flex;
 		align-items: center;
+
 		border: none;
+		border-radius: 10px;
 
 		background-color: var(--main-light-color);
 		color: var(--main-bg-color);
@@ -115,30 +111,8 @@
 	}
 
 	& section button {
-		border-radius: 0;
 		margin: 0;
-	}
-
-	#Toolbar {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px;
-
-		& div {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-		}
-
-		& input {
-			margin: 0 10px;
-			cursor: pointer;
-		}
-
-		& label {
-			text-align: center;
-		}
+		box-shadow: none;
 	}
 }
 
@@ -148,16 +122,18 @@
 
 #Profile {
 	overflow: hidden;
+	background-color: var(--main-light-color);
 }
 
 .profile-dropdown {
+	display: flex;
 	animation: popin 500ms ease;
 }
 
 @keyframes popin {
 	from {
 		opacity: 0%;
-		transform: translateX(-100%);
+		transform: translateX(100%);
 	}
 	to {
 		transform: translateX(0);
@@ -166,69 +142,4 @@
 
 .hidden {
 	display: none;
-}
-
-@media screen and (max-width: 1575px) {
-	#Navigation {
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		height: fit-content;
-		width: 100%;
-		overflow: visible;
-
-		& a {
-			width: fit-content;
-			padding-right: 20px;
-		}
-
-		& span {
-			flex-direction: row;
-			border: none;
-		}
-
-		& span a:first-of-type {
-			border-radius: 10px 0 0 10px;
-		}
-
-		& span#Tags {
-			display: none;
-		}
-
-		& span#Profile button {
-			padding: 20px;
-			padding-left: 0;
-			justify-content: center;
-		}
-
-		& section button.classic {
-			justify-content: center;
-			padding-right: 20px;
-		}
-	}
-
-	#Profile {
-		border-radius: 0 10px 10px 0;
-	}
-
-	.profile-dropdown {
-		animation: rollout 500ms ease;
-		background-color: var(--main-light-color);
-		box-shadow: 5px 5px 0 var(--main-light-accent-color);
-		position: absolute;
-		transform: translateY(75px);
-		border-radius: 10px;
-		min-width: 150px;
-		overflow: hidden;
-		z-index: 2;
-	}
-}
-
-@keyframes rollout {
-	from {
-		opacity: 0%;
-	}
-	to {
-		opacity: 100%;
-	}
 }
