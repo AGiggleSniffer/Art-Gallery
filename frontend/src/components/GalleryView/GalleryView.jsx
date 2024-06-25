@@ -73,7 +73,7 @@ export default function GalleryView() {
 	return (
 		<div id="Galleries">
 			{isOwner && (
-				<div>
+				<div id="GalleryButtons">
 					{!visible ? (
 						<>
 							<OpenModalButton
@@ -118,11 +118,6 @@ export default function GalleryView() {
 			<h3 id="Description">
 				Desc: <div>{myGallery?.description}</div>
 			</h3>
-			<div id="Tags">
-				{myGallery?.GalleryTags?.map(({ type, id }) => (
-					<span key={id}>#{type}</span>
-				))}
-			</div>
 			<div id="Selection">
 				{myGallery?.ArtGalleries?.map(({ Art, id }, i) => {
 					return (
@@ -153,6 +148,11 @@ export default function GalleryView() {
 						</span>
 					);
 				})}
+			</div>
+			<div id="Tags">
+				{myGallery?.GalleryTags?.map(({ type, id }) => (
+					<span key={id}>#{type}</span>
+				))}
 			</div>
 		</div>
 	);
