@@ -28,9 +28,9 @@
 | GET | Return a list of all Galleries from the database | /api/galleries |
 | GET | Return a list of Galleries owned by the user | /api/galleries/owned |
 | GET | Return a single Gallery and its associated data | /api/galleries/:galleryId |
-| POST | Save a Gallery to the datbase, provide: \n"name",\n"description",\n"artIdArray": Array of all associated artIds,\n"tags": String | /api/galleries |
-| PUT | Update a piece of art from datbase id, provide: "name", "description", "dataURL", and "tags" | /api/galleries/:galleryId |
-| DELETE | Delete art from database id | /api/galleries/:galleryId |
+| POST | Save a Gallery to the datbase, provide: <br/>"name",<br/>"description",<br/>"artIdArray": Array of all associated artIds,<br/>"tags": String | /api/galleries |
+| PUT | Update a piece a Gallery from datbase id, provide: "name", "description", "dataURL", and "tags" | /api/galleries/:galleryId |
+| DELETE | Delete Gallery from database id | /api/galleries/:galleryId |
 
 ## Features
 
