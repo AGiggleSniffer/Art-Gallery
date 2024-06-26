@@ -7,8 +7,8 @@
 ### Signup / Login
 | Method | Description | Route |
 |:---|:---|:---|
-| POST | User Signup, provide: "email", "username", and "password" | /api/users |
-| POST | User Signin, provide: "email" OR "username" and "password" | /api/session |
+| POST | User Signup, provide:<br/>"email": String,<br/>"username": String,<br/>"password": String | /api/users |
+| POST | User Signin, provide:<br/>"email": String OR<br/>"username": String,<br/>"password": String | /api/session |
 | GET | Return the logged in user info | /api/session |
 | DELETE | Delete the logged in user | /api/session |
 
