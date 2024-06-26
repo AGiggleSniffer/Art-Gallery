@@ -28,19 +28,21 @@
 | GET | Return a list of all Galleries from the database | /api/galleries |
 | GET | Return a list of Galleries owned by the user | /api/galleries/owned |
 | GET | Return a single Gallery and its associated data | /api/galleries/:galleryId |
-| POST | Save a Gallery to the datbase, provide:<br/>"name",<br/>"description",<br/>"artIdArray": Array,<br/>"tags": String | /api/galleries |
-| PUT | Update a piece a Gallery from datbase id, provide:<br/>"name",<br/>"description",<br/>"dataURL",<br/>"tags" | /api/galleries/:galleryId |
+| POST | Save a Gallery to the datbase, provide:<br/>"name": String,<br/>"description": String,<br/>"artIdArray": Array,<br/>"tags": String | /api/galleries |
+| PUT | Update a piece a Gallery from datbase id, provide:<br/>"name": String,<br/>"description": String,<br/>"dataURL": String,<br/>"tags": String | /api/galleries/:galleryId |
 | DELETE | Delete Gallery from database id | /api/galleries/:galleryId |
 
 ## Features
 
-### 1.
+### 1. Art
+Able to Create, Read, Update, and Delete Art
 
-### 2.
+### 2. Galleries
 
-### 3.
-
-### 4.
-
+### 3. Tags
 
 ## Unique Additions
+
+### SVG Filters
+
+### Custom Canvas Hook
