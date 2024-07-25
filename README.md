@@ -31,7 +31,7 @@ Fun and engaging website to draw small pieces of art and share them with other u
 | POST | Save a Gallery to the datbase, provide:<br/>"name": String,<br/>"description": String,<br/>"artIdArray": Array,<br/>"tags": String | /api/galleries |
 | PUT | Update a piece a Gallery from datbase id, provide:<br/>"name": String,<br/>"description": String,<br/>"dataURL": String,<br/>"tags": String | /api/galleries/:galleryId |
 | DELETE | Delete Gallery from database id | /api/galleries/:galleryId |
-
+<!---
 ## Features
 
 ### 1. Art
@@ -46,3 +46,4 @@ Able to Create, Read, Update, and Delete Art
 ### SVG Filters
 
 ### Custom Canvas Hook
+-->
