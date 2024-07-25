@@ -1,5 +1,5 @@
 # CanvasCollective
-
+![](https://github.com/AGiggleSniffer/AGiggleSniffer.github.io/blob/main/src/assets/images/gifs/Animation5.gif)
 (description)
 
 ## API Routes
