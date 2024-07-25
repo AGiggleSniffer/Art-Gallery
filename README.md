@@ -1,6 +1,6 @@
 # CanvasCollective
 ![](https://github.com/AGiggleSniffer/AGiggleSniffer.github.io/blob/main/src/assets/images/gifs/Animation5.gif)
-(description)
+Fun and engaging website to draw small pieces of art and share them with other users.
 
 ## API Routes
 
