@@ -14,3 +14,10 @@
         background-color: white;
 	}
 }
+
+#GalleryHome {
+	& #Selection {
+		display: flex;
+		flex-wrap: wrap;
+	}
+}

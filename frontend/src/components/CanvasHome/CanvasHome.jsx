@@ -19,11 +19,8 @@ import Toolbar from "../Toolbar";
 export default function CanvasHome() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
-	const canvasRef = useRef(null);
-
 	const user = useSelector(sessionActions.user);
-
+	const canvasRef = useRef(null);
 	const ctx = useCanvasCtx(canvasRef);
 	const clearCanvas = () => {
 		const { width, height } = canvasRef.current;

@@ -18,7 +18,7 @@ div#Buttons {
 }
 
 #CanvasContainer {
-	width: fit-content;
+	width: 800px;
 	height: fit-content;
 
 	overflow: hidden;

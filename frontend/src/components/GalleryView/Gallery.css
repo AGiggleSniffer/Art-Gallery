@@ -7,6 +7,12 @@
 	box-shadow: 0 0 20px var(--main-light-color);
 
 	border-radius: 5px;
+	width: 80%;
+
+	& #Selection {
+		display: flex;
+		flex-wrap: wrap;
+	}
 }
 
 #GalleryButtons {

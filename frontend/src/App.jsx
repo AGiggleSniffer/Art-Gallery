@@ -17,6 +17,7 @@ import GalleryHome from "./components/GalleryHome";
 import GalleryView from "./components/GalleryView";
 import AllArtView from "./components/AllArtView";
 import CanvasView from "./components/CanvasView";
+import DataUrlConverter from "./components/DataUrlConverter";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
 			{
 				path: "/galleries/:id",
 				element: <GalleryView />,
+			},
+			{
+				path: "/converter",
+				element: <DataUrlConverter />,
 			},
 		],
 	},
