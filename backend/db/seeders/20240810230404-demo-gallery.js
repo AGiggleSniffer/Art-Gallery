@@ -23,7 +23,7 @@ module.exports = {
 				name: loremIpsum.slice(0, randInt(25)),
 				description: loremIpsum.slice(
 					randInt(loremIpsum.length),
-					randInt(loremIpsum.length),
+					randInt(250),
 				),
 			});
 
