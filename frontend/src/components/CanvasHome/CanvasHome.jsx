@@ -33,7 +33,7 @@ export default function CanvasHome() {
 
 	return (
 		<>
-			<div className="w-full h-[97vh] flex">
+			<div className="w-full h-[50vh] flex">
 				<div className="w-full">
 					<div id="Buttons">
 						<Toolbar />
@@ -46,7 +46,10 @@ export default function CanvasHome() {
 								buttonText="Save As..."
 								icon={<VscSaveAs />}
 								modalComponent={
-									<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
+									<SaveArtModal
+										canvasRef={canvasRef}
+										navigate={navigate}
+									/>
 								}
 							/>
 						) : (
@@ -59,7 +62,10 @@ export default function CanvasHome() {
 							/>
 						)}
 					</div>
-					<canvas className="border-2 border-black " ref={canvasRef} />
+					<canvas
+						className="border-2 border-black bg-[#66CCCC]"
+						ref={canvasRef}
+					/>
 				</div>
 			</div>
 		</>
