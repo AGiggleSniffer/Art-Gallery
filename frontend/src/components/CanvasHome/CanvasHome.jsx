@@ -33,8 +33,8 @@ export default function CanvasHome() {
 
 	return (
 		<>
-			<div id="CanvasHome">
-				<div id="CanvasContainer">
+			<div className="w-full h-[97vh] flex">
+				<div className="w-full">
 					<div id="Buttons">
 						<Toolbar />
 						<button className="classic" onClick={clearCanvas}>
@@ -59,7 +59,7 @@ export default function CanvasHome() {
 							/>
 						)}
 					</div>
-					<canvas className="border-2 border-black" ref={canvasRef} />
+					<canvas className="border-2 border-black " ref={canvasRef} />
 				</div>
 			</div>
 		</>
