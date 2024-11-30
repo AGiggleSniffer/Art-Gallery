@@ -13,7 +13,7 @@ import OpenModalButton, {
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
-import "./Canvas.css";
+// import "./Canvas.css";
 import Toolbar from "../Toolbar";
 
 export default function CanvasHome() {
@@ -59,7 +59,7 @@ export default function CanvasHome() {
 							/>
 						)}
 					</div>
-					<canvas ref={canvasRef} />
+					<canvas className="border-2 border-black" ref={canvasRef} />
 				</div>
 			</div>
 		</>
