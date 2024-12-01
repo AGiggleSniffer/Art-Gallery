@@ -33,37 +33,37 @@ export default function CanvasHome() {
 
 	return (
 		<>
+			<div id="Buttons">
+				<Toolbar />
+				<button className="classic" onClick={clearCanvas}>
+					<BsBan />
+					Clear
+				</button>
+				{user ? (
+					<OpenModalButton
+						buttonText="Save As..."
+						icon={<VscSaveAs />}
+						modalComponent={
+							<SaveArtModal
+								canvasRef={canvasRef}
+								navigate={navigate}
+							/>
+						}
+					/>
+				) : (
+					<OpenModalButton
+						buttonText="Save As..."
+						icon={<VscSaveAs />}
+						modalComponent={
+							<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
+						}
+					/>
+				)}
+			</div>
 			<div className="w-full h-[50vh] flex">
 				<div className="w-full">
-					<div id="Buttons">
-						<Toolbar />
-						<button className="classic" onClick={clearCanvas}>
-							<BsBan />
-							Clear
-						</button>
-						{user ? (
-							<OpenModalButton
-								buttonText="Save As..."
-								icon={<VscSaveAs />}
-								modalComponent={
-									<SaveArtModal
-										canvasRef={canvasRef}
-										navigate={navigate}
-									/>
-								}
-							/>
-						) : (
-							<OpenModalButton
-								buttonText="Save As..."
-								icon={<VscSaveAs />}
-								modalComponent={
-									<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
-								}
-							/>
-						)}
-					</div>
 					<canvas
-						className="border-2 border-black bg-[#66CCCC]"
+						className="bg-[#66CCCC]"
 						ref={canvasRef}
 					/>
 				</div>

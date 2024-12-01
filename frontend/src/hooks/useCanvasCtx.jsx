@@ -1,17 +1,32 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
 	const [ctx, setCtx] = useState();
+	const [source, setSource] = useState();
 	const [rect, setRect] = useState();
 	const [baseDimension, setBaseDimension] = useState();
-	const [source, setSource] = useState();
+	const [hiddenCanvas, setHiddenCanvas] = useState();
+	const [hiddenContext, setHiddenContext] = useState();
+	const img = useMemo(() => new Image(), []);
 
-	const [img, setImg] = useState(new Image());
+	const renderImage = useCallback(() => {
+		img.onload = () => {
+			canvas.width = baseDimension;
+			canvas.height = baseDimension;
+			ctx.imageSmoothingEnabled = false;
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+		};
 
-	const hiddenCanvas = document.createElement("canvas");
-	const hiddenContext = hiddenCanvas.getContext("2d");
+		img.src = source;
+	}, [baseDimension, canvas, ctx, img, source]);
+
+	const setSize = useCallback(() => {
+		if (!canvas || !rect) return;
+		setRect(canvas.parentNode.getBoundingClientRect());
+		setBaseDimension(rect.height > rect.width ? rect.width : rect.height);
+	}, [canvas, rect]);
 
 	useEffect(() => {
 		setCanvas(ref.current);
@@ -20,12 +35,17 @@ export default function useCanvasCtx(ref) {
 	useEffect(() => {
 		if (!canvas) return;
 		setCtx(canvas.getContext("2d"));
-	}, [ctx, canvas]);
+	}, [canvas]);
+
+	useEffect(() => {
+		setHiddenCanvas(document.createElement("canvas"));
+	}, []);
 
 	useEffect(() => {
 		if (!hiddenCanvas) return;
-		hiddenCanvas.width = 32;
-		hiddenCanvas.height = 32;
+		setHiddenContext(hiddenCanvas.getContext("2d"));
+		hiddenCanvas.width = 128;
+		hiddenCanvas.height = 128;
 	}, [hiddenCanvas]);
 
 	useEffect(() => {
@@ -33,6 +53,13 @@ export default function useCanvasCtx(ref) {
 		canvas.width = baseDimension;
 		canvas.height = baseDimension;
 	}, [canvas, baseDimension]);
+
+	useEffect(() => {
+		window.onresize = () => {
+			renderImage();
+			setSize();
+		};
+	}, [renderImage, setSize]);
 
 	useEffect(() => {
 		if (!canvas) return;
@@ -43,22 +70,6 @@ export default function useCanvasCtx(ref) {
 		if (!rect) return;
 		setBaseDimension(rect.height > rect.width ? rect.width : rect.height);
 	}, [rect]);
-
-	useEffect(() => {
-		if (!canvas) return;
-		setSource(canvas.toDataURL());
-	}, [canvas]);
-
-	useEffect(() => {
-		img.onLoad = () => {
-			canvas.width = baseDimension;
-			canvas.height = baseDimension;
-			ctx.imageSmoothingEnabled = false;
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-		};
-
-		img.src = source;
-	}, [baseDimension, canvas, ctx, img, source]);
 
 	useEffect(() => {
 		if (!canvas) return;
@@ -90,14 +101,16 @@ export default function useCanvasCtx(ref) {
 			);
 
 			setSource(hiddenCanvas.toDataURL());
+
+			renderImage();
 		};
 
 		canvas.addEventListener("mousedown", mousedown);
-		canvas.addEventListener("mouseup", mouseup);
+		window.addEventListener("mouseup", mouseup);
 		canvas.addEventListener("mousemove", mousemove);
 
 		canvas.addEventListener("touchstart", mousedown);
-		canvas.addEventListener("touchend", mouseup);
+		window.addEventListener("touchend", mouseup);
 		canvas.addEventListener("touchmove", mousemove);
 
 		return () => {
@@ -118,7 +131,8 @@ export default function useCanvasCtx(ref) {
 		img,
 		isPainting,
 		source,
+		renderImage,
 	]);
 
-	return ctx;
+	return hiddenContext;
 }
