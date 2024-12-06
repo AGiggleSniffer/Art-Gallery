@@ -1,87 +1,67 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 600;
 
 export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
 	const [ctx, setCtx] = useState();
-	const [source, setSource] = useState();
-	const [rect, setRect] = useState();
-	const [baseDimension, setBaseDimension] = useState();
-	const [hiddenCanvas, setHiddenCanvas] = useState();
-	const [hiddenContext, setHiddenContext] = useState();
-	const img = useMemo(() => new Image(), []);
 
-	const renderImage = useCallback(() => {
-		img.onload = () => {
-			canvas.width = baseDimension;
-			canvas.height = baseDimension;
-			ctx.imageSmoothingEnabled = false;
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-		};
-
-		img.src = source;
-	}, [baseDimension, canvas, ctx, img, source]);
+	const dpi = window.devicePixelRatio;
+	const [scale, setScale] = useState(1);
 
 	const setSize = useCallback(() => {
-		if (!canvas || !rect) return;
-		setRect(canvas.parentNode.getBoundingClientRect());
-		setBaseDimension(rect.height > rect.width ? rect.width : rect.height);
-	}, [canvas, rect]);
+		if (!canvas) return;
+		const scaleFactor =
+			canvas.parentNode.getBoundingClientRect().width / CANVAS_WIDTH;
+		setScale(scaleFactor);
+	}, [canvas]);
+
+	useEffect(() => {
+		setSize();
+	}, [setSize]);
 
 	useEffect(() => {
 		setCanvas(ref.current);
+		setCtx(ref.current?.getContext("2d"));
 	}, [ref]);
 
 	useEffect(() => {
-		if (!canvas) return;
-		setCtx(canvas.getContext("2d"));
-	}, [canvas]);
-
-	useEffect(() => {
-		setHiddenCanvas(document.createElement("canvas"));
-	}, []);
-
-	useEffect(() => {
-		if (!hiddenCanvas) return;
-		setHiddenContext(hiddenCanvas.getContext("2d"));
-		hiddenCanvas.width = 128;
-		hiddenCanvas.height = 128;
-	}, [hiddenCanvas]);
-
-	useEffect(() => {
-		if (!canvas || !baseDimension) return;
-		canvas.width = baseDimension;
-		canvas.height = baseDimension;
-	}, [canvas, baseDimension]);
-
-	useEffect(() => {
-		window.onresize = () => {
-			renderImage();
-			setSize();
-		};
-	}, [renderImage, setSize]);
+		window.onresize = setSize;
+	}, [setSize]);
 
 	useEffect(() => {
 		if (!canvas) return;
-		setRect(canvas.parentNode.getBoundingClientRect());
-	}, [canvas]);
+		canvas.height = CANVAS_HEIGHT * dpi;
+		canvas.width = CANVAS_WIDTH * dpi;
+
+		canvas.style.imageRendering = "pixelated";
+		// ctx.imageSmoothingEnabled = false;
+
+		ctx.save();
+		ctx.scale(dpi, dpi);
+		ctx.restore();
+	}, [canvas, dpi, ctx]);
 
 	useEffect(() => {
-		if (!rect) return;
-		setBaseDimension(rect.height > rect.width ? rect.width : rect.height);
-	}, [rect]);
+		if (!canvas) return;
+		canvas.style.height = `${CANVAS_HEIGHT * scale}px`;
+		canvas.style.width = `${CANVAS_WIDTH * scale}px`;
+	}, [canvas, scale]);
 
 	useEffect(() => {
 		if (!canvas) return;
 
-		const mousedown = (e) => {
+		const mousedown = () => {
 			setIsPainting(true);
-			draw(e);
 		};
 
-		const mouseup = (e) => {
+		const mouseup = () => {
 			setIsPainting(false);
-			draw(e);
+
+			ctx.stroke();
+			ctx.beginPath();
 		};
 
 		const mousemove = (e) => {
@@ -91,48 +71,20 @@ export default function useCanvasCtx(ref) {
 		};
 
 		const draw = (e) => {
-			const ratio = canvas.width / hiddenCanvas.width;
-
-			hiddenContext.fillRect(
-				Math.floor(e.offsetX / ratio),
-				Math.floor(e.offsetY / ratio),
-				1,
-				1,
-			);
-
-			setSource(hiddenCanvas.toDataURL());
-
-			renderImage();
+			ctx.lineTo(e.offsetX / scale, e.offsetY / scale);
+			ctx.stroke();
 		};
 
 		canvas.addEventListener("mousedown", mousedown);
 		window.addEventListener("mouseup", mouseup);
 		canvas.addEventListener("mousemove", mousemove);
 
-		canvas.addEventListener("touchstart", mousedown);
-		window.addEventListener("touchend", mouseup);
-		canvas.addEventListener("touchmove", mousemove);
-
 		return () => {
 			canvas.removeEventListener("mousedown", mousedown);
-			canvas.removeEventListener("mouseup", mouseup);
+			window.removeEventListener("mouseup", mouseup);
 			canvas.removeEventListener("mousemove", mousemove);
-
-			canvas.removeEventListener("touchstart", mousedown);
-			canvas.removeEventListener("touchend", mouseup);
-			canvas.removeEventListener("touchmove", mousemove);
 		};
-	}, [
-		baseDimension,
-		canvas,
-		ctx,
-		hiddenCanvas,
-		hiddenContext,
-		img,
-		isPainting,
-		source,
-		renderImage,
-	]);
+	}, [canvas, ctx, isPainting, scale]);
 
-	return hiddenContext;
+	return ctx;
 }

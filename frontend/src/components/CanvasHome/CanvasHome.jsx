@@ -60,8 +60,8 @@ export default function CanvasHome() {
 					/>
 				)}
 			</div>
-			<div className="w-full h-[50vh] flex">
-				<div className="w-full">
+			<div>
+				<div className="w-screen">
 					<canvas
 						className="bg-[#66CCCC]"
 						ref={canvasRef}
