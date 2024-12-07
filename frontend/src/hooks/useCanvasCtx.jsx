@@ -7,9 +7,9 @@ export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
 	const [ctx, setCtx] = useState();
+	const [scale, setScale] = useState(1);
 
 	const dpi = window.devicePixelRatio;
-	const [scale, setScale] = useState(1);
 
 	const setSize = useCallback(() => {
 		if (!canvas) return;
@@ -19,13 +19,13 @@ export default function useCanvasCtx(ref) {
 	}, [canvas]);
 
 	useEffect(() => {
-		setSize();
-	}, [setSize]);
-
-	useEffect(() => {
 		setCanvas(ref.current);
 		setCtx(ref.current?.getContext("2d"));
 	}, [ref]);
+
+	useEffect(() => {
+		setSize();
+	}, [setSize]);
 
 	useEffect(() => {
 		window.onresize = setSize;
@@ -37,7 +37,9 @@ export default function useCanvasCtx(ref) {
 		canvas.width = CANVAS_WIDTH * dpi;
 
 		canvas.style.imageRendering = "pixelated";
-		// ctx.imageSmoothingEnabled = false;
+
+		ctx.imageSmoothingEnabled = false;
+		ctx.lineCap = "round";
 
 		ctx.save();
 		ctx.scale(dpi, dpi);

@@ -61,7 +61,7 @@ export default function CanvasHome() {
 				)}
 			</div>
 			<div>
-				<div className="w-screen">
+				<div className="w-[75vw]">
 					<canvas
 						className="bg-[#66CCCC]"
 						ref={canvasRef}
