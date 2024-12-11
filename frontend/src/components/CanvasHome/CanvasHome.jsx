@@ -34,7 +34,7 @@ export default function CanvasHome() {
 	return (
 		<>
 			<div id="Buttons">
-				<Toolbar />
+				<Toolbar ctx={ctx} />
 				<button className="classic" onClick={clearCanvas}>
 					<BsBan />
 					Clear

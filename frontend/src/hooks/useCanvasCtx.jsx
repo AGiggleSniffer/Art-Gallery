@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-const CANVAS_WIDTH = 800;
-const CANVAS_HEIGHT = 600;
+const CANVAS_WIDTH = 32;
+const CANVAS_HEIGHT = 32;
 
 export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);

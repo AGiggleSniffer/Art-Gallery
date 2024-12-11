@@ -3,13 +3,12 @@ import { useSelector } from "react-redux";
 import { BsHouse, BsEasel, BsPalette } from "react-icons/bs";
 import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
-import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector(user);
 
 	return (
-		<nav id="Navigation">
+		<nav>
 			<span>
 				<NavLink to="/">
 					<BsHouse />
@@ -26,7 +25,7 @@ function Navigation({ isLoaded }) {
 					Galleries
 				</NavLink>
 			</span>
-			<span id="Profile">
+			<span>
 				{isLoaded && <ProfileButton user={sessionUser} />}
 			</span>
 		</nav>

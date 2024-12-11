@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import "./Toolbar.css";
 
-export default function Toolbar() {
+export default function Toolbar({ ctx }) {
 	const [color, setColor] = useState("#000000");
 	const [line, setLine] = useState(5);
-
-	const ctx = useSelector((state) => state.session.ctx);
 
 	useEffect(() => {
 		if (!ctx) return;
@@ -16,7 +12,7 @@ export default function Toolbar() {
 
 	return (
 		<span id="Toolbar">
-			<div style={{ color: `${color}` }}>
+			<div>
 				<label>
 					<input
 						type="color"

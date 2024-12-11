@@ -21,14 +21,8 @@ import DataUrlConverter from "./components/DataUrlConverter";
 
 function Layout() {
 	const dispatch = useDispatch();
-	const location = useLocation();
-	const { id } = useParams();
 
 	const [isLoaded, setIsLoaded] = useState(false);
-	const [name, setName] = useState("");
-
-	const myArt = useSelector(artActions.findArt(id));
-	const myGallery = useSelector(galleryActions.findGallery(id));
 
 	useEffect(() => {
 		dispatch(sessionActions.restoreUser()).then(() => {
@@ -36,28 +30,9 @@ function Layout() {
 		});
 	}, [dispatch]);
 
-	useEffect(() => {
-		const pathArr = location.pathname.split("/");
-		if (location.pathname === "/") return setName("HOME");
-		if (pathArr[1] === "arts") {
-			if (pathArr[2]) {
-				return setName(myArt?.name);
-			}
-			return setName("ARTS");
-		}
-		if (pathArr[1] === "galleries") {
-			if (pathArr[2]) {
-				return setName(myGallery?.name);
-			}
-			return setName("GALLERIES");
-		}
-	}, [location, myArt, myGallery]);
-
 	return (
 		<div id="Layout">
 			<Navigation isLoaded={isLoaded} />
-
-			<h1 id="Title">CANVAS COLLECTIVE | {name}</h1>
 			{isLoaded && <Outlet />}
 		</div>
 	);
