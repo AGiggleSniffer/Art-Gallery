@@ -15,7 +15,6 @@ import OpenModalButton, {
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
-import "./CanvasView.css";
 import Toolbar from "../Toolbar";
 
 export default function CanvasView() {

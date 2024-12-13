@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as galleryActions from "../../store/gallery";
-import "./Gallery.css";
 
 export default function GalleryHome() {
 	const navigate = useNavigate();

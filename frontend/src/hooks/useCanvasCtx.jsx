@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-const CANVAS_WIDTH = 32;
-const CANVAS_HEIGHT = 32;
+const CANVAS_WIDTH = 100;
+const CANVAS_HEIGHT = 100;
 
 export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);
@@ -25,9 +25,6 @@ export default function useCanvasCtx(ref) {
 
 	useEffect(() => {
 		setSize();
-	}, [setSize]);
-
-	useEffect(() => {
 		window.onresize = setSize;
 	}, [setSize]);
 
@@ -68,13 +65,9 @@ export default function useCanvasCtx(ref) {
 
 		const mousemove = (e) => {
 			if (isPainting === true) {
-				draw(e);
+				ctx.lineTo(e.offsetX / scale, e.offsetY / scale);
+				ctx.stroke();
 			}
-		};
-
-		const draw = (e) => {
-			ctx.lineTo(e.offsetX / scale, e.offsetY / scale);
-			ctx.stroke();
 		};
 
 		canvas.addEventListener("mousedown", mousedown);

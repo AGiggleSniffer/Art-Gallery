@@ -5,7 +5,6 @@ import * as artActions from "../../../store/art";
 import * as galleryActions from "../../../store/gallery";
 import ArtSelection from "./ArtSelection";
 import GallerySelection from "./GallerySelection";
-import "./LoadArt.css";
 
 export default function LoadArtModal({ navigate }) {
 	const dispatch = useDispatch();

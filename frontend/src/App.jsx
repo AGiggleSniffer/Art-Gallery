@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
 	createBrowserRouter,
 	RouterProvider,
 	Outlet,
 	Navigate,
-	useLocation,
-	useParams,
 } from "react-router-dom";
 import * as sessionActions from "./store/session";
-import * as artActions from "./store/art";
-import * as galleryActions from "./store/gallery";
 import Navigation from "./components/Navigation";
 import CanvasHome from "./components/CanvasHome";
 import GalleryHome from "./components/GalleryHome";
@@ -31,10 +27,10 @@ function Layout() {
 	}, [dispatch]);
 
 	return (
-		<div id="Layout">
+		<main className="h-full">
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && <Outlet />}
-		</div>
+		</main>
 	);
 }
 

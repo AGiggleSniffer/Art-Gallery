@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
+import { BsArrowRight } from "react-icons/bs";
 import * as sessionActions from "../../store/session";
 import OpenModalButton, {
 	LoadArtModal,
 	LoginFormModal,
 	SignupFormModal,
 } from "../OpenModalButton";
+
 
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function ProfileButton({ user }) {
 	const ulRef = useRef();
 
 	const toggleMenu = (e) => {
-		e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+		e.stopPropagation();
 		setShowMenu(!showMenu);
 	};
 
@@ -47,17 +48,22 @@ function ProfileButton({ user }) {
 
 	return (
 		<>
-			<section className={ulClassName} ref={ulRef}>
+			<section className={ulClassName + " "} ref={ulRef}>
 				{user ? (
 					<>
 						<div>{user.email}</div>
 
 						<OpenModalButton
 							buttonText="Load Saves"
-							modalComponent={<LoadArtModal navigate={navigate} />}
+							modalComponent={
+								<LoadArtModal navigate={navigate} />
+							}
 						/>
 
-						<OpenModalButton buttonText="Log Out" onButtonClick={logout} />
+						<OpenModalButton
+							buttonText="Log Out"
+							onButtonClick={logout}
+						/>
 					</>
 				) : (
 					<>
@@ -75,9 +81,12 @@ function ProfileButton({ user }) {
 					</>
 				)}
 			</section>
-			<button className={profileClass} onClick={toggleMenu}>
-				{user ? `Hi, ${user.username}` : "Profile Login"}
-				<FaUserCircle style={{marginLeft: "10px"}} />
+			<button
+				className={profileClass + " flex items-center justify-center w-full"}
+				onClick={toggleMenu}
+			>
+				{user ? `Hi, ${user.username}` : "Login"}
+				<BsArrowRight className="mx-2" />
 			</button>
 		</>
 	);

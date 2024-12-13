@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	html {
+		@apply h-full;
+		@apply bg-neutral-800;
+		@apply font-serif;
+		@apply text-white;
+	}
+	body {
+		@apply h-full;
+	}
+}
+
+#root {
+	height: calc(100% - 2.5rem);
+}

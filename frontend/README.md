@@ -25,3 +25,11 @@ Uses a proxy from [vite.config.js](./vite.config.js) file to connect directly to
 -   esLint
 -   Vite
 -   Tailwind
+
+<details>
+
+<summary>Initial Wireframe</summary>
+
+![](./wireframe.png)
+
+</details>

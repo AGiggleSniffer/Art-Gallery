@@ -1,73 +1,30 @@
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { VscSaveAs } from "react-icons/vsc";
-import { BsBan } from "react-icons/bs";
+import { useRef } from "react";
+import { useSelector } from "react-redux";
 
 import * as sessionActions from "../../store/session";
 
-import OpenModalButton, {
-	SaveArtModal,
-	SignupFormModal,
-} from "../OpenModalButton";
-
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
-// import "./Canvas.css";
 import Toolbar from "../Toolbar";
 
 export default function CanvasHome() {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const user = useSelector(sessionActions.user);
 	const canvasRef = useRef(null);
 	const ctx = useCanvasCtx(canvasRef);
-	const clearCanvas = () => {
-		const { width, height } = canvasRef.current;
-		ctx.clearRect(0, 0, width, height);
-	};
-
-	useEffect(() => {
-		dispatch(sessionActions.updateCtx(ctx));
-	}, [dispatch, ctx]);
 
 	return (
-		<>
-			<div id="Buttons">
-				<Toolbar ctx={ctx} />
-				<button className="classic" onClick={clearCanvas}>
-					<BsBan />
-					Clear
-				</button>
-				{user ? (
-					<OpenModalButton
-						buttonText="Save As..."
-						icon={<VscSaveAs />}
-						modalComponent={
-							<SaveArtModal
-								canvasRef={canvasRef}
-								navigate={navigate}
-							/>
-						}
-					/>
-				) : (
-					<OpenModalButton
-						buttonText="Save As..."
-						icon={<VscSaveAs />}
-						modalComponent={
-							<SignupFormModal extraMessage="Sign in or Sign up to Save As" />
-						}
-					/>
-				)}
-			</div>
-			<div>
-				<div className="w-[75vw]">
-					<canvas
-						className="bg-[#66CCCC]"
-						ref={canvasRef}
-					/>
+		<div className="flex h-full overflow-hidden border-t border-black">
+			<Toolbar ctx={ctx} user={user} className="bg-neutral-700 select-none" />
+			<div className="w-full flex justify-center items-center">
+				<div className="w-[95%] max-w-[75vh]">
+					<canvas className="bg-white" ref={canvasRef} />
 				</div>
 			</div>
-		</>
+			{/* <div className="flex flex-col p-5 bg-neutral-700">
+				<input className="m-5"></input>
+				<input className="m-5"></input>
+				<input className="m-5"></input>
+			</div> */}
+		</div>
 	);
 }

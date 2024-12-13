@@ -1,31 +1,22 @@
-import { NavLink } from "react-router-dom";
+
 import { useSelector } from "react-redux";
-import { BsHouse, BsEasel, BsPalette } from "react-icons/bs";
 import { user } from "../../store/session";
 import ProfileButton from "./ProfileButton";
+import Menu from "./Menu";
 
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector(user);
 
 	return (
-		<nav>
-			<span>
-				<NavLink to="/">
-					<BsHouse />
-					Home
-				</NavLink>
-
-				<NavLink to="/arts">
-					<BsPalette />
-					All Art
-				</NavLink>
-
-				<NavLink to="/galleries">
-					<BsEasel />
-					Galleries
-				</NavLink>
+		<nav className="relative flex justify-between items-center w-screen bg-neutral-700 h-10 select-none">
+			<span className="w-28 flex justify-start cursor-pointer">
+				<Menu className="flex justify-center items-center h-10 w-10" />
 			</span>
-			<span>
+			<span className="flex justify-center items-center pr-2">
+				<img src="./Icon.png" className="size-8 mr-2" />
+				<div className="font-bold">CANVAS COLLECTIVE</div>
+			</span>
+			<span className="bg-gradient-to-r from-violet-500 to-fuchsia-500 w-28 h-full flex justify-center">
 				{isLoaded && <ProfileButton user={sessionUser} />}
 			</span>
 		</nav>

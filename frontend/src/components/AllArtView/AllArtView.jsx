@@ -14,11 +14,11 @@ export default function AllArtView() {
 
 	return (
 		<>
-			<div id="Selection">
+			<div className="grid grid-cols-5 p-14">
 				{allArts.map(({ id, data_url, name }) => {
 					return (
 						<div key={id}>
-							<figure>
+							<figure className="size-48 border">
 								<img src={data_url} onClick={() => navigate(`/arts/${id}`)} />
 								<h3>{name}</h3>
 							</figure>

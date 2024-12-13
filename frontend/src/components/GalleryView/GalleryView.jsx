@@ -14,8 +14,6 @@ import OpenModalButton, {
 	DeleteArtGalModal,
 } from "../OpenModalButton";
 
-import "./Gallery.css";
-
 export default function GalleryView() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

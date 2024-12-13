@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
-import "./ModalForm.css";
 import ErrorDisplay from "./ErrorDisplay";
 
 function SignupFormModal({ extraMessage }) {

@@ -16,7 +16,7 @@ function OpenModalButton({
 	};
 
 	return (
-		<button className="classic" onClick={onClick}>
+		<button className="flex items-center" onClick={onClick}>
 			{icon}
 			{buttonText}
 		</button>

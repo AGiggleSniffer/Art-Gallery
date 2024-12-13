@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import * as artActions from "../../store/art";
 import ErrorDisplay from "./ErrorDisplay";
 
-export default function SaveArtModal({ canvasRef, id, navigate }) {
+export default function SaveArtModal({ ctx, id, navigate }) {
 	const myArt = useSelector(artActions.findArt(id));
 	const formattedTagArr = myArt?.ArtTags?.map(({ type }) => type).join(" ");
 	const [description, setDescription] = useState(myArt?.description || "");
@@ -15,7 +15,7 @@ export default function SaveArtModal({ canvasRef, id, navigate }) {
 	const dispatch = useDispatch();
 	const { closeModal } = useModal();
 	const saveCanvas = async () => {
-		const dataURL = await canvasRef.current.toDataURL();
+		const dataURL = await ctx.canvas.toDataURL();
 
 		const formattedTags = tags.replaceAll("#", "").split(" ");
 
