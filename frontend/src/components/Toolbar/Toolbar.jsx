@@ -30,12 +30,12 @@ export default function Toolbar({ ctx, ...props }) {
 				Tools
 			</div>
 			<div className="m-4 mt-0">
-				<label className="mt-0 flex flex-col items-center">
+				<label className="mt-0 flex flex-col items-center text-nowrap">
 					Line Width: {line}
 					<input
 						className="cursor-pointer w-full"
 						type="range"
-						min="0"
+						min="1"
 						max="9"
 						defaultValue="1"
 						onChange={(e) => {
@@ -45,33 +45,33 @@ export default function Toolbar({ ctx, ...props }) {
 				</label>
 			</div>
 			<div className="grid grid-cols-2 justify-items-center cursor-pointer">
-				<BsPencilFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
-				<BsPlus className="hover:bg-neutral-500 rounded-md w-full h-full" />
 				<BsBrushFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
-				<BsEraserFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
+				<BsPlus className="hover:bg-neutral-500 rounded-md w-full h-full" />
+				<BsPencilFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
 				<BsBucketFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
 				<GiSpray className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
-			</div>
-			<div className="m-4">
-				<label className="flex items-center justify-center">
-					<input
-						className="mr-2 cursor-pointer"
-						type="color"
-						onChange={(e) => {
-							setColor(e.target.value);
-						}}
-					/>
-					Color
-				</label>
-			</div>
-			<div className="m-4">
-				<button
-					onClick={clearCanvas}
-					className="flex items-center justify-center w-full"
-				>
-					<BsBan className="mr-2" />
-					Clear
-				</button>
+				<BsEraserFill className="hover:bg-neutral-500 rounded-md w-full h-full p-4" />
+				<div className="p-4 col-span-2 h-full w-full">
+					<label className="flex items-center justify-center">
+						<input
+							className="cursor-pointer rounded w-full h-10"
+							type="color"
+							onChange={(e) => {
+								setColor(e.target.value);
+							}}
+						/>
+						{/* Color */}
+					</label>
+				</div>
+				<div className="hover:bg-neutral-500 p-4 col-span-2 h-full w-full rounded-md text-lg font-bold">
+					<button
+						onClick={clearCanvas}
+						className="flex items-center justify-center w-full"
+					>
+						<BsBan className="mr-2 text-2xl" />
+						Clear
+					</button>
+				</div>
 			</div>
 			{/* <div className="m-4">
 				{user ? (

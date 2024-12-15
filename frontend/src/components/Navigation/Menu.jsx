@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { IoClose, IoMenu } from "react-icons/io5";
 import {
 	BsArrowsFullscreen,
 	BsBrushFill,
@@ -11,6 +10,8 @@ import {
 	BsPersonAdd,
 	BsStarFill,
 } from "react-icons/bs";
+import AnimatedHamburger from "./AnimatedHamburger";
+import { motion } from "motion/react";
 
 const Menu = ({ ...props }) => {
 	const [isHidden, setHidden] = useState(true);
@@ -34,23 +35,22 @@ const Menu = ({ ...props }) => {
 
 	return (
 		<div {...props}>
-			{isHidden ? (
-				<IoMenu
-					onClick={changeHidden}
-					className="w-full h-full hover:bg-neutral-600"
-				/>
-			) : (
+			<AnimatedHamburger
+				active={isHidden}
+				onClick={changeHidden}
+				className="w-full h-full"
+			/>
+			{!isHidden && (
 				<>
-					<IoClose
-						onClick={changeHidden}
-						className="w-full h-full bg-neutral-600"
-					/>
-
-					<div className="flex flex-col absolute bg-neutral-600 w-52 top-10 left-0 rounded-tr-md overflow-hidden">
+					<motion.div
+						initial={{ opacity: 0, scale: 0 }}
+						animate={{ opacity: 1, scale: 1 }}
+						className="flex flex-col absolute bg-neutral-600 w-64 top-10 left-0 rounded-tr-md overflow-hidden"
+					>
 						<NavLink
 							to="/"
 							style={styleActive}
-							className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-t
+							className="flex items-center py-2 px-4 hover:bg-neutral-500 border-t
                           border-t-neutral-600"
 						>
 							<BsBrushFill className="mr-2" />
@@ -102,7 +102,7 @@ const Menu = ({ ...props }) => {
 							<BsStarFill className="mr-2" />
 							Save Drawing
 						</div>
-					</div>
+					</motion.div>
 				</>
 			)}
 		</div>

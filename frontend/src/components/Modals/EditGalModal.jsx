@@ -2,16 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BsPlusCircle } from "react-icons/bs";
 
-import { useModal } from "../../context/Modal";
-
 import * as artActions from "../../store/art";
 import * as galleryActions from "../../store/gallery";
 
 export default function EditGalModal({ id }) {
 	const dispatch = useDispatch();
 	const artArray = useSelector(artActions.ownedArt);
-
-	const { closeModal } = useModal();
 
 	const [checked, setChecked] = useState([]);
 
@@ -28,7 +24,6 @@ export default function EditGalModal({ id }) {
 			.filter((ele) => ele);
 
 		resetChecked();
-		closeModal();
 
 		try {
 			dispatch(galleryActions.addArtGalleries({ id, artIdArray: selectedArt }));
@@ -48,7 +43,7 @@ export default function EditGalModal({ id }) {
 	return (
 		<div id="LoadArt">
 			<h2>Select Art to ADD to Gallery</h2>
-			<button className="classic exit" onClick={closeModal}>
+			<button className="classic exit">
 				X
 			</button>
 			<section id="Selection__buttons">

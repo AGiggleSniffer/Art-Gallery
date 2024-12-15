@@ -6,13 +6,13 @@ import { BsTrash, BsBan, BsPlusCircle, BsCheck2Circle } from "react-icons/bs";
 
 import * as galleryActions from "../../store/gallery";
 import * as sessionActions from "../../store/session";
-
-import OpenModalButton, {
+import OpenModalButton from "../OpenModalButton";
+import {
 	DeleteGalModal,
 	EditGalModal,
 	GalleryFormModal,
 	DeleteArtGalModal,
-} from "../OpenModalButton";
+} from "../Modals";
 
 export default function GalleryView() {
 	const dispatch = useDispatch();

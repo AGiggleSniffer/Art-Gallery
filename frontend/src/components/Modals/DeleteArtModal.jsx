@@ -1,10 +1,8 @@
 import { useDispatch } from "react-redux";
 import * as artActions from "../../store/art";
-import { useModal } from "../../context/Modal";
 
 export default function DeleteArtModal({ navigate, id }) {
 	const dispatch = useDispatch();
-	const { closeModal } = useModal();
 
 	const deleteArt = async () => {
 		try {
@@ -19,8 +17,6 @@ export default function DeleteArtModal({ navigate, id }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		closeModal();
-
 		deleteArt();
 
 		navigate("/");
@@ -31,7 +27,7 @@ export default function DeleteArtModal({ navigate, id }) {
 			<h2>Are you sure you want to delete this art?</h2>
 			<p>Warning! This CAN NOT be undone.</p>
 			<span>
-				<button className="classic" onClick={() => closeModal()}>
+				<button className="classic">
 					Cancel
 				</button>
 				<button className="classic" type="submit">

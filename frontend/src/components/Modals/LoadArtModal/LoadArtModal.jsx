@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useModal } from "../../../context/Modal";
 import * as artActions from "../../../store/art";
 import * as galleryActions from "../../../store/gallery";
 import ArtSelection from "./ArtSelection";
@@ -10,7 +9,6 @@ export default function LoadArtModal({ navigate }) {
 	const dispatch = useDispatch();
 	const artArray = useSelector(artActions.ownedArt);
 	const galleryArr = useSelector(galleryActions.ownedGalleries);
-	const { closeModal } = useModal();
 
 	const [visible, setVisible] = useState(true);
 
@@ -22,7 +20,7 @@ export default function LoadArtModal({ navigate }) {
 	return (
 		<>
 			<div id="LoadArt">
-				<button className="classic exit" onClick={closeModal}>
+				<button className="classic exit">
 					X
 				</button>
 				<h2>
@@ -42,13 +40,13 @@ export default function LoadArtModal({ navigate }) {
 				{visible ? (
 					<ArtSelection
 						navigate={navigate}
-						closeModal={closeModal}
+
 						artArray={artArray}
 					/>
 				) : (
 					<GallerySelection
 						navigate={navigate}
-						closeModal={closeModal}
+
 						galleryArr={galleryArr}
 					/>
 				)}

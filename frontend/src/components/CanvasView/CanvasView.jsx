@@ -7,11 +7,12 @@ import { BsTrash, BsBan } from "react-icons/bs";
 import * as artActions from "../../store/art";
 import * as sessionActions from "../../store/session";
 
-import OpenModalButton, {
+import OpenModalButton from "../OpenModalButton";
+import {
 	SignupFormModal,
 	SaveArtModal,
 	DeleteArtModal,
-} from "../OpenModalButton";
+} from "../Modals";
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 

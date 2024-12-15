@@ -9,10 +9,10 @@ function Navigation({ isLoaded }) {
 
 	return (
 		<nav className="relative flex justify-between items-center w-screen bg-neutral-700 h-10 select-none">
-			<span className="w-28 flex justify-start cursor-pointer">
-				<Menu className="flex justify-center items-center h-10 w-10" />
+			<span className="w-fit flex justify-start cursor-pointer hover:bg-neutral-600">
+				<Menu className="flex justify-center items-center h-10" />
 			</span>
-			<span className="flex justify-center items-center pr-2">
+			<span className="flex justify-center items-center">
 				<img src="./Icon.png" className="size-8 mr-2" />
 				<div className="font-bold">CANVAS COLLECTIVE</div>
 			</span>

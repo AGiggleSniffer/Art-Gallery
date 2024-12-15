@@ -6,7 +6,7 @@ import Noise from "./components/Noise";
 import "./index.css";
 import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
-import { ModalProvider, Modal } from "./context/Modal";
+import { ModalProvider } from "./context/ModalProvider";
 
 const store = configureStore();
 
@@ -22,7 +22,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		<ModalProvider>
 			<Provider store={store}>
 				<App />
-				<Modal />
 				<Noise />
 			</Provider>
 		</ModalProvider>

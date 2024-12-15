@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { BsPlusCircle, BsBan } from "react-icons/bs";
 import { VscSave } from "react-icons/vsc";
-import OpenModalButton from "../OpenModalButton";
+import OpenModalButton from "../../OpenModalButton";
 import GalleryFormModal from "../GalleryFormModal";
 
 export default function ArtSelection({ navigate, closeModal, artArray }) {
 	const [visible, setVisible] = useState(false);
 	const [checked, setChecked] = useState([]);
 
-	const resetChecked = () => setChecked(new Array(artArray.length).fill(false));
+	const resetChecked = () =>
+		setChecked(new Array(artArray.length).fill(false));
 
 	const toggleVisible = () => {
 		setVisible(!visible);
@@ -16,7 +17,9 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 	};
 
 	const handleCheck = (i) => () => {
-		const updatedState = checked.map((item, idx) => (idx === i ? !item : item));
+		const updatedState = checked.map((item, idx) =>
+			idx === i ? !item : item,
+		);
 		setChecked(updatedState);
 	};
 
@@ -43,7 +46,9 @@ export default function ArtSelection({ navigate, closeModal, artArray }) {
 						<OpenModalButton
 							buttonText="Save"
 							icon={<VscSave />}
-							modalComponent={<GalleryFormModal handleSubmit={handleSubmit} />}
+							modalComponent={
+								<GalleryFormModal handleSubmit={handleSubmit} />
+							}
 						/>
 					)}
 					{!visible ? (

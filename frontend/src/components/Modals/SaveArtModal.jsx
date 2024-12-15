@@ -1,41 +1,39 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useModal } from "../../context/Modal";
-
-import * as galleryActions from "../../store/gallery";
-
+import * as artActions from "../../store/art";
 import ErrorDisplay from "./ErrorDisplay";
 
-export default function GalleryFormModal({ id, handleSubmit }) {
-	const myGal = useSelector(galleryActions.findGallery(id));
-	const formattedTagArr = myGal?.GalleryTags?.map(({ type }) => type).join(" ");
-	const [description, setDescription] = useState(myGal?.description || "");
-	const [name, setName] = useState(myGal?.name || "");
+export default function SaveArtModal({ ctx, id, navigate }) {
+	const myArt = useSelector(artActions.findArt(id));
+	const formattedTagArr = myArt?.ArtTags?.map(({ type }) => type).join(" ");
+	const [description, setDescription] = useState(myArt?.description || "");
+	const [name, setName] = useState(myArt?.name || "");
 	const [tags, setTags] = useState(formattedTagArr || "");
 	const [errors, setErrors] = useState({});
 
 	const dispatch = useDispatch();
-	const { closeModal } = useModal();
-	const saveGallery = async () => {
+	const saveCanvas = async () => {
+		const dataURL = await ctx.canvas.toDataURL();
+
 		const formattedTags = tags.replaceAll("#", "").split(" ");
 
-		try {
-			const payload = {
-				artIdArray: handleSubmit ? handleSubmit() : undefined,
-				description,
-				name,
-				id,
-				tags: formattedTags,
-			};
+		const payload = {
+			name,
+			description,
+			dataURL,
+			id,
+			tags: formattedTags,
+		};
 
+		try {
 			if (id) {
-				await dispatch(galleryActions.editGallery(payload));
+				await dispatch(artActions.editThunk(payload));
+				navigate(`/arts/${id}`);
 			} else {
-				await dispatch(galleryActions.postGallery(payload));
+				const { id: newId } = await dispatch(artActions.saveThunk(payload));
+				navigate(`/arts/${newId}`);
 			}
 
-			closeModal();
 		} catch (err) {
 			const data = await err.json();
 			if (data?.errors) {
@@ -44,23 +42,23 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 		}
 	};
 
-	const handleSave = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		saveGallery();
+		saveCanvas();
 	};
 
 	return (
-		<form onSubmit={handleSave}>
-			<h1>Save Gallery</h1>
+		<form onSubmit={handleSubmit}>
+			<h1>Save Art</h1>
 			<div>
 				<label style={{ top: name ? 0 : "" }} htmlFor="name">
-					Name Your Gallery:
+					Name Your Art:
 				</label>
 				<input
 					id="name"
 					type="text"
 					onChange={(e) => setName(e.target.value)}
-					defaultValue={myGal?.name}
+					defaultValue={myArt?.name}
 					required
 				/>
 			</div>
@@ -73,7 +71,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 					id="description"
 					type="text"
 					onChange={(e) => setDescription(e.target.value)}
-					defaultValue={myGal?.description}
+					defaultValue={myArt?.description}
 				/>
 			</div>
 			{errors.description && <ErrorDisplay msg={errors.description} />}
@@ -86,7 +84,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 				</label>
 				<textarea
 					id="tags"
-					placeholder="Add Tags to help people find your Gallery:"
+					placeholder="Add Tags to help people find your art:"
 					onChange={(e) => setTags(e.target.value)}
 					defaultValue={formattedTagArr}
 				/>
@@ -95,7 +93,7 @@ export default function GalleryFormModal({ id, handleSubmit }) {
 			<p>{'(tags will be seperated by spaces. "#\'s" will be ignored)'}</p>
 			<span>
 				<button className="classic" type="submit">
-					Save As...
+					Save As
 				</button>
 			</span>
 		</form>

@@ -36,7 +36,7 @@ export default function useCanvasCtx(ref) {
 		canvas.style.imageRendering = "pixelated";
 
 		ctx.imageSmoothingEnabled = false;
-		ctx.lineCap = "round";
+		// ctx.lineCap = "square";
 
 		ctx.save();
 		ctx.scale(dpi, dpi);
