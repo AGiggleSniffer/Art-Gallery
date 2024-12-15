@@ -6,10 +6,10 @@ const AnimatedHamburger = ({ active, ...props }) => {
 			<MotionConfig initial={false} transition={{ duration: 0.3 }}>
 				<motion.button
 					animate={active ? "closed" : "open"}
-					className="relative h-full w-14 size-4 hover:!bg-neutral-600"
+					className="relative h-full w-16 size-4 hover:!bg-white/10 "
 					variants={{
 						open: { backgroundColor: "#525252" },
-						closed: { backgroundColor: "#404040" },
+						closed: { backgroundColor: "rgb(0 0 0 / 0)" },
 					}}
 				>
 					<motion.span

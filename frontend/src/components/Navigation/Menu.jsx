@@ -11,7 +11,30 @@ import {
 	BsStarFill,
 } from "react-icons/bs";
 import AnimatedHamburger from "./AnimatedHamburger";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+
+const container = {
+	hidden: {},
+	visible: {
+		transition: {
+			staggerChildren: 0.1,
+			delayChildren: 0.1,
+		},
+	},
+	exit: {
+		x: "-100%",
+	},
+};
+
+const slide = {
+	hidden: {
+		x: "-100%",
+	},
+	visible: {
+		x: 0,
+	},
+	exit: {},
+};
 
 const Menu = ({ ...props }) => {
 	const [isHidden, setHidden] = useState(true);
@@ -40,71 +63,94 @@ const Menu = ({ ...props }) => {
 				onClick={changeHidden}
 				className="w-full h-full"
 			/>
-			{!isHidden && (
-				<>
-					<motion.div
-						initial={{ opacity: 0, scale: 0 }}
-						animate={{ opacity: 1, scale: 1 }}
-						className="flex flex-col absolute bg-neutral-600 w-64 top-10 left-0 rounded-tr-md overflow-hidden"
-					>
-						<NavLink
-							to="/"
-							style={styleActive}
-							className="flex items-center py-2 px-4 hover:bg-neutral-500 border-t
-                          border-t-neutral-600"
+			<AnimatePresence>
+				{!isHidden && (
+					<>
+						<motion.div
+							variants={container}
+							initial="hidden"
+							animate="visible"
+							exit="exit"
+							className="flex flex-col absolute bg-neutral-600 w-64 top-10 left-0 rounded-tr-md overflow-hidden"
 						>
-							<BsBrushFill className="mr-2" />
-							Draw
-						</NavLink>
+							<motion.div variants={slide}>
+								<NavLink
+									to="/"
+									style={styleActive}
+									className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors"
+								>
+									<BsBrushFill className="mr-2" />
+									Draw
+								</NavLink>
+							</motion.div>
 
-						<NavLink
-							to="/arts"
-							style={styleActive}
-							className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2"
-						>
-							<BsPaletteFill className="mr-2" />
-							All Art
-						</NavLink>
+							<motion.div variants={slide}>
+								<NavLink
+									to="/arts"
+									style={styleActive}
+									className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors"
+								>
+									<BsPaletteFill className="mr-2" />
+									All Art
+								</NavLink>
+							</motion.div>
 
-						<NavLink
-							to="/galleries"
-							style={styleActive}
-							className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-b border-b-neutral-500"
-						>
-							<BsImageFill className="mr-2" />
-							Gallery
-						</NavLink>
+							<motion.div variants={slide}>
+								<NavLink
+									to="/galleries"
+									style={styleActive}
+									className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors border-b border-b-neutral-500"
+								>
+									<BsImageFill className="mr-2" />
+									Gallery
+								</NavLink>
+							</motion.div>
 
-						<div className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-t border-t-neutral-700">
-							<BsDownload className="mr-2" />
-							Download
-						</div>
+							<motion.div
+								variants={slide}
+								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-t border-t-neutral-700 transition-colors"
+							>
+								<BsDownload className="mr-2" />
+								Download
+							</motion.div>
 
-						<div className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-b border-b-neutral-500 ">
-							<BsArrowsFullscreen className="mr-2" />
-							Fullscreen
-						</div>
+							<motion.div
+								variants={slide}
+								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-b border-b-neutral-500 transition-colors"
+							>
+								<BsArrowsFullscreen className="mr-2" />
+								Fullscreen
+							</motion.div>
 
-						<NavLink
-							to="https://github.com/AGiggleSniffer"
-							className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700"
-						>
-							<BsInfoCircle className="mr-2" />
-							About
-						</NavLink>
+							<motion.div variants={slide}>
+								<NavLink
+									to="https://github.com/AGiggleSniffer"
+									className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
+								>
+									<BsInfoCircle className="mr-2" />
+									About
+								</NavLink>
+							</motion.div>
 
-						<div className="flex items-center py-2 px-4 hover:bg-neutral-500 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700">
-							<BsPersonAdd className="mr-2" />
-							Create Account
-						</div>
+							<motion.div
+								variants={slide}
+								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
+							>
+								<BsPersonAdd className="mr-2" />
+								Create Account
+							</motion.div>
 
-						<div className="flex items-center py-2 px-4 hover:border-l-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:opacity-80">
-							<BsStarFill className="mr-2" />
-							Save Drawing
-						</div>
-					</motion.div>
-				</>
-			)}
+							<motion.div
+								variants={slide}
+								className="flex items-center py-2 px-4 hover:border-l-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:opacity-80 transition-opacity"
+							>
+								<BsStarFill className="mr-2" />
+								Save Drawing
+							</motion.div>
+						</motion.div>
+					</>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };

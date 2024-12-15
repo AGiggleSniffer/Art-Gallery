@@ -25,13 +25,13 @@ const Modal = ({ children }) => {
 	const { close } = useModal();
 	return (
 		<>
-			<div className="fixed top-0 left-0 flex justify-center items-center w-svw h-svh">
+			<div className="fixed top-0 left-0 flex justify-center items-center w-svw h-svh z-50">
 				<motion.div
 					onClick={close}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 0.7 }}
 					exit={{ opacity: 0 }}
-					className="fixed top-0 left-0 h-svh w-svw bg-black"
+					className="fixed top-0 left-0 h-svh w-svw bg-black z-50"
 				/>
 				<motion.div
 					variants={dropIn}
@@ -39,7 +39,7 @@ const Modal = ({ children }) => {
 					animate="visible"
 					exit="exit"
 					onClick={(e) => e.stopPropagation()}
-					className="fixed"
+					className="fixed z-50"
 				>
 					{children}
 				</motion.div>

@@ -36,7 +36,7 @@ export default function useCanvasCtx(ref) {
 		canvas.style.imageRendering = "pixelated";
 
 		ctx.imageSmoothingEnabled = false;
-		// ctx.lineCap = "square";
+		ctx.lineCap = "round";
 
 		ctx.save();
 		ctx.scale(dpi, dpi);
@@ -64,8 +64,16 @@ export default function useCanvasCtx(ref) {
 		};
 
 		const mousemove = (e) => {
+			if (e.touches) {
+				const rect = e.target.getBoundingClientRect();
+				var offsetX = e.touches[0].pageX - rect.left;
+				var offsetY = e.touches[0].pageY - rect.top;
+			}
 			if (isPainting === true) {
-				ctx.lineTo(e.offsetX / scale, e.offsetY / scale);
+				ctx.lineTo(
+					(offsetX / scale) * 2 || e.offsetX / scale,
+					(offsetY / scale) * 2 || e.offsetY / scale,
+				);
 				ctx.stroke();
 			}
 		};
@@ -74,10 +82,18 @@ export default function useCanvasCtx(ref) {
 		window.addEventListener("mouseup", mouseup);
 		canvas.addEventListener("mousemove", mousemove);
 
+		canvas.addEventListener("touchstart", mousedown);
+		canvas.addEventListener("touchend", mouseup);
+		canvas.addEventListener("touchmove", mousemove);
+
 		return () => {
 			canvas.removeEventListener("mousedown", mousedown);
-			window.removeEventListener("mouseup", mouseup);
+			canvas.removeEventListener("mouseup", mouseup);
 			canvas.removeEventListener("mousemove", mousemove);
+
+			canvas.removeEventListener("touchstart", mousedown);
+			window.removeEventListener("touchend", mouseup);
+			canvas.removeEventListener("touchmove", mousemove);
 		};
 	}, [canvas, ctx, isPainting, scale]);
 

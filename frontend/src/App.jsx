@@ -27,7 +27,7 @@ function Layout() {
 	}, [dispatch]);
 
 	return (
-		<main className="h-full">
+		<main className="h-full -z-10">
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && <Outlet />}
 		</main>

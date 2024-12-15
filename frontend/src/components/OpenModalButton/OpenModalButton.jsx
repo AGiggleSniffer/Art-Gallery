@@ -7,6 +7,7 @@ function OpenModalButton({
 	buttonText, // text of the button that opens the modal
 	icon, // optional: icon to display next to text
 	onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
+	className,
 }) {
 	const { modalOpen, open } = useModal();
 
@@ -17,14 +18,11 @@ function OpenModalButton({
 
 	return (
 		<>
-			<button
-				className="flex items-center h-full w-full justify-center"
-				onClick={onClick}
-			>
+			<button className={className} onClick={onClick}>
 				{icon}
 				{buttonText}
 			</button>
-			<AnimatePresence>
+			<AnimatePresence className="z-50">
 				{modalOpen && <Modal>{modalComponent}</Modal>}
 			</AnimatePresence>
 		</>
