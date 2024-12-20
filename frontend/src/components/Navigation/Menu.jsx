@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
 	BsArrowsFullscreen,
+	BsBan,
 	BsBrushFill,
 	BsDownload,
 	BsImageFill,
@@ -14,11 +15,13 @@ import AnimatedHamburger from "./AnimatedHamburger";
 import { AnimatePresence, motion } from "motion/react";
 
 const container = {
-	hidden: {},
+	hidden: {
+		x: "-100%",
+	},
 	visible: {
+		x: 0,
 		transition: {
-			staggerChildren: 0.1,
-			delayChildren: 0.1,
+			staggerChildren: 0.05,
 		},
 	},
 	exit: {
@@ -36,11 +39,29 @@ const slide = {
 	exit: {},
 };
 
-const Menu = ({ ...props }) => {
+const Menu = ({ context, ...props }) => {
 	const [isHidden, setHidden] = useState(true);
 	const changeHidden = (e) => {
 		e.stopPropagation();
 		setHidden((state) => !state);
+	};
+
+	const download = async () => {
+		const data = await context.canvas.toDataURL();
+		const link = document.createElement("a");
+		link.href = data;
+		link.download = "picture.png";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
+	const toggleFullscreen = () => {
+		if (document.fullscreenElement) {
+			document.exitFullscreen();
+		} else {
+			document.documentElement.requestFullscreen();
+		}
 	};
 
 	const styleActive = ({ isActive }) =>
@@ -106,25 +127,18 @@ const Menu = ({ ...props }) => {
 								</NavLink>
 							</motion.div>
 
-							<motion.div
+							<motion.button
+								onClick={toggleFullscreen}
 								variants={slide}
-								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-t border-t-neutral-700 transition-colors"
-							>
-								<BsDownload className="mr-2" />
-								Download
-							</motion.div>
-
-							<motion.div
-								variants={slide}
-								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-b border-b-neutral-500 transition-colors"
+								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
 							>
 								<BsArrowsFullscreen className="mr-2" />
 								Fullscreen
-							</motion.div>
+							</motion.button>
 
 							<motion.div variants={slide}>
 								<NavLink
-									to="https://github.com/AGiggleSniffer"
+									to="https://github.com/AGiggleSniffer/Art-Gallery"
 									className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
 								>
 									<BsInfoCircle className="mr-2" />
@@ -132,21 +146,43 @@ const Menu = ({ ...props }) => {
 								</NavLink>
 							</motion.div>
 
-							<motion.div
+							<motion.button
 								variants={slide}
 								className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
 							>
 								<BsPersonAdd className="mr-2" />
 								Create Account
-							</motion.div>
+							</motion.button>
 
-							<motion.div
-								variants={slide}
-								className="flex items-center py-2 px-4 hover:border-l-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:opacity-80 transition-opacity"
-							>
-								<BsStarFill className="mr-2" />
-								Save Drawing
-							</motion.div>
+							{context && (
+								<>
+									<motion.button
+										onClick={context.clearCanvas}
+										variants={slide}
+										className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-t border-t-neutral-700 transition-colors"
+									>
+										<BsBan className="mr-2" />
+										Clear Drawing
+									</motion.button>
+
+									<motion.button
+										onClick={download}
+										variants={slide}
+										className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors"
+									>
+										<BsDownload className="mr-2" />
+										Download
+									</motion.button>
+
+									<motion.button
+										variants={slide}
+										className="flex items-center py-2 px-4 hover:border-l-2 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+									>
+										<BsStarFill className="mr-2" />
+										Save Drawing
+									</motion.button>
+								</>
+							)}
 						</motion.div>
 					</>
 				)}

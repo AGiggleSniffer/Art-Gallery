@@ -42,7 +42,7 @@ export const saveThunk =
 				name,
 				description,
 				dataURL,
-				tags
+				tags,
 			}),
 		});
 		const data = await response.json();
@@ -58,13 +58,18 @@ export const loadThunk = () => async (dispatch) => {
 	return data;
 };
 
-export const loadAllThunk = () => async (dispatch) => {
-	const response = await csrfFetch(`/api/art`);
+export const loadAllThunk =
+	({ filterState, page, size }) =>
+	async (dispatch) => {
+		console.log(filterState, page, size);
+		const response = await csrfFetch(
+			`/api/art?filterState=${filterState}&page=${page}&size=${size}`,
+		);
 
-	const data = await response.json();
-	dispatch(loadAll(data));
-	return data;
-};
+		const data = await response.json();
+		dispatch(loadAll(data));
+		return data;
+	};
 
 export const editThunk =
 	({ galleryId, name, description, dataURL, tags, id }) =>
@@ -113,11 +118,8 @@ const artReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD:
 			return { ...state, owned: action.payload };
-		case LOAD_ALL: {
-			const newObj = { ...state, all: {} };
-			action.payload.forEach((art) => (newObj.all[art.id] = art));
-			return newObj;
-		}
+		case LOAD_ALL:
+			return { ...state, all: action.payload };
 		case SAVE: {
 			const newAllArt = {
 				...state.all,

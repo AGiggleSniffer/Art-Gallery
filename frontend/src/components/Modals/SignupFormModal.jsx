@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import ErrorDisplay from "./ErrorDisplay";
-import OpenModalButton from "../OpenModalButton";
-// import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 function SignupFormModal({ extraMessage }) {
 	const dispatch = useDispatch();

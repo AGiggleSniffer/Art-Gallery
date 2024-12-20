@@ -1,7 +1,10 @@
 const router = require("express").Router();
+const { check } = require("express-validator");
 const { requireAuth } = require("../../utils/auth");
-const { Art, ArtTag, sequelize } = require("../../db/models");
-const { where } = require("sequelize");
+const { handleValidationErrors } = require("../../utils/validation");
+const { paginationBuilder } = require("../../utils/paginationBuilder");
+const { orderBuilder } = require("../../utils/orderBuilder");
+const { Art, ArtTag, Review, User, sequelize } = require("../../db/models");
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -18,21 +21,36 @@ const checkOwner = async (req, _res, next) => {
 	}
 };
 
-router.get("/", async (_req, res, next) => {
+const validateQueryFilters = [
+	check("page")
+		.default(1)
+		.isInt({ min: 1 })
+		.withMessage("Page must be greater than or equal to 1"),
+	check("size")
+		.default(20)
+		.isInt({ min: 1 })
+		.withMessage("Size must be greater than or equal to 1"),
+	handleValidationErrors,
+];
+
+router.get("/", validateQueryFilters, async (req, res, next) => {
+	const { page, size, filterState } = req.query;
+
+	const include = [User];
+
+	const group = ["Art.id"];
+
+	const pagination = paginationBuilder(page, size);
+
+	const order = orderBuilder(filterState);
+
 	try {
-		const artTags = await ArtTag.findAll({
-			attributes: [
-				"type",
-				[sequelize.fn("count", sequelize.col("ArtTag.type")), "typecount"],
-			],
-			group: "type",
-			order: [["typecount", "DESC"]],
-			limit: 5,
+		const myArt = await Art.scope("withCounts").findAll({
+			include,
+			group,
+			order,
+			...pagination,
 		});
-
-		const topFive = artTags.map(({ dataValues }) => dataValues.type);
-
-		const myArt = await Art.findAll();
 
 		return res.json(myArt);
 	} catch (err) {
@@ -80,7 +98,9 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 	try {
 		const result = await sequelize.transaction(async (t) => {
-			const { dataValues } = await Art.create(payload, { transaction: t });
+			const { dataValues } = await Art.create(payload, {
+				transaction: t,
+			});
 
 			const formattedTags = tags
 				.map((tag) =>

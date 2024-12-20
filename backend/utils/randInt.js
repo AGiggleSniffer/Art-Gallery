@@ -1,0 +1,1 @@
+exports.randInt = (max) => Math.floor(Math.random() * max) + 1;

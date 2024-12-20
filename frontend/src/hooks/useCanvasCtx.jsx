@@ -1,17 +1,48 @@
 import { useCallback, useEffect, useState } from "react";
+import { BRUSH, BUCKET, ERASER, PENCIL, PIXEL, SPRAY } from "./DrawingStyles";
 
 const CANVAS_WIDTH = 100;
 const CANVAS_HEIGHT = 100;
+
+const draw = (e, { x, y }, ctx, style, size, color) => {
+	ctx.strokeStyle = color;
+	ctx.fillStyle = color;
+	ctx.lineWidth = size;
+
+	switch (style) {
+		case BRUSH:
+			ctx.lineCap = "round";
+			ctx.lineTo(x, y);
+			ctx.stroke();
+			break;
+		case PENCIL:
+			ctx.lineCap = "square";
+			ctx.lineTo(x, y);
+			ctx.stroke();
+			break;
+		case PIXEL:
+			ctx.fillRect(Math.floor(x), Math.floor(y), size, size);
+			break;
+	}
+};
 
 export default function useCanvasCtx(ref) {
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
 	const [ctx, setCtx] = useState();
 	const [scale, setScale] = useState(1);
+	const [style, setStyle] = useState(BRUSH);
+	const [size, setSize] = useState(1);
+	const [color, setColor] = useState("#000000");
 
 	const dpi = window.devicePixelRatio;
 
-	const setSize = useCallback(() => {
+	const clearCanvas = useCallback(() => {
+		const { width, height } = canvas;
+		ctx.clearRect(0, 0, width, height);
+	}, [ctx, canvas]);
+
+	const setCanvasSize = useCallback(() => {
 		if (!canvas) return;
 		const scaleFactor =
 			canvas.parentNode.getBoundingClientRect().width / CANVAS_WIDTH;
@@ -24,9 +55,9 @@ export default function useCanvasCtx(ref) {
 	}, [ref]);
 
 	useEffect(() => {
-		setSize();
-		window.onresize = setSize;
-	}, [setSize]);
+		setCanvasSize();
+		window.onresize = setCanvasSize;
+	}, [setCanvasSize]);
 
 	useEffect(() => {
 		if (!canvas) return;
@@ -64,18 +95,20 @@ export default function useCanvasCtx(ref) {
 		};
 
 		const mousemove = (e) => {
+			if (!isPainting) return;
+
+			let x;
+			let y;
 			if (e.touches) {
 				const rect = e.target.getBoundingClientRect();
-				var offsetX = e.touches[0].pageX - rect.left;
-				var offsetY = e.touches[0].pageY - rect.top;
+				x = ((e.touches[0].pageX - rect.left) / scale) * 2;
+				y = ((e.touches[0].pageY - rect.top) / scale) * 2;
+			} else {
+				x = e.offsetX / scale;
+				y = e.offsetY / scale;
 			}
-			if (isPainting === true) {
-				ctx.lineTo(
-					(offsetX / scale) * 2 || e.offsetX / scale,
-					(offsetY / scale) * 2 || e.offsetY / scale,
-				);
-				ctx.stroke();
-			}
+
+			draw(e, { x, y }, ctx, style, size, color);
 		};
 
 		canvas.addEventListener("mousedown", mousedown);
@@ -95,7 +128,16 @@ export default function useCanvasCtx(ref) {
 			window.removeEventListener("touchend", mouseup);
 			canvas.removeEventListener("touchmove", mousemove);
 		};
-	}, [canvas, ctx, isPainting, scale]);
+	}, [canvas, color, ctx, isPainting, scale, size, style]);
 
-	return ctx;
+	return {
+		ctx,
+		clearCanvas,
+		style,
+		setStyle,
+		color,
+		setColor,
+		size,
+		setSize,
+	};
 }

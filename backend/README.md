@@ -24,8 +24,9 @@ Uses bcryptjs to follow industry standards of properly salting hashing and stori
 
 -   NodeJS
 -   ExpressJS
--   Sequelize
 -   Bcryptjs
+-   Sequelize
+-   Postgres
 
 ### Development
 

@@ -4,14 +4,32 @@
 
 @layer base {
 	html {
-		@apply h-full;
+		@apply scroll-smooth;
 		@apply bg-neutral-950;
-		@apply font-serif;
 		@apply text-white;
+		@apply font-serif;
+		@apply h-svh;
 	}
-	body {
-		@apply h-full;
-		@apply w-full;
+
+	*::-webkit-scrollbar {
+		@apply bg-neutral-900/30;
+		@apply w-3;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		@apply bg-neutral-600/80;
+		@apply hover:bg-neutral-500/80;
+		@apply transition-colors;
+		@apply cursor-grab;
+		@apply rounded-full;
+	}
+
+	*::-webkit-scrollbar-thumb:active {
+		@apply cursor-grabbing;
+	}
+
+	#nav-filter::-webkit-scrollbar {
+		@apply hidden;
 	}
 }
 
@@ -25,8 +43,4 @@ canvas {
 	background-image: url("./cream-paper.png");
 	background-repeat: repeat;
 	background-size: auto;
-}
-
-#root {
-	height: calc(100% - 2.5rem);
 }

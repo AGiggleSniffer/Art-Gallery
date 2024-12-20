@@ -27,7 +27,7 @@ function Layout() {
 	}, [dispatch]);
 
 	return (
-		<main className="h-full -z-10">
+		<main className="-z-10 flex flex-col min-h-svh max-h-svh ">
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && <Outlet />}
 		</main>

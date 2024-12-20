@@ -4,9 +4,9 @@ const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 const UPDATE_CTX = "session/update";
 
-export const updateCtx = (ctx) => ({
+export const updateCtx = (context) => ({
 	type: UPDATE_CTX,
-	ctx,
+	context,
 });
 
 const setUser = (user) => {
@@ -72,6 +72,8 @@ const initialState = { ctx: null, user: null };
 
 export const user = (state) => state.session.user;
 
+export const context = (state) => state.session.context;
+
 const sessionReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SET_USER:
@@ -79,7 +81,7 @@ const sessionReducer = (state = initialState, action) => {
 		case REMOVE_USER:
 			return { ...state, user: null };
 		case UPDATE_CTX:
-			return { ...state, ctx: action.ctx };
+			return { ...state, context: action.context };
 		default:
 			return state;
 	}

@@ -7,7 +7,7 @@ export const ModalProvider = ({ children }) => {
 
 	const close = () => setModalOpen(false);
 	const open = () => setModalOpen(true);
-	
+
 	const contextValue = {
 		modalOpen,
 		close,
@@ -21,4 +21,5 @@ export const ModalProvider = ({ children }) => {
 	);
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useModal = () => useContext(ModalContext);

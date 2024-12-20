@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
 				hooks: true,
 			});
+			User.hasMany(models.Review, {
+				foreignKey: "user_id",
+				onDelete: "CASCADE",
+				hooks: true,
+			});
 		}
 	}
 
@@ -36,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 			email: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true,
 				validate: {
 					len: [3, 256],
 					isEmail: true,
@@ -54,7 +60,12 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: "User",
 			defaultScope: {
 				attributes: {
-					exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+					exclude: [
+						"hashedPassword",
+						"email",
+						"createdAt",
+						"updatedAt",
+					],
 				},
 			},
 		},

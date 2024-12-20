@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
 				hooks: true,
 			});
+			Art.hasMany(models.Review, {
+				foreignKey: "art_id",
+				onDelete: "CASCADE",
+				hooks: true,
+			});
 			Art.belongsTo(models.User, { foreignKey: "user_id" });
 		}
 	}
@@ -34,9 +39,13 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notNull: { msg: "Name is required" },
 					notEmpty: { msg: "Name is required" },
-					len: {
-						args: [3, 50],
+					max: {
+						args: 50,
 						msg: "Name too long, must be between 3-50 chars",
+					},
+					min: {
+						args: 3,
+						msg: "Name too short, must be between 3-50 chars",
 					},
 				},
 			},
@@ -61,6 +70,30 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: "Art",
+			scopes: {
+				withCounts: {
+					attributes: {
+						include: [
+							[
+								sequelize.literal(`(
+									SELECT COUNT(*)
+									FROM Reviews
+									WHERE Reviews.art_id = Art.id AND Reviews.liked = true
+								)`),
+								"likeCount",
+							],
+							[
+								sequelize.literal(`(
+									SELECT COUNT(*)
+									FROM Reviews
+									WHERE Reviews.art_id = Art.id AND Reviews.disliked = true
+								)`),
+								"dislikeCount",
+							],
+						],
+					},
+				},
+			},
 		},
 	);
 	return Art;
