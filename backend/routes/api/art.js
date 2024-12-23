@@ -4,7 +4,7 @@ const { requireAuth } = require("../../utils/auth");
 const { handleValidationErrors } = require("../../utils/validation");
 const { paginationBuilder } = require("../../utils/paginationBuilder");
 const { orderBuilder } = require("../../utils/orderBuilder");
-const { Art, ArtTag, Review, User, sequelize } = require("../../db/models");
+const { Art, ArtTag, User, sequelize } = require("../../db/models");
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -45,14 +45,16 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	const order = orderBuilder(filterState);
 
 	try {
-		const myArt = await Art.scope("withCounts").findAll({
+		const Arts = await Art.scope("withCounts").findAll({
 			include,
 			group,
 			order,
 			...pagination,
 		});
 
-		return res.json(myArt);
+		const count = await Art.count();
+
+		return res.json({ Arts, count });
 	} catch (err) {
 		return next(err);
 	}

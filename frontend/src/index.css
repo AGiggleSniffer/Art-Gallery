@@ -11,6 +11,10 @@
 		@apply h-svh;
 	}
 
+	body {
+		@apply bg-[url("./dark-wall.png")]
+	}
+
 	*::-webkit-scrollbar {
 		@apply bg-neutral-900/30;
 		@apply w-3;
@@ -31,16 +35,4 @@
 	#nav-filter::-webkit-scrollbar {
 		@apply hidden;
 	}
-}
-
-body {
-	background-image: url("./dark-wall.png");
-	background-repeat: repeat;
-	background-size: auto;
-}
-
-canvas {
-	background-image: url("./cream-paper.png");
-	background-repeat: repeat;
-	background-size: auto;
 }

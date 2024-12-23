@@ -48,7 +48,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/arts/:id",
-				element: <CanvasView />,
+				element: <CanvasHome />,
 			},
 			{
 				path: "/galleries",

@@ -6,7 +6,7 @@ const UPDATE_CTX = "session/update";
 
 export const updateCtx = (context) => ({
 	type: UPDATE_CTX,
-	context,
+	payload: context,
 });
 
 const setUser = (user) => {
@@ -68,7 +68,7 @@ export const logout = () => async (dispatch) => {
 	return response;
 };
 
-const initialState = { ctx: null, user: null };
+const initialState = { context: null, user: null };
 
 export const user = (state) => state.session.user;
 
@@ -81,7 +81,7 @@ const sessionReducer = (state = initialState, action) => {
 		case REMOVE_USER:
 			return { ...state, user: null };
 		case UPDATE_CTX:
-			return { ...state, context: action.context };
+			return { ...state, context: action.payload };
 		default:
 			return state;
 	}

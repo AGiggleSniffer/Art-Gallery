@@ -9,7 +9,7 @@ const ArtCard = ({
 		<div key={id} className="h-fit w-full my-4 flex flex-col">
 			<figure className="flex justify-center items-center ">
 				<img
-					className="h-full bg-white rounded"
+					className="h-full bg-[url('./cream-paper.png')] bg-white rounded"
 					src={data_url}
 					onClick={() => navigate(`/arts/${id}`)}
 				/>

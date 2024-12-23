@@ -4,7 +4,7 @@ import { BRUSH, BUCKET, ERASER, PENCIL, PIXEL, SPRAY } from "./DrawingStyles";
 const CANVAS_WIDTH = 100;
 const CANVAS_HEIGHT = 100;
 
-const draw = (e, { x, y }, ctx, style, size, color) => {
+const draw = ({ x, y }, ctx, style, size, color) => {
 	ctx.strokeStyle = color;
 	ctx.fillStyle = color;
 	ctx.lineWidth = size;
@@ -83,11 +83,13 @@ export default function useCanvasCtx(ref) {
 	useEffect(() => {
 		if (!canvas) return;
 
-		const mousedown = () => {
+		const mousedown = (e) => {
+			e.stopPropagation();
 			setIsPainting(true);
 		};
 
-		const mouseup = () => {
+		const mouseup = (e) => {
+			e.stopPropagation();
 			setIsPainting(false);
 
 			ctx.stroke();
@@ -96,6 +98,7 @@ export default function useCanvasCtx(ref) {
 
 		const mousemove = (e) => {
 			if (!isPainting) return;
+			e.stopPropagation();
 
 			let x;
 			let y;
@@ -108,7 +111,7 @@ export default function useCanvasCtx(ref) {
 				y = e.offsetY / scale;
 			}
 
-			draw(e, { x, y }, ctx, style, size, color);
+			draw({ x, y }, ctx, style, size, color);
 		};
 
 		canvas.addEventListener("mousedown", mousedown);

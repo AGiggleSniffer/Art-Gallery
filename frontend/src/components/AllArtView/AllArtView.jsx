@@ -4,20 +4,25 @@ import * as artActions from "../../store/art";
 import * as sessionActions from "../../store/session";
 import FilterButton from "./FilterButton";
 import ArtCard from "./ArtCard";
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import Pagination from "./Pagination";
 
 export default function AllArtView() {
 	const dispatch = useDispatch();
 	const scrollRef = useRef();
 	const [filterState, setFilter] = useState("");
-	const [page, setPage] = useState("");
-	const [size, setSize] = useState("");
+	const [page, setPage] = useState(1);
+	const [size, setSize] = useState(20);
 	const allArts = useSelector(artActions.allArtArr);
+	const artCount = useSelector(artActions.artCount);
 
 	useEffect(() => {
 		dispatch(artActions.loadAllThunk({ filterState, page, size }));
-		dispatch(dispatch(sessionActions.updateCtx(null)));
 	}, [dispatch, filterState, page, size]);
+
+	useEffect(() => {
+		dispatch(dispatch(sessionActions.updateCtx(null)));
+	});
 
 	const filters = ["Art Name", "Artist", "Date", "Likes", "Dislikes"];
 
@@ -43,26 +48,44 @@ export default function AllArtView() {
 					</FilterButton>
 				))}
 			</section>
-			<div className="overflow-scroll overflow-x-hidden" ref={scrollRef}>
-				<MotionConfig
-					viewport={{ root: scrollRef, amount: "some", once: true }}
-				>
+			<div
+				className="overflow-scroll overflow-x-hidden px-4 scroll-smooth"
+				ref={scrollRef}
+			>
+				<Pagination
+					className="my-6"
+					size={size}
+					setSize={setSize}
+					page={page}
+					setPage={setPage}
+					count={artCount}
+				/>
+				<div className="grid auto-rows-min md:grid-cols-2 gap-4 xl:grid-cols-4">
 					<AnimatePresence>
-						<motion.div className="grid auto-rows-min md:grid-cols-2 gap-4 mx-4">
-							{allArts.map((art) => (
-								<motion.div
-									initial={{ opacity: 0, scale: 0.5 }}
-									whileInView={{ opacity: 1, scale: 1 }}
-									exit={{ scale: 0.5 }}
-									layout
-									key={art.id}
-								>
-									<ArtCard art={art} />
-								</motion.div>
-							))}
-						</motion.div>
+						{allArts.map((art) => (
+							<motion.div
+								initial={{ opacity: 0, scale: 0.75 }}
+								whileInView={{ opacity: 1, scale: 1 }}
+								viewport={{ root: scrollRef, once: true }}
+								exit={{ scale: 0.5 }}
+								layout
+								key={art.id}
+							>
+								<ArtCard art={art} />
+							</motion.div>
+						))}
 					</AnimatePresence>
-				</MotionConfig>
+				</div>
+				<Pagination
+					className="my-6"
+					size={size}
+					setSize={setSize}
+					page={page}
+					setPage={setPage}
+					count={artCount}
+					scrollRef={scrollRef}
+					bottom
+				/>
 			</div>
 		</>
 	);

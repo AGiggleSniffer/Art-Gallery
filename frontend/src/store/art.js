@@ -1,5 +1,4 @@
 import { csrfFetch } from "./csrf";
-import { createSelector } from "reselect";
 
 const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
@@ -27,7 +26,7 @@ const edit = (payload) => ({
 	payload,
 });
 
-const oneArt = (payload) => ({
+export const oneArt = (payload) => ({
 	type: ONEART,
 	payload,
 });
@@ -61,12 +60,12 @@ export const loadThunk = () => async (dispatch) => {
 export const loadAllThunk =
 	({ filterState, page, size }) =>
 	async (dispatch) => {
-		console.log(filterState, page, size);
 		const response = await csrfFetch(
 			`/api/art?filterState=${filterState}&page=${page}&size=${size}`,
 		);
 
 		const data = await response.json();
+		console.log(data);
 		dispatch(loadAll(data));
 		return data;
 	};
@@ -107,19 +106,23 @@ export const deleteArtThunk = (id) => async () => {
 	return data;
 };
 
-const initialState = { owned: [], all: {} };
+const initialState = { all: [], count: 0, owned: [], current: null };
 
-export const findArt = (id) => (state) => state.art.all[id];
+export const allArtArr = (state) => state.art.all;
+export const artCount = (state) => state.art.count;
 export const ownedArt = (state) => state.art.owned;
-export const allArt = (state) => state.art.all;
-export const allArtArr = createSelector(allArt, (art) => Object.values(art));
+export const findArt = (state) => state.art.current;
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD:
 			return { ...state, owned: action.payload };
 		case LOAD_ALL:
-			return { ...state, all: action.payload };
+			return {
+				...state,
+				all: action.payload.Arts,
+				count: action.payload.count,
+			};
 		case SAVE: {
 			const newAllArt = {
 				...state.all,
@@ -135,11 +138,7 @@ const artReducer = (state = initialState, action) => {
 			return { ...state, all: newAllArt };
 		}
 		case ONEART: {
-			const newAllArt = {
-				...state.all,
-				[action.payload.id]: action.payload,
-			};
-			return { ...state, all: newAllArt };
+			return { ...state, current: action.payload };
 		}
 		default:
 			return state;
