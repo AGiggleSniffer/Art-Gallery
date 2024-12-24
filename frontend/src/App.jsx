@@ -12,7 +12,6 @@ import CanvasHome from "./components/CanvasHome";
 import GalleryHome from "./components/GalleryHome";
 import GalleryView from "./components/GalleryView";
 import AllArtView from "./components/AllArtView";
-import CanvasView from "./components/CanvasView";
 import DataUrlConverter from "./components/DataUrlConverter";
 
 function Layout() {

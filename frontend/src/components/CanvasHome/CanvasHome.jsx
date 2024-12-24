@@ -50,7 +50,7 @@ export default function CanvasHome() {
 			<div className="w-full flex justify-center items-center border-l border-black">
 				<div className="w-[95%] max-w-[75vh]">
 					<canvas
-						className="bg-[url('./cream-paper.png')] bg-white"
+						className="bg-[url('/cream-paper.png')] bg-white"
 						ref={canvasRef}
 					/>
 				</div>

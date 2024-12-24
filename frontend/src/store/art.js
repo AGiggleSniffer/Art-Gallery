@@ -65,7 +65,6 @@ export const loadAllThunk =
 		);
 
 		const data = await response.json();
-		console.log(data);
 		dispatch(loadAll(data));
 		return data;
 	};

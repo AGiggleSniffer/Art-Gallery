@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as artActions from "../../store/art";
 import ErrorDisplay from "./ErrorDisplay";
+import { context } from "../../store/session";
 
-export default function SaveArtModal({ ctx, id, navigate }) {
+export default function SaveArtModal({ id, navigate }) {
+	const sessionUser = useSelector(context);
 	const myArt = useSelector(artActions.findArt(id));
 	const formattedTagArr = myArt?.ArtTags?.map(({ type }) => type).join(" ");
 	const [description, setDescription] = useState(myArt?.description || "");
@@ -13,7 +15,7 @@ export default function SaveArtModal({ ctx, id, navigate }) {
 
 	const dispatch = useDispatch();
 	const saveCanvas = async () => {
-		const dataURL = await ctx.canvas.toDataURL();
+		const dataURL = await sessionUser.canvas.toDataURL();
 
 		const formattedTags = tags.replaceAll("#", "").split(" ");
 
@@ -30,10 +32,11 @@ export default function SaveArtModal({ ctx, id, navigate }) {
 				await dispatch(artActions.editThunk(payload));
 				navigate(`/arts/${id}`);
 			} else {
-				const { id: newId } = await dispatch(artActions.saveThunk(payload));
+				const { id: newId } = await dispatch(
+					artActions.saveThunk(payload),
+				);
 				navigate(`/arts/${newId}`);
 			}
-
 		} catch (err) {
 			const data = await err.json();
 			if (data?.errors) {
@@ -64,7 +67,10 @@ export default function SaveArtModal({ ctx, id, navigate }) {
 			</div>
 			{errors.name && <ErrorDisplay msg={errors.name} />}
 			<div>
-				<label style={{ top: description ? 0 : "" }} htmlFor="description">
+				<label
+					style={{ top: description ? 0 : "" }}
+					htmlFor="description"
+				>
 					Description:
 				</label>
 				<input
@@ -90,7 +96,9 @@ export default function SaveArtModal({ ctx, id, navigate }) {
 				/>
 			</div>
 			{errors.type && <ErrorDisplay msg={errors.type} />}
-			<p>{'(tags will be seperated by spaces. "#\'s" will be ignored)'}</p>
+			<p>
+				{'(tags will be seperated by spaces. "#\'s" will be ignored)'}
+			</p>
 			<span>
 				<button className="classic" type="submit">
 					Save As

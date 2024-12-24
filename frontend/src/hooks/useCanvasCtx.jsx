@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BRUSH, BUCKET, ERASER, PENCIL, PIXEL, SPRAY } from "./DrawingStyles";
+import { BRUSH, PENCIL, PIXEL } from "./DrawingStyles";
 
 const CANVAS_WIDTH = 100;
 const CANVAS_HEIGHT = 100;
