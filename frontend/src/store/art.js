@@ -4,7 +4,6 @@ const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
-const TOP_TAGS = "art/topTags";
 
 const load = (payload) => ({
 	type: LOAD,
@@ -23,11 +22,6 @@ const edit = (payload) => ({
 
 export const oneArt = (payload) => ({
 	type: ONEART,
-	payload,
-});
-
-const topTags = (payload) => ({
-	type: TOP_TAGS,
 	payload,
 });
 
@@ -104,26 +98,17 @@ export const deleteArtThunk = (id) => async () => {
 	return data;
 };
 
-export const topTagsTagsThunk = () => async (dispatch) => {
-	const response = await csrfFetch("/api/art/topTags");
-	const data = await response.json();
-	dispatch(topTags(data));
-	return data;
-};
-
 const initialState = {
 	all: [],
 	count: 0,
 	owned: [],
 	current: null,
-	topTags: [],
 };
 
 export const allArtArr = (state) => state.art.all;
 export const artCount = (state) => state.art.count;
 export const ownedArt = (state) => state.art.owned;
 export const findArt = (state) => state.art.current;
-export const topTagsArr = (state) => state.art.topTags;
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -144,9 +129,6 @@ const artReducer = (state = initialState, action) => {
 		}
 		case ONEART: {
 			return { ...state, current: action.payload };
-		}
-		case TOP_TAGS: {
-			return { ...state, topTags: action.payload.map((tag) => tag.type) };
 		}
 		default:
 			return state;

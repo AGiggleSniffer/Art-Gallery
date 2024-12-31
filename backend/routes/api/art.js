@@ -36,21 +36,19 @@ const validateQueryFilters = [
 router.get("/", validateQueryFilters, async (req, res, next) => {
 	const { page, size, filterState } = req.query;
 
-	const include = [User, ArtTag];
+	const include = [User];
 
 	const group = ["Art.id"];
 
 	const pagination = paginationBuilder(page, size);
 
-	const { order, where } = orderBuilder(filterState);
-	console.log(order, where);
+	const order = orderBuilder(filterState);
 
 	try {
 		const Arts = await Art.scope("withCounts").findAll({
 			include,
 			group,
 			order,
-			where,
 			...pagination,
 		});
 
@@ -69,24 +67,6 @@ router.get("/owned", requireAuth, async (req, res, next) => {
 	try {
 		const myArt = await Art.findAll({ where });
 		return res.json(myArt);
-	} catch (err) {
-		return next(err);
-	}
-});
-
-router.get("/topTags", async (_, res, next) => {
-	try {
-		const topTypes = await ArtTag.findAll({
-			attributes: [
-				"type",
-				[sequelize.fn("COUNT", sequelize.col("type")), "typeCount"],
-			],
-			group: ["type"],
-			order: [[sequelize.literal("typeCount"), "DESC"]],
-			limit: 5,
-		});
-
-		return res.json(topTypes);
 	} catch (err) {
 		return next(err);
 	}

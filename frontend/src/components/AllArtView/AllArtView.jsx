@@ -13,24 +13,13 @@ export default function AllArtView() {
 	const [filterState, setFilter] = useState("");
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(20);
-	const [filters, setFilters] = useState([]);
 	const allArts = useSelector(artActions.allArtArr);
 	const artCount = useSelector(artActions.artCount);
-	const topTags = useSelector(artActions.topTagsArr);
+	const filters = ["Name", "Artist", "Oldest", "Likes", "Dislikes"];
 
 	useEffect(() => {
 		dispatch(artActions.loadAllThunk({ filterState, page, size }));
 	}, [dispatch, filterState, page, size]);
-
-	useEffect(() => {
-		const filterArr = ["Name", "Artist", "Oldest", "Likes", "Dislikes"];
-		topTags?.forEach((tag) => filterArr.push(tag));
-		setFilters(filterArr);
-	}, [topTags]);
-
-	useEffect(() => {
-		dispatch(artActions.topTagsTagsThunk());
-	}, [dispatch]);
 
 	useEffect(() => {
 		dispatch(sessionActions.updateCtx(null));

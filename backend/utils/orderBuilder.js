@@ -1,42 +1,35 @@
 const { sequelize } = require("../db/models");
 
 exports.orderBuilder = (filter) => {
-	const result = { order: [], where: {} };
+	const order = [];
 	switch (filter) {
 		case "": {
-			result.order.push([["createdAt", "DESC"]]);
-			return result;
+			order.push([["createdAt", "DESC"]]);
+			break;
 		}
 		case "Oldest": {
-			result.order.push([["createdAt"]]);
-			return result;
+			order.push([["createdAt"]]);
+			break;
 		}
 		case "Name": {
-			result.order.push([
-				[sequelize.fn("LOWER", sequelize.col("name")), "ASC"],
-			]);
-			return result;
+			order.push([[sequelize.fn("LOWER", sequelize.col("name")), "ASC"]]);
+			break;
 		}
 		case "Artist": {
-			result.order.push([
+			order.push([
 				[sequelize.fn("LOWER", sequelize.col("username")), "ASC"],
 			]);
-			return result;
+			break;
 		}
 		case "Likes": {
-			result.order.push([[sequelize.literal("likeCount"), "DESC"]]);
-			return result;
+			order.push([[sequelize.literal("likeCount"), "DESC"]]);
+			break;
 		}
 		case "Dislikes": {
-			result.order.push([[sequelize.literal("dislikeCount"), "DESC"]]);
-			return result;
-		}
-		default: {
-			// if no pre defined filter
-			// console.log(`\n\n\nFilter: ${filter}\n\n\n`);
-			// result.order.push([[sequelize.literal("ArtTag.type")]]);
-			// result.where["$ArtTag.type$"] = filter;
-			return result;
+			order.push([[sequelize.literal("dislikeCount"), "DESC"]]);
+			break;
 		}
 	}
+
+	return order;
 };
