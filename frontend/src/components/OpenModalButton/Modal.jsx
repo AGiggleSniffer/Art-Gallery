@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useModal } from "../../context/ModalProvider";
 
 const dropIn = {
@@ -21,29 +21,32 @@ const dropIn = {
 	},
 };
 
-const Modal = ({ children }) => {
-	const { close } = useModal();
+const Modal = () => {
+	const { modalContent, close } = useModal();
 	return (
 		<>
-			<div className="fixed top-0 left-0 flex justify-center items-center w-svw h-svh z-50">
-				<motion.div
-					onClick={close}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 0.7 }}
-					exit={{ opacity: 0 }}
-					className="fixed top-0 left-0 h-svh w-svw bg-black z-50"
-				/>
-				<motion.div
-					variants={dropIn}
-					initial="hidden"
-					animate="visible"
-					exit="exit"
-					onClick={(e) => e.stopPropagation()}
-					className="fixed z-50"
-				>
-					{children}
-				</motion.div>
-			</div>
+			<AnimatePresence>
+				{modalContent && (
+					<div className="fixed top-0 left-0 flex justify-center items-center w-svw h-svh z-50">
+						<motion.div
+							onClick={close}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 0.7 }}
+							exit={{ opacity: 0 }}
+							className="fixed top-0 left-0 h-svh w-svw bg-black"
+						/>
+						<motion.div
+							variants={dropIn}
+							initial="hidden"
+							animate="visible"
+							exit="exit"
+							className="fixed flex justify-center items-center lg:max-w-5/6"
+						>
+							{modalContent}
+						</motion.div>
+					</div>
+				)}
+			</AnimatePresence>
 		</>
 	);
 };

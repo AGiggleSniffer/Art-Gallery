@@ -17,7 +17,9 @@ const SaveButton = () => {
 		<OpenModalButton
 			className="flex justify-center items-center w-full h-full hover:bg-white/30 transition-colors"
 			icon={<BsStarFill className="mr-2" />}
-			modalComponent={<SignupFormModal />}
+			modalComponent={
+				<SignupFormModal extraMessage="Sign up to save your art" />
+			}
 			buttonText="Save"
 		/>
 	);

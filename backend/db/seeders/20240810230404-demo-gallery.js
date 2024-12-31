@@ -21,26 +21,26 @@ module.exports = {
 		const artGalSeedArr = [];
 
 		for (let i = 0; i < NUM_OF_GAL; i++) {
-			let num1 = randInt(loremIpsum.length - 4);
-			let num2 = randInt(50) + 3 + num1;
+			let num1 = randInt(0, loremIpsum.length - 4);
+			let num2 = randInt(3, 50) + num1;
 			const name = loremIpsum.slice(num1, num2);
 
-			num1 = randInt(loremIpsum.length - 255);
-			num2 = randInt(255) + num1;
+			num1 = randInt(0, loremIpsum.length - 1);
+			num2 = randInt(0, 255) + num1;
 			const desc = loremIpsum.slice(num1, num2);
 
 			const payload = {
-				user_id: randInt(3),
+				user_id: randInt(1, 3),
 				name: name,
 				description: desc,
 			};
 
 			galSeedArr.push(payload);
 
-			for (let si = 0; si < randInt(MAX_ART_PER_GAL); si++) {
+			for (let si = 0; si < randInt(1, MAX_ART_PER_GAL); si++) {
 				const paylaod = {
 					gallery_id: i + 1,
-					art_id: randInt(NUM_OF_PHOTOS),
+					art_id: randInt(1, NUM_OF_PHOTOS),
 				};
 
 				artGalSeedArr.push(paylaod);

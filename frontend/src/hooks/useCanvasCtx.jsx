@@ -1,13 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 import { BRUSH, PENCIL, PIXEL } from "./DrawingStyles";
+import { useParams } from "react-router-dom";
 
 const CANVAS_WIDTH = 100;
 const CANVAS_HEIGHT = 100;
 
-const draw = ({ x, y }, ctx, style, size, color) => {
+const draw = (e, ctx, style, size, color, scale) => {
 	ctx.strokeStyle = color;
 	ctx.fillStyle = color;
 	ctx.lineWidth = size;
+
+	let x;
+	let y;
+	if (e.touches) {
+		const rect = e.target.getBoundingClientRect();
+		x = ((e.touches[0].pageX - rect.left) / scale) * 2;
+		y = ((e.touches[0].pageY - rect.top) / scale) * 2;
+	} else {
+		x = e.offsetX / scale;
+		y = e.offsetY / scale;
+	}
 
 	switch (style) {
 		case BRUSH:
@@ -27,6 +39,7 @@ const draw = ({ x, y }, ctx, style, size, color) => {
 };
 
 export default function useCanvasCtx(ref) {
+	const { id } = useParams();
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
 	const [ctx, setCtx] = useState();
@@ -38,6 +51,7 @@ export default function useCanvasCtx(ref) {
 	const dpi = window.devicePixelRatio;
 
 	const clearCanvas = useCallback(() => {
+		if (!canvas) return;
 		const { width, height } = canvas;
 		ctx.clearRect(0, 0, width, height);
 	}, [ctx, canvas]);
@@ -48,6 +62,10 @@ export default function useCanvasCtx(ref) {
 			canvas.parentNode.getBoundingClientRect().width / CANVAS_WIDTH;
 		setScale(scaleFactor);
 	}, [canvas]);
+
+	useEffect(() => {
+		clearCanvas();
+	}, [clearCanvas, id]);
 
 	useEffect(() => {
 		setCanvas(ref.current);
@@ -86,6 +104,8 @@ export default function useCanvasCtx(ref) {
 		const mousedown = (e) => {
 			e.stopPropagation();
 			setIsPainting(true);
+
+			draw(e, ctx, style, size, color, scale);
 		};
 
 		const mouseup = (e) => {
@@ -100,18 +120,7 @@ export default function useCanvasCtx(ref) {
 			if (!isPainting) return;
 			e.stopPropagation();
 
-			let x;
-			let y;
-			if (e.touches) {
-				const rect = e.target.getBoundingClientRect();
-				x = ((e.touches[0].pageX - rect.left) / scale) * 2;
-				y = ((e.touches[0].pageY - rect.top) / scale) * 2;
-			} else {
-				x = e.offsetX / scale;
-				y = e.offsetY / scale;
-			}
-
-			draw({ x, y }, ctx, style, size, color);
+			draw(e, ctx, style, size, color, scale);
 		};
 
 		canvas.addEventListener("mousedown", mousedown);

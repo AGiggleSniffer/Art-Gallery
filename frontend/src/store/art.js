@@ -2,9 +2,9 @@ import { csrfFetch } from "./csrf";
 
 const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
-const SAVE = "art/save";
 const EDIT = "art/edit";
 const ONEART = "art/one";
+const TOP_TAGS = "art/topTags";
 
 const load = (payload) => ({
 	type: LOAD,
@@ -13,11 +13,6 @@ const load = (payload) => ({
 
 const loadAll = (payload) => ({
 	type: LOAD_ALL,
-	payload,
-});
-
-const save = (payload) => ({
-	type: SAVE,
 	payload,
 });
 
@@ -31,9 +26,14 @@ export const oneArt = (payload) => ({
 	payload,
 });
 
+const topTags = (payload) => ({
+	type: TOP_TAGS,
+	payload,
+});
+
 export const saveThunk =
 	({ galleryId, name, description, dataURL, tags }) =>
-	async (dispatch) => {
+	async () => {
 		const response = await csrfFetch("/api/art", {
 			method: "POST",
 			body: JSON.stringify({
@@ -45,7 +45,6 @@ export const saveThunk =
 			}),
 		});
 		const data = await response.json();
-		dispatch(save(data));
 		return data;
 	};
 
@@ -105,12 +104,26 @@ export const deleteArtThunk = (id) => async () => {
 	return data;
 };
 
-const initialState = { all: [], count: 0, owned: [], current: null };
+export const topTagsTagsThunk = () => async (dispatch) => {
+	const response = await csrfFetch("/api/art/topTags");
+	const data = await response.json();
+	dispatch(topTags(data));
+	return data;
+};
+
+const initialState = {
+	all: [],
+	count: 0,
+	owned: [],
+	current: null,
+	topTags: [],
+};
 
 export const allArtArr = (state) => state.art.all;
 export const artCount = (state) => state.art.count;
 export const ownedArt = (state) => state.art.owned;
 export const findArt = (state) => state.art.current;
+export const topTagsArr = (state) => state.art.topTags;
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -122,13 +135,6 @@ const artReducer = (state = initialState, action) => {
 				all: action.payload.Arts,
 				count: action.payload.count,
 			};
-		case SAVE: {
-			const newAllArt = {
-				...state.all,
-				[action.payload.id]: action.payload,
-			};
-			return { ...state, all: newAllArt };
-		}
 		case EDIT: {
 			const newAllArt = {
 				...state.all,
@@ -138,6 +144,9 @@ const artReducer = (state = initialState, action) => {
 		}
 		case ONEART: {
 			return { ...state, current: action.payload };
+		}
+		case TOP_TAGS: {
+			return { ...state, topTags: action.payload.map((tag) => tag.type) };
 		}
 		default:
 			return state;

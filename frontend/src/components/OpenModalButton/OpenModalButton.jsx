@@ -1,6 +1,4 @@
-import { AnimatePresence } from "motion/react";
 import { useModal } from "../../context/ModalProvider";
-import Modal from "./Modal";
 
 function OpenModalButton({
 	modalComponent, // component to render inside the modal
@@ -9,10 +7,11 @@ function OpenModalButton({
 	onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
 	className,
 }) {
-	const { modalOpen, open } = useModal();
+	const { setModalContent } = useModal();
 
-	const onClick = () => {
-		open();
+	const onClick = (e) => {
+		e.stopPropagation();
+		setModalContent(modalComponent);
 		if (typeof onButtonClick === "function") onButtonClick();
 	};
 
@@ -22,9 +21,6 @@ function OpenModalButton({
 				{icon}
 				{buttonText}
 			</button>
-			<AnimatePresence className="z-50">
-				{modalOpen && <Modal>{modalComponent}</Modal>}
-			</AnimatePresence>
 		</>
 	);
 }

@@ -13,6 +13,7 @@ import GalleryHome from "./components/GalleryHome";
 import GalleryView from "./components/GalleryView";
 import AllArtView from "./components/AllArtView";
 import DataUrlConverter from "./components/DataUrlConverter";
+import Modal from "./components/OpenModalButton/Modal";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -26,7 +27,8 @@ function Layout() {
 	}, [dispatch]);
 
 	return (
-		<main className="-z-10 flex flex-col min-h-svh max-h-svh ">
+		<main className="flex flex-col min-h-svh max-h-svh">
+			<Modal />
 			<Navigation isLoaded={isLoaded} />
 			{isLoaded && <Outlet />}
 		</main>

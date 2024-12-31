@@ -60,6 +60,7 @@ const NavigationButtons = ({ variant }) => {
 
 			<motion.div variants={variant}>
 				<NavLink
+					target="_blank"
 					to="https://github.com/AGiggleSniffer/Art-Gallery"
 					className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 border-y border-b-neutral-500 border-t-neutral-700 transition-colors"
 				>

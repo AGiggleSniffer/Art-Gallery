@@ -27,7 +27,7 @@ const Pagination = ({
 			<div className="flex items-center justify-between text-sm text-nowrap">
 				<span className="flex items-center">
 					<label className="flex items-center">
-						Rows per page:
+						Items per page:
 						<CustomSelect
 							className="text-black bg-white mx-4 rounded"
 							options={options}
@@ -60,7 +60,7 @@ const Pagination = ({
 						<BsChevronRight />
 					</button>
 				</span>
-				<span className="mr-4 text-nowrap text-xs sm:text-sm">
+				<span className="text-nowrap text-xs sm:text-sm">
 					{size * page - size + 1} - {size * page} of {count}
 				</span>
 			</div>

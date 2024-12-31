@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import ErrorDisplay from "./ErrorDisplay";
+import SunsetForm from "./SunsetForm";
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "./LoginFormModal";
+import { useModal } from "../../context/ModalProvider";
 
 function SignupFormModal({ extraMessage }) {
 	const dispatch = useDispatch();
@@ -10,6 +14,7 @@ function SignupFormModal({ extraMessage }) {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState({});
+	const { close } = useModal();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -22,7 +27,7 @@ function SignupFormModal({ extraMessage }) {
 					password,
 				}),
 			)
-				.then()
+				.then(close())
 				.catch(async (res) => {
 					const data = await res.json();
 					if (data?.errors) {
@@ -37,20 +42,17 @@ function SignupFormModal({ extraMessage }) {
 	};
 
 	return (
-		<div className="bg-neutral-700 p-12 text-black">
-			<h1>Sign Up</h1>
-			{extraMessage && <h2>{extraMessage}</h2>}
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label
-						style={{ top: email ? 0 : "" }}
-						htmlFor="email"
-						className={"absolute text-black/50 select-none pl-2"}
-					>
-						Email
-					</label>
+		<SunsetForm handleSubmit={handleSubmit}>
+			<div className="flex flex-col items-center justify-center gap-2 my-8 lg:m-4">
+				<img src="Icon.png" className="h-20 w-fit lg:h-12" />
+				<h1 className="text-4xl font-bold text-center">Sign Up</h1>
+				{extraMessage && <h2 className="text-sm">{extraMessage}</h2>}
+			</div>
+			<div className="w-full h-full flex flex-col gap-2 md:px-12 lg:px-0 text-xl">
+				<div className="flex flex-col w-full">
+					<label htmlFor="email">Email</label>
 					<input
-						id="email"
+						className="rounded text-black p-2"
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
@@ -59,16 +61,10 @@ function SignupFormModal({ extraMessage }) {
 					/>
 				</div>
 				{errors.email && <ErrorDisplay msg={errors.email} />}
-				<div>
-					<label
-						style={{ top: username ? 0 : "" }}
-						htmlFor="username"
-						className={"absolute text-black/50 select-none pl-2"}
-					>
-						Username
-					</label>
+				<div className="flex flex-col w-full">
+					<label htmlFor="username">Username</label>
 					<input
-						id="username"
+						className="rounded text-black p-2"
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
@@ -77,15 +73,10 @@ function SignupFormModal({ extraMessage }) {
 					/>
 				</div>
 				{errors.username && <ErrorDisplay msg={errors.username} />}
-				<div>
-					<label
-						style={{ top: password ? 0 : "" }}
-						className={"absolute text-black/50 select-none pl-2"}
-						htmlFor="password"
-					>
-						Password
-					</label>
+				<div className="flex flex-col w-full">
+					<label htmlFor="password">Password</label>
 					<input
+						className="rounded text-black p-2"
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
@@ -94,15 +85,10 @@ function SignupFormModal({ extraMessage }) {
 					/>
 				</div>
 				{errors.password && <ErrorDisplay msg={errors.password} />}
-				<div className="relative">
-					<label
-						htmlFor="confirmpassword"
-						className={"absolute text-black/50 select-none pl-2"}
-					>
-						Confirm Password
-					</label>
+				<div className="flex flex-col w-full">
+					<label htmlFor="confirmpassword">Confirm Password</label>
 					<input
-						id="confirmpassword"
+						className="rounded text-black p-2"
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
@@ -113,14 +99,26 @@ function SignupFormModal({ extraMessage }) {
 				{errors.confirmPassword && (
 					<ErrorDisplay msg={errors.confirmPassword} />
 				)}
-				<span>
-					<button className="classic" type="submit">
+				<div className="w-full">
+					<button
+						className="purple-gradient w-full mt-6 rounded py-2"
+						type="submit"
+					>
 						Sign Up
 					</button>
-				</span>
-				<span>{/* <OpenModalButton buttonText="Or Login" /> */}</span>
-			</form>
-		</div>
+				</div>
+			</div>
+			<div className="h-full flex items-end">
+				<p className="text-sm text-nowrap">
+					Already have an Account?
+					<OpenModalButton
+						className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400"
+						buttonText="Login"
+						modalComponent={<LoginFormModal />}
+					/>
+				</p>
+			</div>
+		</SunsetForm>
 	);
 }
 

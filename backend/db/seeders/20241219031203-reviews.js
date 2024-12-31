@@ -19,10 +19,10 @@ module.exports = {
 
 		const reviewArr = [];
 		for (let i = 0; i < NUM_OF_REVIEWS; i++) {
-			const bool = randInt(2) - 1 ? true : false;
+			const bool = randInt(0, 1) ? true : false;
 			reviewArr.push({
-				user_id: randInt(3),
-				art_id: randInt(NUM_OF_PHOTOS),
+				user_id: randInt(1, 3),
+				art_id: randInt(1, NUM_OF_PHOTOS),
 				liked: bool,
 				disliked: !bool,
 			});

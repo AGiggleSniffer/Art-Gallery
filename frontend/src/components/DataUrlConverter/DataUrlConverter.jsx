@@ -2,27 +2,27 @@ import { useRef, useState } from "react";
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
 export default function DataUrlConverter() {
-    const [dataUrl, setUrl] = useState("");
-    const [imgsrc, setImgsrc] = useState("")
-    const canvasref = useRef();
-    const ctx = useCanvasCtx(canvasref);
+	const [dataUrl, setUrl] = useState("");
+	const [imgsrc, setImgsrc] = useState("");
+	const canvasref = useRef();
+	const { ctx } = useCanvasCtx(canvasref);
 	const handleConversion = (e) => {
-        const img = new Image();
-        setImgsrc(e.target.value);
-        img.src = e.target.value;
-        ctx.drawImage(img, 0, 0);
-        setUrl(ctx.canvas.toDataURL());
+		const img = new Image();
+		setImgsrc(e.target.value);
+		img.src = e.target.value;
+		ctx.drawImage(img, 0, 0);
+		setUrl(ctx.canvas.toDataURL());
 	};
 
 	return (
 		<>
 			<h1>CONVERTER</h1>
-            <input type="text" onChange={handleConversion} />
-            <img src={imgsrc} style={{width: "300px"}}/>
-            <canvas ref={canvasref}/>
+			<input type="text" onChange={handleConversion} />
+			<img src={imgsrc} style={{ width: "300px" }} />
+			<canvas ref={canvasref} />
 			<div
 				style={{
-                    wordWrap: "break-word",
+					wordWrap: "break-word",
 					width: "80%",
 					backgroundColor: "black",
 					color: "white",

@@ -7,7 +7,7 @@ const Tool = ({ children, isSelected, onButtonClick }) => {
 		onButtonClick();
 		animate([
 			[
-				".tool",
+				scope.current,
 				{
 					rotate: [
 						"0deg",
@@ -25,7 +25,6 @@ const Tool = ({ children, isSelected, onButtonClick }) => {
 
 	return (
 		<div
-			ref={scope}
 			onClick={onClick}
 			className="h-full w-full hover:bg-white/10 rounded-md transition-colors"
 			style={
@@ -37,6 +36,7 @@ const Tool = ({ children, isSelected, onButtonClick }) => {
 			}
 		>
 			<motion.div
+				ref={scope}
 				variants={{
 					hover: {
 						scale: [1, 1.1, 1.1, 1],
@@ -61,7 +61,7 @@ const Tool = ({ children, isSelected, onButtonClick }) => {
 				}}
 				whileHover="hover"
 				animate="visible"
-				className="h-full w-full tool"
+				className="h-full w-full"
 			>
 				{children}
 			</motion.div>

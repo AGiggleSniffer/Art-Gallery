@@ -1,42 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as artActions from "../../store/art";
 import ErrorDisplay from "./ErrorDisplay";
 import { context } from "../../store/session";
+import { BsArrowLeft } from "react-icons/bs";
+import { useModal } from "../../context/ModalProvider";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function SaveArtModal({ id, navigate }) {
-	const sessionUser = useSelector(context);
-	const myArt = useSelector(artActions.findArt(id));
-	const formattedTagArr = myArt?.ArtTags?.map(({ type }) => type).join(" ");
-	const [description, setDescription] = useState(myArt?.description || "");
-	const [name, setName] = useState(myArt?.name || "");
-	const [tags, setTags] = useState(formattedTagArr || "");
+export default function SaveArtModal() {
+	const navigate = useNavigate();
+	const { id } = useParams();
+	const sessionContext = useSelector(context);
+	const [data, setData] = useState("");
+	const [description, setDescription] = useState("");
+	const [name, setName] = useState("");
+	const [tags, setTags] = useState("");
 	const [errors, setErrors] = useState({});
+	const { close } = useModal();
 
 	const dispatch = useDispatch();
 	const saveCanvas = async () => {
-		const dataURL = await sessionUser.canvas.toDataURL();
-
 		const formattedTags = tags.replaceAll("#", "").split(" ");
 
 		const payload = {
 			name,
 			description,
-			dataURL,
-			id,
+			dataURL: data,
 			tags: formattedTags,
 		};
 
 		try {
-			if (id) {
-				await dispatch(artActions.editThunk(payload));
-				navigate(`/arts/${id}`);
-			} else {
-				const { id: newId } = await dispatch(
-					artActions.saveThunk(payload),
-				);
-				navigate(`/arts/${newId}`);
-			}
+			const { id: newId } = await dispatch(artActions.saveThunk(payload));
+			navigate(`/arts/${newId}`);
+			close();
 		} catch (err) {
 			const data = await err.json();
 			if (data?.errors) {
@@ -50,60 +46,87 @@ export default function SaveArtModal({ id, navigate }) {
 		saveCanvas();
 	};
 
+	useEffect(() => {
+		setData(sessionContext?.ctx.canvas.toDataURL());
+	}, [sessionContext]);
+
 	return (
-		<form onSubmit={handleSubmit}>
-			<h1>Save Art</h1>
-			<div>
-				<label style={{ top: name ? 0 : "" }} htmlFor="name">
-					Name Your Art:
-				</label>
-				<input
-					id="name"
-					type="text"
-					onChange={(e) => setName(e.target.value)}
-					defaultValue={myArt?.name}
-					required
+		<div
+			key="loginForm"
+			className="lg:grid lg:rounded-lg overflow-hidden grid-cols-3 w-full"
+		>
+			<div className="lg:flex flex-col hidden justify-center items-center bg-black p-2">
+				<img
+					src={data}
+					className="object-contain image h-fit w-full bg-[url('/cream-paper.png')] pixelated bg-white"
 				/>
+				<p className="py-2">Preview</p>
 			</div>
-			{errors.name && <ErrorDisplay msg={errors.name} />}
-			<div>
-				<label
-					style={{ top: description ? 0 : "" }}
-					htmlFor="description"
-				>
-					Description:
-				</label>
-				<input
-					id="description"
-					type="text"
-					onChange={(e) => setDescription(e.target.value)}
-					defaultValue={myArt?.description}
-				/>
-			</div>
-			{errors.description && <ErrorDisplay msg={errors.description} />}
-			<div>
-				<label
-					style={tags ? { top: tags ? 0 : "" } : { display: "none" }}
-					htmlFor="tags"
-				>
-					Tags:
-				</label>
-				<textarea
-					id="tags"
-					placeholder="Add Tags to help people find your art:"
-					onChange={(e) => setTags(e.target.value)}
-					defaultValue={formattedTagArr}
-				/>
-			</div>
-			{errors.type && <ErrorDisplay msg={errors.type} />}
-			<p>
-				{'(tags will be seperated by spaces. "#\'s" will be ignored)'}
-			</p>
-			<span>
-				<button className="classic" type="submit">
-					Save As
-				</button>
-			</span>
-		</form>
+			<form
+				onSubmit={handleSubmit}
+				className="col-span-2 flex flex-col gap-2 items-center bg-neutral-700 p-6 shadow-lg h-svh w-svw lg:h-full lg:w-full"
+			>
+				<div className="md:text-4xl text-2xl absolute top-6 left-6 lg:hidden">
+					<BsArrowLeft className="cursor-pointer" onClick={close} />
+				</div>
+				<div className="flex flex-col items-center justify-center gap-2 my-8 lg:m-4">
+					<img src="Icon.png" className="h-20 w-fit lg:h-12" />
+					<h1 className="text-4xl font-bold text-center">Save Art</h1>
+				</div>
+				<div className="w-full h-full flex flex-col gap-2 md:px-12 lg:px-0 text-xl">
+					<div className="flex flex-col w-full">
+						<label htmlFor="name">Name Your Art:</label>
+						<input
+							className="rounded text-black p-2"
+							id="name"
+							type="text"
+							onChange={(e) => setName(e.target.value)}
+							defaultValue={name}
+							required
+						/>
+					</div>
+					{errors.name && <ErrorDisplay msg={errors.name} />}
+					<div className="flex flex-col w-full">
+						<label htmlFor="description">Description:</label>
+						<input
+							className="rounded text-black p-2"
+							id="description"
+							type="text"
+							onChange={(e) => setDescription(e.target.value)}
+							defaultValue={description}
+						/>
+					</div>
+					{errors.description && (
+						<ErrorDisplay msg={errors.description} />
+					)}
+					<div className="flex flex-col w-full">
+						<label htmlFor="tags">Tags:</label>
+						<textarea
+							className="rounded text-black p-2"
+							id="tags"
+							placeholder="Add Tags to help people find your art:"
+							onChange={(e) => setTags(e.target.value)}
+							defaultValue={""}
+						/>
+					</div>
+					{errors.type && <ErrorDisplay msg={errors.type} />}
+					<div>
+						<p className="text-nowrap text-sm">
+							{
+								'(tags will be seperated by spaces. "#\'s" will be ignored)'
+							}
+						</p>
+					</div>
+					<div className="flex flex-col w-full">
+						<button
+							className="purple-gradient w-full mt-6 rounded py-2"
+							type="submit"
+						>
+							Save As
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
 	);
 }

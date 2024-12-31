@@ -1,15 +1,16 @@
 import { BsBan, BsDownload, BsStarFill } from "react-icons/bs";
-import { context } from "../../../store/session";
+import { context, user } from "../../../store/session";
 import { useSelector } from "react-redux";
 import { motion } from "motion/react";
-import { SaveArtModal } from "../../Modals";
+import { SaveArtModal, SignupFormModal } from "../../Modals";
 import OpenModalButton from "../../OpenModalButton";
 
 const DrawingButtons = ({ variant }) => {
 	const sessionContext = useSelector(context);
+	const sessionUser = useSelector(user);
 
 	const download = async () => {
-		const data = await sessionContext.canvas.toDataURL();
+		const data = await sessionContext.ctx.canvas.toDataURL();
 		const link = document.createElement("a");
 		link.href = data;
 		link.download = "picture.png";
@@ -41,14 +42,23 @@ const DrawingButtons = ({ variant }) => {
 
 				<motion.div
 					variants={variant}
-					className="py-2 px-4 hover:border-l-2 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+					className="hover:border-l-2 purple-gradient"
 				>
-					<OpenModalButton
-						className="flex items-center"
-						icon={<BsStarFill className="mr-2" />}
-						modalComponent={<SaveArtModal />}
-						buttonText="Save Drawing"
-					/>
+					{sessionUser ? (
+						<OpenModalButton
+							className="flex items-center py-2 px-4 "
+							icon={<BsStarFill className="mr-2" />}
+							modalComponent={<SaveArtModal />}
+							buttonText="Save Drawing"
+						/>
+					) : (
+						<OpenModalButton
+							className="flex items-center py-2 px-4 "
+							icon={<BsStarFill className="mr-2" />}
+							modalComponent={<SignupFormModal extraMessage="Sign up to save your art" />}
+							buttonText="Save Drawing"
+						/>
+					)}
 				</motion.div>
 			</>
 		)

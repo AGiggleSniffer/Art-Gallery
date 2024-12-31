@@ -36,3 +36,14 @@
 		@apply hidden;
 	}
 }
+
+@layer utilities {
+	.purple-gradient {
+		@apply bg-gradient-to-r;
+		@apply from-violet-500;
+		@apply to-fuchsia-500;
+	}
+	.pixelated {
+		image-rendering: pixelated;
+	}
+}

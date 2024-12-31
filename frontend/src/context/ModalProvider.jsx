@@ -3,15 +3,16 @@ import { createContext, useContext, useState } from "react";
 const ModalContext = createContext();
 
 export const ModalProvider = ({ children }) => {
-	const [modalOpen, setModalOpen] = useState(false);
+	const [modalContent, setModalContent] = useState(null);
 
-	const close = () => setModalOpen(false);
-	const open = () => setModalOpen(true);
+	const close = () => {
+		setModalContent(null);
+	};
 
 	const contextValue = {
-		modalOpen,
 		close,
-		open,
+		modalContent,
+		setModalContent,
 	};
 
 	return (

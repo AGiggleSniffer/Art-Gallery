@@ -13,18 +13,28 @@ export default function AllArtView() {
 	const [filterState, setFilter] = useState("");
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(20);
+	const [filters, setFilters] = useState([]);
 	const allArts = useSelector(artActions.allArtArr);
 	const artCount = useSelector(artActions.artCount);
+	const topTags = useSelector(artActions.topTagsArr);
 
 	useEffect(() => {
 		dispatch(artActions.loadAllThunk({ filterState, page, size }));
 	}, [dispatch, filterState, page, size]);
 
 	useEffect(() => {
-		dispatch(dispatch(sessionActions.updateCtx(null)));
-	});
+		const filterArr = ["Name", "Artist", "Oldest", "Likes", "Dislikes"];
+		topTags?.forEach((tag) => filterArr.push(tag));
+		setFilters(filterArr);
+	}, [topTags]);
 
-	const filters = ["Art Name", "Artist", "Date", "Likes", "Dislikes"];
+	useEffect(() => {
+		dispatch(artActions.topTagsTagsThunk());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(sessionActions.updateCtx(null));
+	});
 
 	return (
 		<>
@@ -37,8 +47,10 @@ export default function AllArtView() {
 						onClick={() => {
 							if (filterState === filter) {
 								setFilter("");
+								setPage(1);
 							} else {
 								setFilter(filter);
+								setPage(1);
 							}
 						}}
 						isActive={filterState === filter}
@@ -49,43 +61,45 @@ export default function AllArtView() {
 				))}
 			</section>
 			<div
-				className="overflow-scroll overflow-x-hidden px-4 scroll-smooth"
+				className="overflow-scroll overflow-x-hidden px-4 scroll-smooth flex justify-center"
 				ref={scrollRef}
 			>
-				<Pagination
-					className="my-6"
-					size={size}
-					setSize={setSize}
-					page={page}
-					setPage={setPage}
-					count={artCount}
-				/>
-				<div className="grid auto-rows-min md:grid-cols-2 gap-4 xl:grid-cols-4">
-					<AnimatePresence>
-						{allArts.map((art) => (
-							<motion.div
-								initial={{ opacity: 0, scale: 0.75 }}
-								whileInView={{ opacity: 1, scale: 1 }}
-								viewport={{ root: scrollRef, once: true }}
-								exit={{ scale: 0.5 }}
-								layout
-								key={art.id}
-							>
-								<ArtCard art={art} />
-							</motion.div>
-						))}
-					</AnimatePresence>
+				<div className="xl:w-5/6 w-full">
+					<Pagination
+						className="py-3 my-3 border-b"
+						size={size}
+						setSize={setSize}
+						page={page}
+						setPage={setPage}
+						count={artCount}
+					/>
+					<div className="grid gap-4 auto-rows-min md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+						<AnimatePresence>
+							{allArts.map((art) => (
+								<motion.div
+									initial={{ opacity: 0, scale: 0.75 }}
+									whileInView={{ opacity: 1, scale: 1 }}
+									viewport={{ root: scrollRef, once: true }}
+									exit={{ scale: 0.5 }}
+									layout
+									key={art.id}
+								>
+									<ArtCard art={art} />
+								</motion.div>
+							))}
+						</AnimatePresence>
+					</div>
+					<Pagination
+						className="py-3 my-3 border-t"
+						size={size}
+						setSize={setSize}
+						page={page}
+						setPage={setPage}
+						count={artCount}
+						scrollRef={scrollRef}
+						bottom
+					/>
 				</div>
-				<Pagination
-					className="my-6"
-					size={size}
-					setSize={setSize}
-					page={page}
-					setPage={setPage}
-					count={artCount}
-					scrollRef={scrollRef}
-					bottom
-				/>
 			</div>
 		</>
 	);
