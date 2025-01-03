@@ -61,6 +61,11 @@ app.use((err, _req, _res, next) => {
 		err.status = 400;
 		err.errors = { type: err.message };
 		return next(err);
+	} else if (err.message === "Already Reviewed") {
+		err.title = "Validation error";
+		err.status = 400;
+		err.errors = { type: err.message };
+		return next(err);
 	} else return next(err);
 });
 

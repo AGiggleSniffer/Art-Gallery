@@ -11,6 +11,7 @@ const LikeCounter = ({ className, icon, icon2, count, active, onClick }) => {
 
 	const onButtonClick = () => {
 		onClick();
+		if (active) return;
 		const sparkles = Array.from({ length: SPARKLE_AMT });
 		const sparkleAnims = sparkles.map((_, index) => [
 			`.sparkle-${index}`,

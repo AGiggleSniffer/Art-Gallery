@@ -70,7 +70,7 @@ export default function SaveArtModal() {
 					<BsArrowLeft className="cursor-pointer" onClick={close} />
 				</div>
 				<div className="flex flex-col items-center justify-center gap-2 my-8 lg:m-4">
-					<img src="Icon.png" className="h-20 w-fit lg:h-12" />
+					<img src="/Icon.png" className="h-20 w-fit lg:h-12" />
 					<h1 className="text-4xl font-bold text-center">Save Art</h1>
 				</div>
 				<div className="w-full h-full flex flex-col gap-2 md:px-12 lg:px-0 text-xl">

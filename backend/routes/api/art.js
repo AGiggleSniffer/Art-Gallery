@@ -63,9 +63,10 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 router.get("/owned", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const where = { user_id: user.id };
+	const include = [ArtTag];
 
 	try {
-		const myArt = await Art.findAll({ where });
+		const myArt = await Art.findAll({ where, include });
 		return res.json(myArt);
 	} catch (err) {
 		return next(err);

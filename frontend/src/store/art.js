@@ -4,6 +4,9 @@ const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
+const LIKE = "art/like";
+const DISLIKE = "art/dislike";
+const DELETE_REVIEW = "art/delete";
 
 const load = (payload) => ({
 	type: LOAD,
@@ -24,6 +27,25 @@ export const oneArt = (payload) => ({
 	type: ONEART,
 	payload,
 });
+
+const like = (payload) => ({
+	type: LIKE,
+	payload,
+});
+
+const dislike = (payload) => ({
+	type: DISLIKE,
+	payload,
+});
+
+const deleteReview = (payload) => ({
+	type: DELETE_REVIEW,
+	payload,
+});
+
+///
+/// ART THUNKS
+///
 
 export const saveThunk =
 	({ galleryId, name, description, dataURL, tags }) =>
@@ -98,6 +120,44 @@ export const deleteArtThunk = (id) => async () => {
 	return data;
 };
 
+///
+/// REVIEW THUNKS
+///
+
+export const likeThunk = (id) => async (dispatch) => {
+	const response = await csrfFetch(`/api/review/like/${id}`, {
+		method: "POST",
+	});
+
+	const data = await response.json();
+	dispatch(like(data));
+	return data;
+};
+
+export const dislikeThunk = (id) => async (dispatch) => {
+	const response = await csrfFetch(`/api/review/dislike/${id}`, {
+		method: "POST",
+	});
+
+	const data = await response.json();
+	dispatch(dislike(data));
+	return data;
+};
+
+export const deleteReivewThunk = (id) => async (dispatch) => {
+	const response = await csrfFetch(`/api/review/delete/${id}`, {
+		method: "DELETE",
+	});
+
+	const data = await response.json();
+	dispatch(deleteReview(data));
+	return data;
+};
+
+///
+/// STATE & SELECTORS
+///
+
 const initialState = {
 	all: [],
 	count: 0,
@@ -109,6 +169,10 @@ export const allArtArr = (state) => state.art.all;
 export const artCount = (state) => state.art.count;
 export const ownedArt = (state) => state.art.owned;
 export const findArt = (state) => state.art.current;
+
+///
+/// REDUCER
+///
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -129,6 +193,17 @@ const artReducer = (state = initialState, action) => {
 		}
 		case ONEART: {
 			return { ...state, current: action.payload };
+		}
+		case LIKE: {
+			console.log(action.payload);
+			const newState = { ...state };
+			return { ...state };
+		}
+		case DISLIKE: {
+			return { ...state };
+		}
+		case DELETE_REVIEW: {
+			return { ...state };
 		}
 		default:
 			return state;
