@@ -1,5 +1,6 @@
 import { BsStarFill } from "react-icons/bs";
 import { motion, useAnimate } from "motion/react";
+import { useCallback, useEffect } from "react";
 
 const SPARKLE_AMT = 10;
 const randInt = (min, max) => {
@@ -9,9 +10,7 @@ const randInt = (min, max) => {
 const LikeCounter = ({ className, icon, icon2, count, active, onClick }) => {
 	const [scope, animate] = useAnimate();
 
-	const onButtonClick = () => {
-		onClick();
-		if (active) return;
+	const animateSparkles = useCallback(() => {
 		const sparkles = Array.from({ length: SPARKLE_AMT });
 		const sparkleAnims = sparkles.map((_, index) => [
 			`.sparkle-${index}`,
@@ -45,6 +44,18 @@ const LikeCounter = ({ className, icon, icon2, count, active, onClick }) => {
 			],
 			...sparkleAnims,
 		]);
+	}, [animate, scope]);
+
+	useEffect(() => {
+		if (active === true) {
+			animateSparkles();
+		}
+	}, [active, animateSparkles]);
+
+	const onButtonClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onClick();
 	};
 
 	const stars = Array.from({ length: SPARKLE_AMT }).map((_, index) => (

@@ -130,6 +130,7 @@ export const likeThunk = (id) => async (dispatch) => {
 	});
 
 	const data = await response.json();
+
 	dispatch(like(data));
 	return data;
 };
@@ -140,6 +141,7 @@ export const dislikeThunk = (id) => async (dispatch) => {
 	});
 
 	const data = await response.json();
+
 	dispatch(dislike(data));
 	return data;
 };
@@ -195,15 +197,46 @@ const artReducer = (state = initialState, action) => {
 			return { ...state, current: action.payload };
 		}
 		case LIKE: {
-			console.log(action.payload);
-			const newState = { ...state };
-			return { ...state };
+			return {
+				...state,
+				all: state.all.map((art) => {
+					if (art.id === +action.payload.artId) {
+						return { ...art, likeCount: art.likeCount + 1 };
+					}
+					return art;
+				}),
+			};
 		}
 		case DISLIKE: {
-			return { ...state };
+			return {
+				...state,
+				all: state.all.map((art) => {
+					if (art.id === +action.payload.artId) {
+						return { ...art, dislikeCount: art.dislikeCount + 1 };
+					}
+					return art;
+				}),
+			};
 		}
 		case DELETE_REVIEW: {
-			return { ...state };
+			return {
+				...state,
+				all: state.all.map((art) => {
+					if (art.id === +action.payload.artId) {
+						if (action.payload.like) {
+							return { ...art, likeCount: art.likeCount - 1 };
+						}
+
+						if (action.payload.dislike) {
+							return {
+								...art,
+								dislikeCount: art.dislikeCount - 1,
+							};
+						}
+					}
+					return art;
+				}),
+			};
 		}
 		default:
 			return state;

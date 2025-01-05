@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LikeCounter from "./LikeCounter";
@@ -11,24 +11,69 @@ import {
 import * as artActions from "../../store/art";
 
 const ArtCard = ({
-	art: { id, data_url, name, dislikeCount, likeCount, createdAt, User },
+	art: {
+		id,
+		data_url,
+		name,
+		likeCount,
+		dislikeCount,
+		createdAt,
+		User,
+		Reviews,
+	},
 }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const [isLiked, setIsLiked] = useState();
+	const [isLiked, setIsLiked] = useState(null);
 
-	const onLike = () => {
-		setIsLiked((state) => {
-			const res = dispatch(artActions.likeThunk(id));
-			return state ? null : true;
-		});
+	useEffect(() => {
+		if (Reviews[0]?.liked) {
+			setIsLiked(true);
+		}
+
+		if (Reviews[0]?.disliked) {
+			setIsLiked(false);
+		}
+	}, [Reviews]);
+
+	const onLike = async () => {
+		setIsLiked((state) => (state === true ? null : true));
+		try {
+			if (isLiked === null) {
+				await dispatch(artActions.likeThunk(id));
+				setIsLiked(true);
+			} else if (isLiked === true) {
+				await dispatch(artActions.deleteReivewThunk(id));
+				setIsLiked(null);
+			} else if (isLiked === false) {
+				await dispatch(artActions.deleteReivewThunk(id));
+				await dispatch(artActions.likeThunk(id));
+				setIsLiked(true);
+			}
+		} catch (err) {
+			const res = await err.json();
+			console.log(res);
+		}
 	};
 
-	const onDislike = () => {
-		setIsLiked((state) => {
-			const res = dispatch(artActions.dislikeThunk(id));
-			return state === false ? null : false;
-		});
+	const onDislike = async () => {
+		setIsLiked((state) => (state === false ? null : false));
+		try {
+			if (isLiked === null) {
+				await dispatch(artActions.dislikeThunk(id));
+				setIsLiked(false);
+			} else if (isLiked === false) {
+				await dispatch(artActions.deleteReivewThunk(id));
+				setIsLiked(null);
+			} else if (isLiked === true) {
+				await dispatch(artActions.deleteReivewThunk(id));
+				await dispatch(artActions.dislikeThunk(id));
+				setIsLiked(false);
+			}
+		} catch (err) {
+			const res = await err.json();
+			console.log(res);
+		}
 	};
 
 	return (

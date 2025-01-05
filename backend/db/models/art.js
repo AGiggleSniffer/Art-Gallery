@@ -66,32 +66,40 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: { msg: "Something went wrong please try again" },
 				},
 			},
+			likeCount: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+			},
+			dislikeCount: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+			},
 		},
 		{
 			sequelize,
 			modelName: "Art",
 			scopes: {
 				withCounts: {
-					attributes: {
-						include: [
-							[
-								sequelize.literal(`(
-									SELECT COUNT(*)
-									FROM Reviews
-									WHERE Reviews.art_id = Art.id AND Reviews.liked = true
-								)`),
-								"likeCount",
-							],
-							[
-								sequelize.literal(`(
-									SELECT COUNT(*)
-									FROM Reviews
-									WHERE Reviews.art_id = Art.id AND Reviews.disliked = true
-								)`),
-								"dislikeCount",
-							],
-						],
-					},
+					// attributes: {
+					// 	include: [
+					// 		[
+					// 			sequelize.literal(`(
+					// 				SELECT COUNT(*)
+					// 				FROM Reviews
+					// 				WHERE Reviews.art_id = Art.id AND Reviews.liked = true
+					// 			)`),
+					// 			"likeCount",
+					// 		],
+					// 		[
+					// 			sequelize.literal(`(
+					// 				SELECT COUNT(*)
+					// 				FROM Reviews
+					// 				WHERE Reviews.art_id = Art.id AND Reviews.disliked = true
+					// 			)`),
+					// 			"dislikeCount",
+					// 		],
+					// 	],
+					// },
 				},
 			},
 		},

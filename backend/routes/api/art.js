@@ -4,7 +4,7 @@ const { requireAuth } = require("../../utils/auth");
 const { handleValidationErrors } = require("../../utils/validation");
 const { paginationBuilder } = require("../../utils/paginationBuilder");
 const { orderBuilder } = require("../../utils/orderBuilder");
-const { Art, ArtTag, User, sequelize } = require("../../db/models");
+const { Art, ArtTag, User, Review, sequelize } = require("../../db/models");
 
 const checkOwner = async (req, _res, next) => {
 	const { user } = req;
@@ -35,8 +35,17 @@ const validateQueryFilters = [
 
 router.get("/", validateQueryFilters, async (req, res, next) => {
 	const { page, size, filterState } = req.query;
+	const { user } = req;
 
-	const include = [User];
+	const include = [
+		User,
+		{
+			model: Review,
+			// if we are logged in find review by the user
+			where: user ? { user_id: user.id } : {},
+			required: false,
+		},
+	];
 
 	const group = ["Art.id"];
 
@@ -45,16 +54,14 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	const order = orderBuilder(filterState);
 
 	try {
-		const Arts = await Art.scope("withCounts").findAll({
+		const { rows: Arts, count } = await Art.findAndCountAll({
 			include,
 			group,
 			order,
 			...pagination,
 		});
 
-		const count = await Art.count();
-
-		return res.json({ Arts, count });
+		return res.json({ Arts, count: count.length });
 	} catch (err) {
 		return next(err);
 	}
