@@ -4,29 +4,30 @@ exports.orderBuilder = (filter) => {
 	const order = [];
 	switch (filter) {
 		case "": {
-			order.push([["createdAt", "DESC"]]);
+			order.push(["createdAt", "DESC"]);
 			break;
 		}
 		case "Oldest": {
-			order.push([["createdAt"]]);
+			order.push(["createdAt"]);
 			break;
 		}
 		case "Name": {
-			order.push([[sequelize.fn("LOWER", sequelize.col("name")), "ASC"]]);
+			order.push([sequelize.fn("LOWER", sequelize.col("name")), "ASC"]);
 			break;
 		}
 		case "Artist": {
 			order.push([
-				[sequelize.fn("LOWER", sequelize.col("username")), "ASC"],
+				sequelize.fn("LOWER", sequelize.col("User.username")),
+				"ASC",
 			]);
 			break;
 		}
 		case "Likes": {
-			order.push([[sequelize.literal("likeCount"), "DESC"]]);
+			order.push([sequelize.literal("likeCount"), "DESC"]);
 			break;
 		}
 		case "Dislikes": {
-			order.push([[sequelize.literal("dislikeCount"), "DESC"]]);
+			order.push([sequelize.literal("dislikeCount"), "DESC"]);
 			break;
 		}
 	}

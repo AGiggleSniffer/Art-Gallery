@@ -27,6 +27,8 @@ const ArtCard = ({
 	const [isLiked, setIsLiked] = useState(null);
 
 	useEffect(() => {
+		if (!Reviews) return;
+
 		if (Reviews[0]?.liked) {
 			setIsLiked(true);
 		}
@@ -37,7 +39,6 @@ const ArtCard = ({
 	}, [Reviews]);
 
 	const onLike = async () => {
-		setIsLiked((state) => (state === true ? null : true));
 		try {
 			if (isLiked === null) {
 				await dispatch(artActions.likeThunk(id));
@@ -57,7 +58,6 @@ const ArtCard = ({
 	};
 
 	const onDislike = async () => {
-		setIsLiked((state) => (state === false ? null : false));
 		try {
 			if (isLiked === null) {
 				await dispatch(artActions.dislikeThunk(id));

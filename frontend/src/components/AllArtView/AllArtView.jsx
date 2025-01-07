@@ -13,9 +13,9 @@ export default function AllArtView() {
 	const [filterState, setFilter] = useState("");
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(20);
-	const allArts = useSelector(artActions.allArtArr);
+	const allArts = useSelector(artActions.selectAllArtArr);
 	const artCount = useSelector(artActions.artCount);
-	const filters = ["Name", "Artist", "Oldest", "Likes", "Dislikes"];
+	const filters = ["Name", /*"Artist",*/ "Oldest", "Likes", "Dislikes"];
 
 	useEffect(() => {
 		dispatch(artActions.loadAllThunk({ filterState, page, size }));

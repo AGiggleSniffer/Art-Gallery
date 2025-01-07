@@ -37,17 +37,16 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	const { page, size, filterState } = req.query;
 	const { user } = req;
 
-	const include = [
-		User,
-		{
-			model: Review,
-			// if we are logged in find review by the user
-			where: user ? { user_id: user.id } : {},
-			required: false,
-		},
-	];
-
-	const group = ["Art.id"];
+	const include = user
+		? [
+				User,
+				{
+					model: Review,
+					where: { user_id: user.id },
+					required: false,
+				},
+		  ]
+		: [User];
 
 	const pagination = paginationBuilder(page, size);
 
@@ -56,7 +55,6 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	try {
 		const { rows: Arts, count } = await Art.findAndCountAll({
 			include,
-			group,
 			order,
 			...pagination,
 		});

@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { createSelector } from "reselect";
 
 const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
@@ -161,13 +162,16 @@ export const deleteReivewThunk = (id) => async (dispatch) => {
 ///
 
 const initialState = {
-	all: [],
+	all: {},
 	count: 0,
 	owned: [],
 	current: null,
 };
 
-export const allArtArr = (state) => state.art.all;
+const selectAllArt = (state) => state.art.all;
+export const selectAllArtArr = createSelector([selectAllArt], (all) =>
+	Object.values(all).sort((a, b) => a.order - b.order),
+);
 export const artCount = (state) => state.art.count;
 export const ownedArt = (state) => state.art.owned;
 export const findArt = (state) => state.art.current;
@@ -180,12 +184,16 @@ const artReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD:
 			return { ...state, owned: action.payload };
-		case LOAD_ALL:
+		case LOAD_ALL: {
 			return {
 				...state,
-				all: action.payload.Arts,
 				count: action.payload.count,
+				all: action.payload.Arts.reduce((acc, item, index) => {
+					acc[item.id] = { ...item, order: index };
+					return acc;
+				}, {}),
 			};
+		}
 		case EDIT: {
 			const newAllArt = {
 				...state.all,
@@ -197,45 +205,48 @@ const artReducer = (state = initialState, action) => {
 			return { ...state, current: action.payload };
 		}
 		case LIKE: {
+			console.log(action.payload);
+			const id = +action.payload.artId;
 			return {
 				...state,
-				all: state.all.map((art) => {
-					if (art.id === +action.payload.artId) {
-						return { ...art, likeCount: art.likeCount + 1 };
-					}
-					return art;
-				}),
+				all: {
+					...state.all,
+					[id]: {
+						...state.all[id],
+						likeCount: state.all[id].likeCount + 1,
+					},
+				},
 			};
 		}
 		case DISLIKE: {
+			const id = +action.payload.artId;
 			return {
 				...state,
-				all: state.all.map((art) => {
-					if (art.id === +action.payload.artId) {
-						return { ...art, dislikeCount: art.dislikeCount + 1 };
-					}
-					return art;
-				}),
+				all: {
+					...state.all,
+					[id]: {
+						...state.all[id],
+						dislikeCount: state.all[id].dislikeCount + 1,
+					},
+				},
 			};
 		}
 		case DELETE_REVIEW: {
+			const { artId: id, like, dislike } = action.payload;
 			return {
 				...state,
-				all: state.all.map((art) => {
-					if (art.id === +action.payload.artId) {
-						if (action.payload.like) {
-							return { ...art, likeCount: art.likeCount - 1 };
-						}
-
-						if (action.payload.dislike) {
-							return {
-								...art,
-								dislikeCount: art.dislikeCount - 1,
-							};
-						}
-					}
-					return art;
-				}),
+				all: {
+					...state.all,
+					[+id]: {
+						...state.all[+id],
+						likeCount: like
+							? state.all[+id].likeCount - 1
+							: state.all[+id].likeCount,
+						dislikeCount: dislike
+							? state.all[+id].dislikeCount - 1
+							: state.all[+id].dislikeCount,
+					},
+				},
 			};
 		}
 		default:
