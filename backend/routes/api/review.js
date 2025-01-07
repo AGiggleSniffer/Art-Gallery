@@ -2,6 +2,35 @@ const router = require("express").Router();
 const { requireAuth } = require("../../utils/auth");
 const { Art, ArtTag, User, Review, sequelize } = require("../../db/models");
 
+router.put("/:artId", requireAuth, async (req, res, next) => {
+	const { user } = req;
+	const { artId } = req.params;
+	const { liked, disliked } = req.body;
+	const payload = {
+		liked,
+		disliked,
+	};
+	const options = {
+		where: { user_id: user.id, art_id: artId },
+		/* ONLY supported for Postgres */
+		// will return the results without needing another db query
+		returning: true,
+		plain: true,
+	};
+
+	try {
+		await Art.update(payload, options);
+		return res.json({
+			message: "Successfully Updated",
+			artId,
+			liked,
+			disliked,
+		});
+	} catch (err) {
+		return next(err);
+	}
+});
+
 router.post("/like/:artId", requireAuth, async (req, res, next) => {
 	const { user } = req;
 	const { artId } = req.params;

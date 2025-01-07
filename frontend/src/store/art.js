@@ -5,9 +5,10 @@ const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
-const LIKE = "art/like";
-const DISLIKE = "art/dislike";
-const DELETE_REVIEW = "art/delete";
+const LIKE = "art/review/like";
+const DISLIKE = "art/review/dislike";
+const DELETE_REVIEW = "art/review/delete";
+const UPDATE_REVIEW = "art/review/update";
 
 const load = (payload) => ({
 	type: LOAD,
@@ -41,6 +42,11 @@ const dislike = (payload) => ({
 
 const deleteReview = (payload) => ({
 	type: DELETE_REVIEW,
+	payload,
+});
+
+const updateReview = (payload) => ({
+	type: UPDATE_REVIEW,
 	payload,
 });
 
@@ -157,6 +163,20 @@ export const deleteReivewThunk = (id) => async (dispatch) => {
 	return data;
 };
 
+export const updateReivewThunk = (id, liked, disliked) => async (dispatch) => {
+	const response = await csrfFetch(`/api/review/${id}`, {
+		method: "PUT",
+		body: JSON.stringify({
+			liked,
+			disliked,
+		}),
+	});
+
+	const data = await response.json();
+	dispatch(updateReview(data));
+	return data;
+};
+
 ///
 /// STATE & SELECTORS
 ///
@@ -245,6 +265,33 @@ const artReducer = (state = initialState, action) => {
 						dislikeCount: dislike
 							? state.all[+id].dislikeCount - 1
 							: state.all[+id].dislikeCount,
+					},
+				},
+			};
+		}
+		case UPDATE_REVIEW: {
+			const { artId: id, liked, disliked } = action.payload;
+			let likeCount = state.all[+id].likeCount;
+			let dislikeCount = state.all[+id].dislikeCount;
+			
+			if (liked) {
+				likeCount++;
+				dislikeCount--;
+			}
+
+			if (disliked) {
+				dislikeCount++;
+				likeCount--;
+			}
+			
+			return {
+				...state,
+				all: {
+					...state.all,
+					[+id]: {
+						...state.all[+id],
+						likeCount,
+						dislikeCount,
 					},
 				},
 			};

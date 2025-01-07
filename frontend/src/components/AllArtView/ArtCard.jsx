@@ -41,17 +41,17 @@ const ArtCard = ({
 	const onLike = async () => {
 		try {
 			if (isLiked === null) {
-				await dispatch(artActions.likeThunk(id));
 				setIsLiked(true);
+				await dispatch(artActions.likeThunk(id));
 			} else if (isLiked === true) {
-				await dispatch(artActions.deleteReivewThunk(id));
 				setIsLiked(null);
-			} else if (isLiked === false) {
 				await dispatch(artActions.deleteReivewThunk(id));
-				await dispatch(artActions.likeThunk(id));
+			} else if (isLiked === false) {
 				setIsLiked(true);
+				await dispatch(artActions.updateReivewThunk(id, true, false));
 			}
 		} catch (err) {
+			setIsLiked(isLiked);
 			const res = await err.json();
 			console.log(res);
 		}
@@ -60,17 +60,17 @@ const ArtCard = ({
 	const onDislike = async () => {
 		try {
 			if (isLiked === null) {
-				await dispatch(artActions.dislikeThunk(id));
 				setIsLiked(false);
+				await dispatch(artActions.dislikeThunk(id));
 			} else if (isLiked === false) {
-				await dispatch(artActions.deleteReivewThunk(id));
 				setIsLiked(null);
-			} else if (isLiked === true) {
 				await dispatch(artActions.deleteReivewThunk(id));
-				await dispatch(artActions.dislikeThunk(id));
+			} else if (isLiked === true) {
 				setIsLiked(false);
+				await dispatch(artActions.updateReivewThunk(id, false, true));
 			}
 		} catch (err) {
+			setIsLiked(isLiked);
 			const res = await err.json();
 			console.log(res);
 		}
