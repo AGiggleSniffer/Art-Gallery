@@ -273,7 +273,7 @@ const artReducer = (state = initialState, action) => {
 			const { artId: id, liked, disliked } = action.payload;
 			let likeCount = state.all[+id].likeCount;
 			let dislikeCount = state.all[+id].dislikeCount;
-			
+
 			if (liked) {
 				likeCount++;
 				dislikeCount--;
@@ -283,7 +283,7 @@ const artReducer = (state = initialState, action) => {
 				dislikeCount++;
 				likeCount--;
 			}
-			
+
 			return {
 				...state,
 				all: {

@@ -78,9 +78,9 @@ const ArtCard = ({
 
 	return (
 		<div key={id} className="my-4 flex flex-col">
-			<figure className="flex justify-center items-center cursor-pointer bg-black rounded overflow-hidden">
+			<figure className="flex justify-center items-center cursor-pointer bg-black overflow-hidden">
 				<img
-					className="w-full bg-[url('/cream-paper.png')] bg-white pixelated"
+					className="frame w-full bg-[url('/cream-paper.png')] bg-white pixelated"
 					src={data_url}
 					onClick={() => navigate(`/arts/${id}`)}
 				/>

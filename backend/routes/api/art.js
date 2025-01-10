@@ -59,7 +59,7 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 			...pagination,
 		});
 
-		return res.json({ Arts, count: count.length });
+		return res.json({ Arts, count: count });
 	} catch (err) {
 		return next(err);
 	}
