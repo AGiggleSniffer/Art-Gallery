@@ -5,11 +5,10 @@ import ErrorDisplay from "./ErrorDisplay";
 import { context } from "../../store/session";
 import { BsArrowLeft } from "react-icons/bs";
 import { useModal } from "../../context/ModalProvider";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SaveArtModal() {
 	const navigate = useNavigate();
-	const { id } = useParams();
 	const sessionContext = useSelector(context);
 	const [data, setData] = useState("");
 	const [description, setDescription] = useState("");

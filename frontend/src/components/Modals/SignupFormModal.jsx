@@ -44,7 +44,7 @@ function SignupFormModal({ extraMessage }) {
 	return (
 		<SunsetForm handleSubmit={handleSubmit}>
 			<div className="flex flex-col items-center justify-center gap-2 my-8 lg:m-4">
-				<img src="Icon.png" className="h-20 w-fit lg:h-12" />
+				<img src="/Icon.png" className="h-20 w-fit lg:h-12" />
 				<h1 className="text-4xl font-bold text-center">Sign Up</h1>
 				{extraMessage && <h2 className="text-sm">{extraMessage}</h2>}
 			</div>

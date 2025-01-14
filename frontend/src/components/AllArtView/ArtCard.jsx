@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LikeCounter from "./LikeCounter";
 import {
@@ -8,7 +8,10 @@ import {
 	BsHandThumbsDown,
 	BsHandThumbsUp,
 } from "react-icons/bs";
+import { useModal } from "../../context/ModalProvider";
+import SignupFormModal from "../Modals/SignupFormModal";
 import * as artActions from "../../store/art";
+import * as sessionActions from "../../store/session";
 
 const ArtCard = ({
 	art: {
@@ -24,7 +27,9 @@ const ArtCard = ({
 }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const sessionUser = useSelector(sessionActions.user);
 	const [isLiked, setIsLiked] = useState(null);
+	const { setModalContent } = useModal();
 
 	useEffect(() => {
 		if (!Reviews) return;
@@ -39,6 +44,11 @@ const ArtCard = ({
 	}, [Reviews]);
 
 	const onLike = async () => {
+		if (!sessionUser)
+			return setModalContent(
+				<SignupFormModal extraMessage="Signup to like or dislike Art" />,
+			);
+		
 		try {
 			if (isLiked === null) {
 				setIsLiked(true);
@@ -58,6 +68,11 @@ const ArtCard = ({
 	};
 
 	const onDislike = async () => {
+		if (!sessionUser)
+			return setModalContent(
+				<SignupFormModal extraMessage="Signup to like or dislike Art" />,
+			);
+		
 		try {
 			if (isLiked === null) {
 				setIsLiked(false);

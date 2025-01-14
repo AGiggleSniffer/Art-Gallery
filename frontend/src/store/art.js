@@ -93,7 +93,7 @@ export const loadAllThunk =
 
 export const editThunk =
 	({ galleryId, name, description, dataURL, tags, id }) =>
-	async (dispatch) => {
+	async () => {
 		const response = await csrfFetch(`/api/art/${id}`, {
 			method: "PUT",
 			body: JSON.stringify({
@@ -106,7 +106,7 @@ export const editThunk =
 		});
 
 		const data = await response.json();
-		dispatch(edit(data));
+		// dispatch(edit(data));
 		return data;
 	};
 

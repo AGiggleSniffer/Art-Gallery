@@ -15,11 +15,12 @@ export default function AllArtView() {
 	const [size, setSize] = useState(20);
 	const allArts = useSelector(artActions.selectAllArtArr);
 	const artCount = useSelector(artActions.artCount);
+	const sessionUser = useSelector(sessionActions.user);
 	const filters = ["Name", /*"Artist",*/ "Oldest", "Likes", "Dislikes"];
 
 	useEffect(() => {
 		dispatch(artActions.loadAllThunk({ filterState, page, size }));
-	}, [dispatch, filterState, page, size]);
+	}, [dispatch, filterState, page, size, sessionUser]);
 
 	useEffect(() => {
 		dispatch(sessionActions.updateCtx(null));

@@ -9,10 +9,10 @@ import {
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import CanvasHome from "./components/CanvasHome";
-import GalleryHome from "./components/GalleryHome";
-import GalleryView from "./components/GalleryView";
+// import GalleryHome from "./components/GalleryHome";
+// import GalleryView from "./components/GalleryView";
+// import DataUrlConverter from "./components/DataUrlConverter";
 import AllArtView from "./components/AllArtView";
-import DataUrlConverter from "./components/DataUrlConverter";
 import Modal from "./components/OpenModalButton/Modal";
 
 function Layout() {
@@ -51,18 +51,18 @@ const router = createBrowserRouter([
 				path: "/arts/:id",
 				element: <CanvasHome />,
 			},
-			{
-				path: "/galleries",
-				element: <GalleryHome />,
-			},
-			{
-				path: "/galleries/:id",
-				element: <GalleryView />,
-			},
-			{
-				path: "/converter",
-				element: <DataUrlConverter />,
-			},
+			// {
+			// 	path: "/galleries",
+			// 	element: <GalleryHome />,
+			// },
+			// {
+			// 	path: "/galleries/:id",
+			// 	element: <GalleryView />,
+			// },
+			// {
+			// 	path: "/converter",
+			// 	element: <DataUrlConverter />,
+			// },
 		],
 	},
 	{

@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		<ModalProvider>
 			<Provider store={store}>
 				<App />
-				<Noise />
+				{/* <Noise /> */}
 			</Provider>
 		</ModalProvider>
 	</React.StrictMode>,
