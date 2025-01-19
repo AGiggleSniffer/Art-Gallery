@@ -6,6 +6,7 @@ import FilterButton from "./FilterButton";
 import ArtCard from "./ArtCard";
 import { AnimatePresence, motion } from "motion/react";
 import Pagination from "./Pagination";
+import randInt from "../../utils/randInt.js";
 
 export default function AllArtView() {
 	const dispatch = useDispatch();
@@ -67,11 +68,36 @@ export default function AllArtView() {
 						<AnimatePresence>
 							{allArts.map((art) => (
 								<motion.div
-									initial={{ opacity: 0, scale: 0.75 }}
-									whileInView={{ opacity: 1, scale: 1 }}
-									viewport={{ root: scrollRef, once: true }}
-									exit={{ scale: 0.5 }}
-									layout
+									style={{ originY: 0 }}
+									initial={{
+										y: "10vh",
+										rotateZ: randInt(0, 1)
+											? randInt(5, 45)
+											: -randInt(5, 45),
+									}}
+									whileInView={{
+										y: 0,
+										rotateZ: 0,
+										transition: {
+											type: "spring",
+											damping: randInt(3, 10),
+											duration: 50,
+											y: {
+												damping: 100,
+											},
+										},
+									}}
+									viewport={{ root: scrollRef, once: false }}
+									exit={{
+										y: "110vh",
+										rotateZ: randInt(0, 1)
+											? randInt(15, 65)
+											: -randInt(15, 65),
+										transition: {
+											duration: 0.5,
+										},
+									}}
+									// layout
 									key={art.id}
 								>
 									<ArtCard art={art} />

@@ -47,7 +47,7 @@ export default function CanvasHome() {
 				user={user}
 				className="bg-neutral-600/50 select-none w-16 flex-shrink-0 relative"
 			/>
-			<div className="w-full flex justify-center items-center border-l border-black">
+			<div className="w-full flex flex-col justify-center items-center border-l border-black">
 				<div className="w-[95%] max-w-[75vh]">
 					<canvas
 						className="bg-[url('/cream-paper.png')] bg-white"

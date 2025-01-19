@@ -1,11 +1,9 @@
 import { BsStarFill } from "react-icons/bs";
 import { motion, useAnimate } from "motion/react";
 import { useCallback, useEffect } from "react";
+import randInt from "../../utils/randInt.js";
 
 const SPARKLE_AMT = 10;
-const randInt = (min, max) => {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
 
 const LikeCounter = ({ className, icon, icon2, count, active, onClick }) => {
 	const [scope, animate] = useAnimate();

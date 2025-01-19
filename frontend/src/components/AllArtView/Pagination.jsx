@@ -29,7 +29,7 @@ const Pagination = ({
 					<label className="flex items-center">
 						Items per page:
 						<CustomSelect
-							className="text-black bg-white mx-4 rounded"
+							className="text-black bg-white mx-4 rounded z-10"
 							options={options}
 							selected={size}
 							setSelected={setSize}

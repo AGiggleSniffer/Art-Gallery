@@ -92,8 +92,8 @@ const ArtCard = ({
 	};
 
 	return (
-		<div key={id} className="my-4 flex flex-col">
-			<figure className="flex justify-center items-center cursor-pointer bg-black overflow-hidden">
+		<div key={id} className="my-4 flex flex-col relative">
+			<figure className="string flex flex-col justify-center items-center cursor-pointer overflow-hidden">
 				<img
 					className="frame w-full bg-[url('/cream-paper.png')] bg-white pixelated"
 					src={data_url}
