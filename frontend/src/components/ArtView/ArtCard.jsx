@@ -48,7 +48,7 @@ const ArtCard = ({
 			return setModalContent(
 				<SignupFormModal extraMessage="Signup to like or dislike Art" />,
 			);
-		
+
 		try {
 			if (isLiked === null) {
 				setIsLiked(true);
@@ -72,7 +72,7 @@ const ArtCard = ({
 			return setModalContent(
 				<SignupFormModal extraMessage="Signup to like or dislike Art" />,
 			);
-		
+
 		try {
 			if (isLiked === null) {
 				setIsLiked(false);
@@ -97,14 +97,19 @@ const ArtCard = ({
 				<img
 					className="frame w-full bg-[url('/cream-paper.png')] bg-white pixelated"
 					src={data_url}
-					onClick={() => navigate(`/arts/${id}`)}
+					onClick={() => navigate(`/art/${id}`)}
 				/>
 			</figure>
 			<div className="my-4">
 				<h1 className="text-xl">{name}</h1>
 				<div className="flex justify-between">
 					<p className="text-neutral-400 flex items-center">
-						{User.username} - {new Date(createdAt).toDateString()}
+						{User.username} -{" "}
+						{new Date(createdAt)
+							.toDateString()
+							.split(" ")
+							.splice(1)
+							.join(" ")}
 					</p>
 					<span className="flex rounded-full bg-black/20">
 						<LikeCounter

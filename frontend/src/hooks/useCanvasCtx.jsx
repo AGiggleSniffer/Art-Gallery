@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { BRUSH, PENCIL, PIXEL } from "./DrawingStyles";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import * as sessionActions from "../store/session";
 
 const CANVAS_WIDTH = 100;
 const CANVAS_HEIGHT = 100;
@@ -39,6 +41,7 @@ const draw = (e, ctx, style, size, color, scale) => {
 };
 
 export default function useCanvasCtx(ref) {
+	const dispatch = useDispatch();
 	const { id } = useParams();
 	const [isPainting, setIsPainting] = useState(false);
 	const [canvas, setCanvas] = useState();
@@ -55,6 +58,16 @@ export default function useCanvasCtx(ref) {
 		const { width, height } = canvas;
 		ctx.clearRect(0, 0, width, height);
 	}, [ctx, canvas]);
+
+	const updateCanvas = useCallback(
+		(dataUrl) => {
+			if (!ctx) return;
+			const img = new Image();
+			img.src = dataUrl;
+			ctx.drawImage(img, 0, 0);
+		},
+		[ctx],
+	);
 
 	const setCanvasSize = useCallback(() => {
 		if (!canvas) return;
@@ -142,6 +155,22 @@ export default function useCanvasCtx(ref) {
 		};
 	}, [canvas, color, ctx, isPainting, scale, size, style]);
 
+	useEffect(() => {
+		dispatch(
+			sessionActions.updateCtx({
+				ctx,
+				clearCanvas,
+				style,
+				setStyle,
+				color,
+				setColor,
+				size,
+				setSize,
+				updateCanvas,
+			}),
+		);
+	}, [clearCanvas, color, ctx, dispatch, size, style, updateCanvas]);
+
 	return {
 		ctx,
 		clearCanvas,
@@ -151,5 +180,6 @@ export default function useCanvasCtx(ref) {
 		setColor,
 		size,
 		setSize,
+		updateCanvas,
 	};
 }

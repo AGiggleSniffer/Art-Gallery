@@ -20,11 +20,6 @@ const loadAll = (payload) => ({
 	payload,
 });
 
-const edit = (payload) => ({
-	type: EDIT,
-	payload,
-});
-
 export const oneArt = (payload) => ({
 	type: ONEART,
 	payload,
@@ -71,13 +66,17 @@ export const saveThunk =
 		return data;
 	};
 
-export const loadThunk = () => async (dispatch) => {
-	const response = await csrfFetch(`/api/art/owned`);
+export const loadThunk =
+	({ filterState, page, size }) =>
+	async (dispatch) => {
+		const response = await csrfFetch(
+			`/api/art/owned?filterState=${filterState}&page=${page}&size=${size}`,
+		);
 
-	const data = await response.json();
-	dispatch(load(data));
-	return data;
-};
+		const data = await response.json();
+		dispatch(load(data));
+		return data;
+	};
 
 export const loadAllThunk =
 	({ filterState, page, size }) =>
@@ -106,7 +105,6 @@ export const editThunk =
 		});
 
 		const data = await response.json();
-		// dispatch(edit(data));
 		return data;
 	};
 
@@ -192,8 +190,11 @@ const selectAllArt = (state) => state.art.all;
 export const selectAllArtArr = createSelector([selectAllArt], (all) =>
 	Object.values(all).sort((a, b) => a.order - b.order),
 );
+const ownedArt = (state) => state.art.owned;
+export const selectOwnedArtArr = createSelector([ownedArt], (owned) =>
+	Object.values(owned).sort((a, b) => a.order - b.order),
+);
 export const artCount = (state) => state.art.count;
-export const ownedArt = (state) => state.art.owned;
 export const findArt = (state) => state.art.current;
 
 ///
@@ -202,8 +203,16 @@ export const findArt = (state) => state.art.current;
 
 const artReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case LOAD:
-			return { ...state, owned: action.payload };
+		case LOAD: {
+			return {
+				...state,
+				count: action.payload.count,
+				owned: action.payload.Arts.reduce((acc, item, index) => {
+					acc[item.id] = { ...item, order: index };
+					return acc;
+				}, {}),
+			};
+		}
 		case LOAD_ALL: {
 			return {
 				...state,

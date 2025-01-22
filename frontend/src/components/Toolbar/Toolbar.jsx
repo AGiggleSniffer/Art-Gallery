@@ -45,7 +45,9 @@ export default function Toolbar({
 					isSelected={style === BRUSH}
 					onButtonClick={() => setStyle(BRUSH)}
 				>
-					<BsBrushFill className="w-full h-full p-4" />
+					<BsBrushFill
+						className="w-full h-full p-4"
+					/>
 				</Tool>
 				<Tool
 					isSelected={style === PIXEL}
@@ -87,7 +89,6 @@ export default function Toolbar({
 								setColor(e.target.value);
 							}}
 						/>
-						{/* Color */}
 					</label>
 				</div>
 			</div>

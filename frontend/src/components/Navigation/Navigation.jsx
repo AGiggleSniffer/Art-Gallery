@@ -3,7 +3,7 @@ import Menu from "./Menu";
 
 function Navigation({ isLoaded }) {
 	return (
-		<nav className="relative flex justify-between items-center w-screen bg-neutral-600/50 h-10 select-none z-10">
+		<nav className="relative flex justify-between items-center w-screen bg-neutral-600/50 h-10 select-none z-20">
 			<span className="md:w-28 w-16">
 				<div className="w-fit flex justify-start cursor-pointer">
 					{isLoaded && <Menu className="h-10 w-16" />}

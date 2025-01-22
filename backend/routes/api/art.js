@@ -59,20 +59,36 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 			...pagination,
 		});
 
-		return res.json({ Arts, count: count });
+		return res.json({ Arts, count });
 	} catch (err) {
 		return next(err);
 	}
 });
 
 router.get("/owned", requireAuth, async (req, res, next) => {
+	const { page, size, filterState } = req.query;
 	const { user } = req;
 	const where = { user_id: user.id };
-	const include = [ArtTag];
+	const include = [
+		User,
+		{
+			model: Review,
+			where: { user_id: user.id },
+			required: false,
+		},
+	];
+	const pagination = paginationBuilder(page, size);
+	const order = orderBuilder(filterState);
 
 	try {
-		const myArt = await Art.findAll({ where, include });
-		return res.json(myArt);
+		const { rows: Arts, count } = await Art.findAndCountAll({
+			where,
+			include,
+			order,
+			...pagination,
+		});
+
+		return res.json({ Arts, count });
 	} catch (err) {
 		return next(err);
 	}

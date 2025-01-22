@@ -1,19 +1,30 @@
 import { motion } from "motion/react";
 import { NavLink } from "react-router-dom";
-import { BsArrowsFullscreen, BsBrushFill, BsImageFill, BsInfoCircle, BsPaletteFill } from "react-icons/bs";
+import {
+	BsArrowsFullscreen,
+	BsBrushFill,
+	// BsImageFill,
+	BsInfoCircle,
+	BsPaletteFill,
+} from "react-icons/bs";
 
 const NavigationButtons = ({ variant }) => {
 	const styleActive = ({ isActive }) =>
-        isActive ? { borderLeft: "4px solid" } : {};
-    
+		isActive
+			? {
+					borderLeft: "4px solid",
+					backgroundColor: "rgb(255 255 255 / 0.1)",
+			  }
+			: {};
+
 	const toggleFullscreen = () => {
 		if (document.fullscreenElement) {
 			document.exitFullscreen();
 		} else {
 			document.documentElement.requestFullscreen();
 		}
-    };
-    
+	};
+
 	return (
 		<>
 			<motion.div variants={variant}>
@@ -31,14 +42,14 @@ const NavigationButtons = ({ variant }) => {
 				<NavLink
 					to="/arts"
 					style={styleActive}
-					className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors"
+					className="flex items-center py-2 px-4 hover:bg-white/10 hover:border-l-2 transition-colors border-b border-b-neutral-500"
 				>
 					<BsPaletteFill className="mr-2" />
 					All Art
 				</NavLink>
 			</motion.div>
 
-			<motion.div variants={variant}>
+			{/* <motion.div variants={variant}>
 				<NavLink
 					to="/galleries"
 					style={styleActive}
@@ -47,7 +58,7 @@ const NavigationButtons = ({ variant }) => {
 					<BsImageFill className="mr-2" />
 					Gallery
 				</NavLink>
-			</motion.div>
+			</motion.div> */}
 
 			<motion.button
 				onClick={toggleFullscreen}

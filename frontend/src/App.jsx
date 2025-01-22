@@ -9,11 +9,13 @@ import {
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import CanvasHome from "./components/CanvasHome";
+import CanvasView from "./components/CanvasView";
 // import GalleryHome from "./components/GalleryHome";
 // import GalleryView from "./components/GalleryView";
 // import DataUrlConverter from "./components/DataUrlConverter";
 import AllArtView from "./components/AllArtView";
 import Modal from "./components/OpenModalButton/Modal";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 function Layout() {
 	const dispatch = useDispatch();
@@ -48,8 +50,12 @@ const router = createBrowserRouter([
 				element: <AllArtView />,
 			},
 			{
-				path: "/arts/:id",
-				element: <CanvasHome />,
+				path: "/art/:id",
+				element: <CanvasView />,
+			},
+			{
+				path: "/profile",
+				element: <ProfilePage />,
 			},
 			// {
 			// 	path: "/galleries",

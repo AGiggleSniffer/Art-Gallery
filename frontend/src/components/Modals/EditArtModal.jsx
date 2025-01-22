@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import * as artActions from "../../store/art";
-import ErrorDisplay from "./ErrorDisplay";
-import { context } from "../../store/session";
 import { BsArrowLeft } from "react-icons/bs";
-import { useModal } from "../../context/ModalProvider";
-import { useNavigate } from "react-router-dom";
 
-export default function SaveArtModal() {
+import * as artActions from "../../store/art";
+import * as sessionActions from "../../store/session";
+
+import { useModal } from "../../context/ModalProvider";
+import ErrorDisplay from "./ErrorDisplay";
+
+export default function EditArtModal() {
 	const navigate = useNavigate();
-	const sessionContext = useSelector(context);
+	const { id } = useParams();
+	const sessionContext = useSelector(sessionActions.context);
+	const currentArt = useSelector(artActions.findArt);
 	const [data, setData] = useState("");
 	const [description, setDescription] = useState("");
 	const [name, setName] = useState("");
@@ -22,6 +26,7 @@ export default function SaveArtModal() {
 		const formattedTags = tags.replaceAll("#", "").split(" ");
 
 		const payload = {
+			id,
 			name,
 			description,
 			dataURL: data,
@@ -29,7 +34,7 @@ export default function SaveArtModal() {
 		};
 
 		try {
-			const { id: newId } = await dispatch(artActions.saveThunk(payload));
+			const { id: newId } = await dispatch(artActions.editThunk(payload));
 			navigate(`/art/${newId}`);
 			close();
 		} catch (err) {
@@ -46,8 +51,13 @@ export default function SaveArtModal() {
 	};
 
 	useEffect(() => {
-		setData(sessionContext?.ctx?.canvas.toDataURL());
-	}, [sessionContext]);
+		setData(sessionContext?.ctx?.canvas.toDataURL() || "");
+		setDescription(currentArt?.description || "");
+		setName(currentArt?.name || "");
+		setTags(
+			currentArt?.ArtTags.map((tag) => `#${tag.type}`).join(" ") || "",
+		);
+	}, [currentArt, sessionContext]);
 
 	return (
 		<div
@@ -70,7 +80,9 @@ export default function SaveArtModal() {
 				</div>
 				<div className="flex flex-col items-center justify-center gap-2 my-8 lg:m-4">
 					<img src="/Icon.png" className="h-20 w-fit lg:h-12" />
-					<h1 className="text-4xl font-bold text-center">Save Art</h1>
+					<h1 className="text-4xl font-bold text-center">
+						Edit / Update Art
+					</h1>
 				</div>
 				<div className="w-full h-full flex flex-col gap-2 md:px-12 lg:px-0 text-xl">
 					<div className="flex flex-col w-full">
@@ -105,7 +117,7 @@ export default function SaveArtModal() {
 							id="tags"
 							placeholder="Add Tags to help people find your art:"
 							onChange={(e) => setTags(e.target.value)}
-							defaultValue={""}
+							defaultValue={tags}
 						/>
 					</div>
 					{errors.type && <ErrorDisplay msg={errors.type} />}

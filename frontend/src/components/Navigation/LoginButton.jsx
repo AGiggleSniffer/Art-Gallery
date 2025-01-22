@@ -4,11 +4,16 @@ import { LoginFormModal } from "../Modals";
 import { useSelector } from "react-redux";
 import { user } from "../../store/session";
 import { BsPersonCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const LoginButton = () => {
+	const navigate = useNavigate();
 	const sessionUser = useSelector(user);
 	return sessionUser ? (
-		<button className="text-nowrap flex items-center justify-center">
+		<button
+			className="text-nowrap flex items-center justify-center"
+			onClick={() => navigate("/profile")}
+		>
 			<BsPersonCircle className="mr-2" />
 			Profile
 		</button>

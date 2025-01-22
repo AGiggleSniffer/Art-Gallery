@@ -1,18 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { VscSave, VscSaveAs } from "react-icons/vsc";
-import { BsTrash, BsBan } from "react-icons/bs";
+import { useParams } from "react-router-dom";
 
 import * as artActions from "../../store/art";
-import * as sessionActions from "../../store/session";
-
-import OpenModalButton from "../OpenModalButton";
-import {
-	SignupFormModal,
-	SaveArtModal,
-	DeleteArtModal,
-} from "../Modals";
 
 import useCanvasCtx from "../../hooks/useCanvasCtx";
 
@@ -20,102 +10,40 @@ import Toolbar from "../Toolbar";
 
 export default function CanvasView() {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const { id } = useParams();
 
-	const [isOwner, setIsOwner] = useState(false);
+	const currentArt = useSelector(artActions.findArt);
+
 	const canvasRef = useRef(null);
-
-	const user = useSelector(sessionActions.user);
-	const myArt = useSelector(artActions.findArt(id));
-
-	const ctx = useCanvasCtx(canvasRef);
-	const clearCanvas = () => {
-		const { width, height } = canvasRef.current;
-		ctx.clearRect(0, 0, width, height);
-	};
+	const { updateCanvas, style, setStyle, setColor, size, setSize } =
+		useCanvasCtx(canvasRef);
 
 	useEffect(() => {
-		dispatch(artActions.findOneArt(id));
-	}, [dispatch, id, user]);
-
-	useEffect(() => {
-		if (user && myArt?.user_id === user?.id) {
-			setIsOwner(true);
-		} else {
-			setIsOwner(false);
+		if (id) {
+			dispatch(artActions.findOneArt(id));
 		}
-	}, [myArt, user]);
+	}, [dispatch, id]);
 
 	useEffect(() => {
-		const img = new Image();
-		img.src = myArt?.data_url;
-		ctx?.drawImage(img, 0, 0);
-	}, [myArt, ctx, id]);
-
-	useEffect(() => {
-		dispatch(sessionActions.updateCtx(ctx));
-	}, [dispatch, ctx]);
+		if (currentArt && updateCanvas) {
+			updateCanvas(currentArt.data_url);
+		}
+	}, [updateCanvas, currentArt]);
 
 	return (
-		<>
-			<div id="CanvasHome">
-				<div id="CanvasContainer">
-					<div id="Buttons">
-						<Toolbar />
-						<button className="classic" onClick={clearCanvas}>
-							<BsBan />
-							Clear
-						</button>
-						{isOwner && (
-							<OpenModalButton
-								buttonText="Save"
-								icon={<VscSaveAs />}
-								modalComponent={
-									<SaveArtModal
-										canvasRef={canvasRef}
-										id={id}
-										navigate={navigate}
-									/>
-								}
-							/>
-						)}
-						{user ? (
-							<OpenModalButton
-								buttonText="Save As..."
-								icon={<VscSave />}
-								modalComponent={
-									<SaveArtModal canvasRef={canvasRef} navigate={navigate} />
-								}
-							/>
-						) : (
-							<OpenModalButton
-								buttonText="Save As..."
-								icon={<VscSave />}
-								modalComponent={
-									<SignupFormModal extraMessage="Sign in or Sign up to Save" />
-								}
-							/>
-						)}
-						{isOwner && (
-							<OpenModalButton
-								buttonText="Delete"
-								icon={<BsTrash />}
-								modalComponent={<DeleteArtModal navigate={navigate} id={id} />}
-							/>
-						)}
-					</div>
-					<canvas ref={canvasRef} />
-					<h3 id="Description">
-						<div>Desc:</div> <div>{myArt?.description}</div>
-					</h3>
-				</div>
-				<div id="Tags">
-					{myArt?.ArtTags?.map(({ type, id }) => (
-						<span key={id}>#{type}</span>
-					))}
+		<div className="flex overflow-hidden border-t border-black h-full flex-grow">
+			<Toolbar
+				context={{ style, setStyle, setColor, size, setSize }}
+				className="bg-neutral-600/50 select-none w-16 flex-shrink-0 relative"
+			/>
+			<div className="w-full flex flex-col justify-center items-center border-l border-black">
+				<div className="w-[95%] max-w-[75vh]">
+					<canvas
+						className="bg-[url('/cream-paper.png')] bg-white"
+						ref={canvasRef}
+					/>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
