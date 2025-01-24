@@ -10,11 +10,6 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
 				hooks: true,
 			});
-			User.hasMany(models.Gallery, {
-				foreignKey: "user_id",
-				onDelete: "CASCADE",
-				hooks: true,
-			});
 			User.hasMany(models.Review, {
 				foreignKey: "user_id",
 				onDelete: "CASCADE",

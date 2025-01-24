@@ -11,7 +11,7 @@ const LoginButton = () => {
 	const sessionUser = useSelector(user);
 	return sessionUser ? (
 		<button
-			className="text-nowrap flex items-center justify-center"
+			className="text-nowrap flex items-center justify-center h-full w-full hover:bg-white/30 transition-colors"
 			onClick={() => navigate("/profile")}
 		>
 			<BsPersonCircle className="mr-2" />

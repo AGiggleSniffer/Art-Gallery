@@ -13,11 +13,6 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: "CASCADE",
 				hooks: true,
 			});
-			Art.hasMany(models.ArtGallery, {
-				foreignKey: "art_id",
-				onDelete: "CASCADE",
-				hooks: true,
-			});
 			Art.hasMany(models.Review, {
 				foreignKey: "art_id",
 				onDelete: "CASCADE",

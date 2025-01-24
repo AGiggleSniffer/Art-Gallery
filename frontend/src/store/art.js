@@ -5,6 +5,7 @@ const LOAD = "art/load";
 const LOAD_ALL = "art/loadAll";
 const EDIT = "art/edit";
 const ONEART = "art/one";
+const DELETE = "art/delete";
 const LIKE = "art/review/like";
 const DISLIKE = "art/review/dislike";
 const DELETE_REVIEW = "art/review/delete";
@@ -20,8 +21,13 @@ const loadAll = (payload) => ({
 	payload,
 });
 
-export const oneArt = (payload) => ({
+const oneArt = (payload) => ({
 	type: ONEART,
+	payload,
+});
+
+const deleteArt = (payload) => ({
+	type: DELETE,
 	payload,
 });
 
@@ -116,12 +122,13 @@ export const findOneArt = (id) => async (dispatch) => {
 	return data;
 };
 
-export const deleteArtThunk = (id) => async () => {
+export const deleteArtThunk = (id) => async (dispatch) => {
 	const response = await csrfFetch(`/api/art/${id}`, {
 		method: "DELETE",
 	});
 
 	const data = await response.json();
+	dispatch(deleteArt(id));
 	return data;
 };
 
@@ -232,6 +239,11 @@ const artReducer = (state = initialState, action) => {
 		}
 		case ONEART: {
 			return { ...state, current: action.payload };
+		}
+		case DELETE: {
+			const newState = { ...state.owned };
+			delete newState[+action.payload];
+			return { ...state, owned: newState };
 		}
 		case LIKE: {
 			console.log(action.payload);
