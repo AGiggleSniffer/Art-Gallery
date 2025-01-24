@@ -59,40 +59,47 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 			...pagination,
 		});
 
-		return res.json({ Arts, count });
-	} catch (err) {
-		return next(err);
-	}
-});
-
-router.get("/owned", requireAuth, async (req, res, next) => {
-	const { page, size, filterState } = req.query;
-	const { user } = req;
-	const where = { user_id: user.id };
-	const include = [
-		User,
-		{
-			model: Review,
-			where: { user_id: user.id },
-			required: false,
-		},
-	];
-	const pagination = paginationBuilder(page, size);
-	const order = orderBuilder(filterState);
-
-	try {
-		const { rows: Arts, count } = await Art.findAndCountAll({
-			where,
-			include,
-			order,
-			...pagination,
-		});
+		console.log("\n\nLIST: " + Arts + "\n\n");
 
 		return res.json({ Arts, count });
 	} catch (err) {
 		return next(err);
 	}
 });
+
+router.get(
+	"/owned",
+	validateQueryFilters,
+	requireAuth,
+	async (req, res, next) => {
+		const { page, size, filterState } = req.query;
+		const { user } = req;
+		const where = { user_id: user.id };
+		const include = [
+			User,
+			{
+				model: Review,
+				where: { user_id: user.id },
+				required: false,
+			},
+		];
+		const pagination = paginationBuilder(page, size);
+		const order = orderBuilder(filterState);
+
+		try {
+			const { rows: Arts, count } = await Art.findAndCountAll({
+				where,
+				include,
+				order,
+				...pagination,
+			});
+
+			return res.json({ Arts, count });
+		} catch (err) {
+			return next(err);
+		}
+	},
+);
 
 router.get("/:artId", async (req, res, next) => {
 	const { artId } = req.params;
