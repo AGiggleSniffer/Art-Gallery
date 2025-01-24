@@ -73,30 +73,6 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: "Art",
-			scopes: {
-				withCounts: {
-					// attributes: {
-					// 	include: [
-					// 		[
-					// 			sequelize.literal(`(
-					// 				SELECT COUNT(*)
-					// 				FROM Reviews
-					// 				WHERE Reviews.art_id = Art.id AND Reviews.liked = true
-					// 			)`),
-					// 			"likeCount",
-					// 		],
-					// 		[
-					// 			sequelize.literal(`(
-					// 				SELECT COUNT(*)
-					// 				FROM Reviews
-					// 				WHERE Reviews.art_id = Art.id AND Reviews.disliked = true
-					// 			)`),
-					// 			"dislikeCount",
-					// 		],
-					// 	],
-					// },
-				},
-			},
 		},
 	);
 	return Art;

@@ -53,6 +53,8 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	const order = orderBuilder(filterState);
 
 	try {
+		console.log("\n\n", order, "\n\n");
+
 		const { rows: Arts, count } = await Art.findAndCountAll({
 			include,
 			order,
