@@ -246,7 +246,6 @@ const artReducer = (state = initialState, action) => {
 			return { ...state, owned: newState };
 		}
 		case LIKE: {
-			console.log(action.payload);
 			const id = +action.payload.artId;
 			return {
 				...state,

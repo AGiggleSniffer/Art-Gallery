@@ -23,11 +23,11 @@ exports.orderBuilder = (filter) => {
 			break;
 		}
 		case "Likes": {
-			order.push([sequelize.literal("likeCount"), "DESC"]);
+			order.push([sequelize.literal("likecount"), "DESC"]);
 			break;
 		}
 		case "Dislikes": {
-			order.push([sequelize.literal("dislikeCount"), "DESC"]);
+			order.push([sequelize.literal("dislikecount"), "DESC"]);
 			break;
 		}
 	}
