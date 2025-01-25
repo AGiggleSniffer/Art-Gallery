@@ -16,8 +16,8 @@ const draw = (e, ctx, style, size, color, scale) => {
 	let y;
 	if (e.touches) {
 		const rect = e.target.getBoundingClientRect();
-		x = ((e.touches[0].pageX - rect.left) / scale) * 2;
-		y = ((e.touches[0].pageY - rect.top) / scale) * 2;
+		x = (e.touches[0].pageX - rect.left) / scale;
+		y = (e.touches[0].pageY - rect.top) / scale;
 	} else {
 		x = e.offsetX / scale;
 		y = e.offsetY / scale;
@@ -51,7 +51,7 @@ export default function useCanvasCtx(ref) {
 	const [size, setSize] = useState(1);
 	const [color, setColor] = useState("#000000");
 
-	const dpi = window.devicePixelRatio;
+	// const dpi = window.devicePixelRatio;
 
 	const clearCanvas = useCallback(() => {
 		if (!canvas) return;
@@ -93,18 +93,20 @@ export default function useCanvasCtx(ref) {
 
 	useEffect(() => {
 		if (!canvas) return;
-		canvas.height = CANVAS_HEIGHT * dpi;
-		canvas.width = CANVAS_WIDTH * dpi;
+		// canvas.height = CANVAS_HEIGHT * dpi;
+		// canvas.width = CANVAS_WIDTH * dpi;
+		canvas.height = CANVAS_HEIGHT;
+		canvas.width = CANVAS_WIDTH;
 
 		canvas.style.imageRendering = "pixelated";
 
 		ctx.imageSmoothingEnabled = false;
 		ctx.lineCap = "round";
 
-		ctx.save();
-		ctx.scale(dpi, dpi);
-		ctx.restore();
-	}, [canvas, dpi, ctx]);
+		// ctx.save();
+		// ctx.scale(dpi, dpi);
+		// ctx.restore();
+	}, [canvas, /*dpi,*/ ctx]);
 
 	useEffect(() => {
 		if (!canvas) return;
