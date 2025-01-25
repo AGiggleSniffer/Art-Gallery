@@ -24,13 +24,13 @@ router.put("/:artId", requireAuth, async (req, res, next) => {
 		const result = await Review.update(payload, options);
 
 		if (liked && result[1] === 1) {
-			await Art.increment({ likeCount: 1 }, { where: { id: artId } });
-			await Art.decrement({ dislikeCount: 1 }, { where: { id: artId } });
+			await Art.increment({ likecount: 1 }, { where: { id: artId } });
+			await Art.decrement({ dislikecount: 1 }, { where: { id: artId } });
 		}
 
 		if (disliked && result[1] === 1) {
-			await Art.increment({ dislikeCount: 1 }, { where: { id: artId } });
-			await Art.decrement({ likeCount: 1 }, { where: { id: artId } });
+			await Art.increment({ dislikecount: 1 }, { where: { id: artId } });
+			await Art.decrement({ likecount: 1 }, { where: { id: artId } });
 		}
 
 		return res.json({
@@ -59,7 +59,7 @@ router.post("/like/:artId", requireAuth, async (req, res, next) => {
 		const [_, created] = await Review.findOrCreate({ where, defaults });
 
 		if (created) {
-			await Art.increment({ likeCount: 1 }, { where: { id: artId } });
+			await Art.increment({ likecount: 1 }, { where: { id: artId } });
 			return res.json({ message: "Successfully Liked", artId });
 		} else throw new Error("Already Reviewed");
 	} catch (err) {
@@ -82,7 +82,7 @@ router.post("/dislike/:artId", requireAuth, async (req, res, next) => {
 		const [_, created] = await Review.findOrCreate({ where, defaults });
 
 		if (created) {
-			await Art.increment({ dislikeCount: 1 }, { where: { id: artId } });
+			await Art.increment({ dislikecount: 1 }, { where: { id: artId } });
 			return res.json({ message: "Successfully Disliked", artId });
 		} else throw new Error("Already Reviewed");
 	} catch (err) {
@@ -99,11 +99,11 @@ router.delete("/delete/:artId", requireAuth, async (req, res, next) => {
 		const { dataValues } = await Review.findOne({ where });
 
 		if (dataValues.liked) {
-			await Art.decrement({ likeCount: 1 }, { where: { id: artId } });
+			await Art.decrement({ likecount: 1 }, { where: { id: artId } });
 		}
 
 		if (dataValues.disliked) {
-			await Art.decrement({ dislikeCount: 1 }, { where: { id: artId } });
+			await Art.decrement({ dislikecount: 1 }, { where: { id: artId } });
 		}
 
 		await Review.destroy({ where });

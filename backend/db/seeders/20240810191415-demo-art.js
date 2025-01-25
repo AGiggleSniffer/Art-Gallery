@@ -41,8 +41,8 @@ module.exports = {
 				name: name,
 				description: desc,
 				data_url: img.url,
-				likeCount: randInt(0, 200),
-				dislikeCount: randInt(0, 200),
+				likecount: randInt(0, 200),
+				dislikecount: randInt(0, 200),
 			};
 
 			try {

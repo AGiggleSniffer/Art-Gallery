@@ -53,7 +53,7 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 	const order = orderBuilder(filterState);
 
 	try {
-		console.log("\n\n", order, "\n\n");
+		console.log("\n\nORDER: ", order, "\n\n");
 
 		const { rows: Arts, count } = await Art.findAndCountAll({
 			include,
@@ -61,7 +61,7 @@ router.get("/", validateQueryFilters, async (req, res, next) => {
 			...pagination,
 		});
 
-		console.log("\n\nLIST: " + Arts + "\n\n");
+		console.log("\n\nLIST: ", Arts[0], "\n\n");
 
 		return res.json({ Arts, count });
 	} catch (err) {

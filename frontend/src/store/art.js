@@ -254,7 +254,7 @@ const artReducer = (state = initialState, action) => {
 					...state.all,
 					[id]: {
 						...state.all[id],
-						likeCount: state.all[id].likeCount + 1,
+						likecount: state.all[id].likecount + 1,
 					},
 				},
 			};
@@ -267,7 +267,7 @@ const artReducer = (state = initialState, action) => {
 					...state.all,
 					[id]: {
 						...state.all[id],
-						dislikeCount: state.all[id].dislikeCount + 1,
+						dislikecount: state.all[id].dislikecount + 1,
 					},
 				},
 			};
@@ -280,29 +280,29 @@ const artReducer = (state = initialState, action) => {
 					...state.all,
 					[+id]: {
 						...state.all[+id],
-						likeCount: like
-							? state.all[+id].likeCount - 1
-							: state.all[+id].likeCount,
-						dislikeCount: dislike
+						likecount: like
+							? state.all[+id].likecount - 1
+							: state.all[+id].likecount,
+						dislikecount: dislike
 							? state.all[+id].dislikeCount - 1
-							: state.all[+id].dislikeCount,
+							: state.all[+id].dislikecount,
 					},
 				},
 			};
 		}
 		case UPDATE_REVIEW: {
 			const { artId: id, liked, disliked } = action.payload;
-			let likeCount = state.all[+id].likeCount;
-			let dislikeCount = state.all[+id].dislikeCount;
+			let likecount = state.all[+id].likecount;
+			let dislikecount = state.all[+id].dislikecount;
 
 			if (liked) {
-				likeCount++;
-				dislikeCount--;
+				likecount++;
+				dislikecount--;
 			}
 
 			if (disliked) {
-				dislikeCount++;
-				likeCount--;
+				dislikecount++;
+				likecount--;
 			}
 
 			return {
@@ -311,8 +311,8 @@ const artReducer = (state = initialState, action) => {
 					...state.all,
 					[+id]: {
 						...state.all[+id],
-						likeCount,
-						dislikeCount,
+						likecount,
+						dislikecount,
 					},
 				},
 			};
