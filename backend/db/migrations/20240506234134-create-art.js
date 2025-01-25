@@ -34,11 +34,11 @@ module.exports = {
 					type: Sequelize.TEXT,
 					allowNull: false,
 				},
-				likeCount: {
+				likecount: {
 					type: Sequelize.INTEGER,
 					defaultValue: 0,
 				},
-				dislikeCount: {
+				dislikecount: {
 					type: Sequelize.INTEGER,
 					defaultValue: 0,
 				},

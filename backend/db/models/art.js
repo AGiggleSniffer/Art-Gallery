@@ -61,11 +61,11 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: { msg: "Something went wrong please try again" },
 				},
 			},
-			likeCount: {
+			likecount: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,
 			},
-			dislikeCount: {
+			dislikecount: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,
 			},

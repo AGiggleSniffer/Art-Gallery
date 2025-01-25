@@ -18,8 +18,8 @@ const ArtCard = ({
 		id,
 		data_url,
 		name,
-		likeCount,
-		dislikeCount,
+		likecount,
+		dislikecount,
 		createdAt,
 		User,
 		Reviews,
@@ -117,7 +117,7 @@ const ArtCard = ({
 							className="pl-2 pr-1 py-1 flex items-center justify-center relative"
 							icon={<BsHandThumbsUp className="mr-1" />}
 							icon2={<BsFillHandThumbsUpFill className="mr-1" />}
-							count={likeCount}
+							count={likecount}
 							active={isLiked}
 						/>
 						<LikeCounter
@@ -127,7 +127,7 @@ const ArtCard = ({
 							icon2={
 								<BsFillHandThumbsDownFill className="mr-1" />
 							}
-							count={dislikeCount}
+							count={dislikecount}
 							active={isLiked === false}
 						/>
 					</span>
