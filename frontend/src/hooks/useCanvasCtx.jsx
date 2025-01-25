@@ -19,8 +19,8 @@ const draw = (e, ctx, style, size, color, scale) => {
 		x = ((e.touches[0].pageX - rect.left) / scale) * 2;
 		y = ((e.touches[0].pageY - rect.top) / scale) * 2;
 	} else {
-		x = (e.offsetX / scale);
-		y = (e.offsetY / scale);
+		x = e.offsetX / scale;
+		y = e.offsetY / scale;
 	}
 
 	switch (style) {
@@ -61,12 +61,13 @@ export default function useCanvasCtx(ref) {
 
 	const updateCanvas = useCallback(
 		(dataUrl) => {
-			if (!ctx) return;
+			if (!ctx || !canvas) return;
+			const { width, height } = canvas;
 			const img = new Image();
 			img.src = dataUrl;
-			ctx.drawImage(img, 0, 0);
+			ctx.drawImage(img, 0, 0, width, height);
 		},
-		[ctx],
+		[ctx, canvas],
 	);
 
 	const setCanvasSize = useCallback(() => {
