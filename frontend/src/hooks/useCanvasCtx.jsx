@@ -16,11 +16,11 @@ const draw = (e, ctx, style, size, color, scale) => {
 	let y;
 	if (e.touches) {
 		const rect = e.target.getBoundingClientRect();
-		x = ((e.touches[0].pageX - rect.left) / scale) * 2;
-		y = ((e.touches[0].pageY - rect.top) / scale) * 2;
+		x = ((e.touches[0].pageX - rect.left) / scale) * 4;
+		y = ((e.touches[0].pageY - rect.top) / scale) * 4;
 	} else {
-		x = e.offsetX / scale;
-		y = e.offsetY / scale;
+		x = (e.offsetX / scale);
+		y = (e.offsetY / scale);
 	}
 
 	switch (style) {
